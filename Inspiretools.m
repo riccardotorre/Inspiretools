@@ -4,15 +4,32 @@
 (*Inspire Mathematica Interface (just execute all)*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*General functions*)
 
 
-StringToDate[string_]:=Check[First[Cases[{DateList[string]},x_:>x[[1]]+(x[[2]]-1)/12+(x[[3]]-1)/365]]//N,If[ToString[Head[ToExpression[string]]]=="Real",ToExpression[string],string]]//Quiet
+(*InterpretDate[str_]:=DateObject[{StringSplit[str,"+"]\[LeftDoubleBracket]1\[RightDoubleBracket],{"Year","-","Month","-","Day","T","Hour",":","Minute",":","Second"}} ,TimeZone\[Rule]"UTC"];*)
+StringToDateOld[string_]:=Quiet[Check[First[Cases[{DateList[StringSplit[string,"+"][[1]] ,TimeZone->"UTC" ]},x_:>x[[1]]+(x[[2]]-1)/12+(x[[3]]-1)/365]]//N,If[ToString[Head[ToExpression[string]]]=="Real",ToExpression[string],string]]];
+StringToDateNew[string_] := Quiet[Module[{dateobj, datelist, instant, result}, Check[dateobj = DateObject[StringSplit[string, "+"][[1]], "Instant", TimeZone -> "UTC"]; datelist = DateList[dateobj]; instant = datelist[[-1]] - Floor[datelist[[-1]]]; result = 1900 + (AbsoluteTime[dateobj, TimeZone -> "UTC"] + instant)/(365.2422*24*60*60.); {If[Abs[result-Round[result]]<0.0027,N[Round[result]],result]}, If[ToString[Head[ToExpression[string]]] == "Real", ToExpression[string], string]]]];
+StringToDate[string_] := StringToDateNew[string];
+DateToDateObject[date_] := Module[{tmp, datelist, instant, newdatelist}, tmp = FromAbsoluteTime[(date - 1900)*365.2422*24*60*60., TimeZone -> "UTC"]; tmp]; 
+GetDateFromArXivNumber[arxivnumber_]:=If[ToString[arxivnumber]!=ToString[Null],StringCases[StringCases[StringDelete[arxivnumber,"."],DigitCharacter..][[1]],w_~~x_~~y_~~z_~~k__:>Which[ToExpression[w<>x]<=50,ToExpression[w<>x]+2000+(ToExpression[y<>z]-1)/12.+ToExpression[k]/1000000.,ToExpression[w<>x]>50,ToExpression[w<>x]+1900+(ToExpression[y<>z]-1)/12.+ToExpression[k]/1000000.]],{Null}][[1]];
+SelectSmallestDate[list_]:=Quiet[Check[Module[{tmp},tmp=N[#]&/@DeleteDuplicates[Sort[MinimalBy[DeleteCases[Flatten[list],Null],IntegerPart[#]&]]];If[Length[tmp]==1,tmp[[1]],If[tmp[[1]]-IntegerPart[tmp[[1]]]==0,tmp[[2]],tmp[[1]]]]],Null]];
+ArXivCat[string_]:=StringReplace[string,RegularExpression["\\.(.*)"]:>""];
 
 
 (* ::Subsection:: *)
 (*Check schema and import sample records to test the interface*)
+
+
+(* ::Text:: *)
+(*Possible URLS appearing in records*)
+
+
+authorsurls={"https://labs.inspirehep.net/api/authors/","https://inspirehep.net/api/authors/"};
+institutionsurls={"https://labs.inspirehep.net/api/institutions/","https://inspirehep.net/api/institutions/"};
+journalsurls={"https://labs.inspirehep.net/api/journals/","https://inspirehep.net/api/journals/"};
+literatureurls ={"https://labs.inspirehep.net/api/literature/","https://inspirehep.net/api/literature/"};
 
 
 (* ::Text:: *)
@@ -35,7 +52,7 @@ keys[3]={"artid","cnum","conf_acronym","conference_record","curated_relation","h
 (*Functions that correspond to all general elements for each JSON entry (in all records: authors, conferences, data, experiments, hep, insitutions, jobs, journals)*)
 
 
-RecordID[entry_]:=entry[["id"]]/.Missing["KeyAbsent",x__]:>0;
+RecordID[entry_]:=ToExpression[entry[["id"]]/.Missing["KeyAbsent",x__]:>0];
 RecordLinks[entry_]:=entry[["links"]]/.Missing["KeyAbsent",x__]:>{""};
 RecordCreated[entry_]:=entry[["created"]]/.Missing["KeyAbsent",x__]:>"";
 RecordUpdated[entry_]:=entry[["updated"]]/.Missing["KeyAbsent",x__]:>"";
@@ -95,7 +112,7 @@ ObjectURL=Association[{"description"->"","value"->""}];
 (*HEP records*)
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Schema: HEP records*)
 
 
@@ -183,6 +200,8 @@ HEPBookSeries[entry_]:=entry[["metadata","book_series"]]/.Missing["KeyAbsent",x_
 	HEPBookSeriesTitle[entry_]:=(#[["title"]]&/@HEPBookSeries[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPBookSeriesVolume[entry_]:=(#[["volume"]]&/@HEPBookSeries[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPBookSeriesArray[entry_]:=Transpose@{HEPBookSeriesTitle[entry],HEPBookSeriesVolume[entry]};
+HEPCitations[entry_]:=entry[["metadata","citation_count"]]/.Missing["KeyAbsent",x__]:>True;
+HEPCitationsNoSelf[entry_]:=entry[["metadata","citation_count_without_self_citations"]]/.Missing["KeyAbsent",x__]:>True;
 HEPCiteable[entry_]:=entry[["metadata","citeable"]]/.Missing["KeyAbsent",x__]:>True;
 HEPCollaborations[entry_]:=entry[["metadata","collaborations"]]/.Missing["KeyAbsent",x__]:>{ObjectCollaborations};
 	HEPCollaborationsRecord[entry_]:=(#[["record"]]&/@HEPCollaborations[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
@@ -218,7 +237,7 @@ HEPDOIs[entry_]:=entry[["metadata","dois"]]/.Missing["KeyAbsent",x__]:>{ObjectDO
 	HEPDOIsSource[entry_]:=(#[["source"]]&/@HEPDOIs[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPDOIsValue[entry_]:=(#[["value"]]&/@HEPDOIs[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPDOIsArray[entry_]:=Transpose@{HEPDOIsMaterial[entry],HEPDOIsSource[entry],HEPDOIsValue[entry]};
-HEPEarliestDate[entry_]:=entry[["metadata","earliest_date"]]/.Missing["KeyAbsent",x__]:>"";
+HEPEarliestDate[entry_]:=entry[["metadata","date"]]/.Missing["KeyAbsent",x__]:>"";
 HEPEditions[entry_]:=entry[["metadata","editions"]]/.Missing["KeyAbsent",x__]:>"";
 HEPEnergyRanges[entry_]:=entry[["metadata","energy_ranges"]]/.Missing["KeyAbsent",x__]:>{""};
 HEPExternalSystemIdentifiers[entry_]:=entry[["metadata","external_system_identifiers"]]/.Missing["KeyAbsent",x__]:>{ObjectID};
@@ -300,7 +319,7 @@ HEPPublicationInfoJournalRecord[entry_]:=(#[["journal_record"]]&/@HEPPublication
 		HEPPublicationInfoParentRecordRef[entry_]:=(#[["$ref"]]&/@HEPPublicationInfoParentRecord[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoParentReportNumber[entry_]:=(#[["parent_report_number"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoPubinfoFreetext[entry_]:=(#[["pubinfo_freetext"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPPublicationInfoYear[entry_]:=(#[["year"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>0;
+	HEPPublicationInfoYear[entry_]:=(#[["year"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
 HEPPublicationInfoArray[entry_]:=Transpose@{HEPPublicationInfoArtID[entry],HEPPublicationInfoCnum[entry],HEPPublicationInfoConfAcronym[entry],HEPPublicationInfoConferenceRecordRef[entry],HEPPublicationInfoCuratedRelation[entry],HEPPublicationInfoHidden[entry],HEPPublicationInfoJournalIssue[entry],HEPPublicationInfoJournalRecordRef[entry],HEPPublicationInfoJournalTitle[entry],HEPPublicationInfoJournalVolume[entry],HEPPublicationInfoMaterial[entry],HEPPublicationInfoPageEnd[entry],HEPPublicationInfoPageStart[entry],HEPPublicationInfoParentISBN[entry],HEPPublicationInfoParentRecordRef[entry],HEPPublicationInfoParentReportNumber[entry],HEPPublicationInfoPubinfoFreetext[entry],HEPPublicationInfoYear[entry]};
 HEPPublicationType[entry_]:=entry[["metadata","publication_type"]]/.Missing["KeyAbsent",x__]:>{""};
 HEPRecordAffiliations[entry_]:=entry[["metadata","record_affiliations"]]/.Missing["KeyAbsent",x__]:>{ObjectAffiliations};
@@ -439,23 +458,25 @@ ExtractHEPAbstract[entry_]:={HEPAbstractsValue[entry][[1]]}/.""->Null;
 ExtractHEPArXivCategories[entry_]:=Flatten@HEPArXivEprintsCategories[entry]/.""->Null;
 ExtractHEPArXivFirstCategory[entry_]:={ExtractHEPArXivCategories[entry][[1]]}/.""->Null;
 ExtractHEPArXivIDs[entry_]:=HEPArXivEprintsValue[entry]/.""->Null;
-ExtractHEPAuthorsAffiliationsIDs[entry_]:=ToExpression/@StringDelete[#,"http://labs.inspirehep.net/api/institutions/"]&/@HEPAuthorsAffiliationsRecordRef[entry];
+ExtractHEPAuthorsAffiliationsIDs[entry_]:=ToExpression/@StringDelete[#,Alternatives@@institutionsurls]&/@HEPAuthorsAffiliationsRecordRef[entry];
 ExtractHEPAuthorsAffiliationsNames[entry_]:=HEPAuthorsAffiliationsValue[entry]/.""->Null;
 ExtractHEPAuthorsAll[entry_]:=Transpose@{ExtractHEPAuthorsIDs[entry],(*ExtractHEPAuthorsInspireNames[entry]*)(*(Cases[#,x_\[RuleDelayed]x\[LeftDoubleBracket]2\[RightDoubleBracket]]&/@HEPAuthorsIDsArray[entry])/.{{""}}\[Rule]Null*)HEPAuthorsIDsValue[entry]/.{""}->Null,ExtractHEPAuthorsFullNames[entry],ExtractHEPAuthorsAffiliationsIDs[entry]/.{Null}->Null,ExtractHEPAuthorsAffiliationsNames[entry]/.{Null}->Null};
 ExtractHEPAuthorsCount[entry_]:={HEPNumberOfAuthors[entry]}/. 0->Null;(*to be used with brief JSON*)
 ExtractHEPAuthorsFullNames[entry_]:=HEPAuthorsFullName[entry]/.""->Null;
-ExtractHEPAuthorsIDs[entry_]:=ToExpression[StringDelete[HEPAuthorsRecordRef[entry],"http://labs.inspirehep.net/api/authors/"]];
+ExtractHEPAuthorsIDs[entry_]:=ToExpression[StringDelete[HEPAuthorsRecordRef[entry],Alternatives@@authorsurls]];
 ExtractHEPAuthorsInspireNames[entry_]:=(Cases[#,x_/;x[[1]]=="INSPIRE BAI":>x[[2]]]&/@HEPAuthorsIDsArray[entry])/.{}->{Null};
+ExtractHEPCitations[entry_]:={HEPCitations[entry]};
+ExtractHEPCitationsNoSelf[entry_]:={HEPCitationsNoSelf[entry]};
 ExtractHEPCiteableFlag[entry_]:={HEPCiteable[entry]};
 (*ExtractHEPCitationsCount[entry_]:=Quiet[Check[{entry\[LeftDoubleBracket]"metadata","citation_count"\[RightDoubleBracket]/.Missing["KeyAbsent",x__]\[RuleDelayed]Null},0]];*)
 ExtractHEPCollaborations[entry_]:=HEPCollaborationsValue[entry]/.""->Null;
 ExtractHEPCore[entry_]:={HEPCore[entry]};
 ExtractHEPCurated[entry_]:={HEPCurated[entry]};
-ExtractHEPDateCreated[entry_]:={RecordCreated[entry]}/.""->Null;
-ExtractHEPDateUpdated[entry_]:={RecordUpdated[entry]}/.""->Null;
+ExtractHEPDateCreated[entry_]:=RecordCreated[entry]/.""->{Null};
+ExtractHEPDateUpdated[entry_]:=RecordUpdated[entry]/.""->{Null};
 ExtractHEPDocumentTypes[entry_]:=HEPDocumentType[entry]/.""->Null;
 ExtractHEPDOIs[entry_]:=HEPDOIsValue[entry]/.""->Null;
-ExtractHEPEarliestDate[entry_]:={StringToDate@HEPEarliestDate[entry]}/.""->Null;
+ExtractHEPEarliestDate[entry_]:=HEPEarliestDate[entry]/.""->{Null};
 ExtractHEPExperiments[entry_]:=HEPAcceleratorExperimentsLegacyName[entry]/.""->Null;
 ExtractHEPExternalIDs[entry_]:=HEPExternalSystemIdentifiersArray[entry]/.""->Null;
 ExtractHEPExternalURLs[entry_]:=HEPURLsArray[entry]/.""->Null;
@@ -463,19 +484,19 @@ ExtractHEPID[entry_]:={RecordID[entry]};
 ExtractHEPInspireCategories[entry_]:=HEPInspireCategoriesTerm[entry]/.""->Null;
 ExtractHEPISBNs[entry_]:=HEPISBNsValue[entry]/.""->Null;
 ExtractHEPJournalArtID[entry_]:={HEPPublicationInfoArtID[entry]}/. ""->Null;
-ExtractHEPJournalDate[entry_]:={HEPPublicationInfoYear[entry]}/. 0->Null;
-ExtractHEPJournalID[entry_]:={ToExpression[StringDelete[HEPPublicationInfoJournalRecordRef[entry],"http://labs.inspirehep.net/api/journals/"]]};
+ExtractHEPJournalDate[entry_]:={HEPPublicationInfoYear[entry]/. ""->{Null}};
+ExtractHEPJournalID[entry_]:={ToExpression[StringDelete[HEPPublicationInfoJournalRecordRef[entry],Alternatives@@journalsurls]]};
 ExtractHEPJournalIssue[entry_]:={HEPPublicationInfoJournalIssue[entry]}/.""->Null;
 ExtractHEPJournalName[entry_]:={HEPPublicationInfoJournalTitle[entry]}/.""->Null;
 ExtractHEPJournalPageEnd[entry_]:={HEPPublicationInfoPageEnd[entry]}/.""->Null;
 ExtractHEPJournalPageStart[entry_]:={HEPPublicationInfoPageStart[entry]}/.""->Null;
 ExtractHEPJournalVolume[entry_]:={HEPPublicationInfoJournalVolume[entry]}/.""->Null;
 ExtractHEPKeywords[entry_]:=HEPKeywordsValue[entry]/.""->Null;
-ExtractHEPPreprintDate[entry_]:={HEPPreprintDate[entry]}/.""->Null
+ExtractHEPPreprintDate[entry_]:=HEPPreprintDate[entry]/.""->{Null};
 ExtractHEPNumberofPages[entry_]:={HEPNumberOfPages[entry]}/. 0->Null;(*to be used with brief JSON*)
 ExtractHEPNumberofFigures[entry_]:={Length[HEPFiguresArray[entry]/.{{"","","","","",""}}->Null]};
 ExtractHEPPublicationType[entry_]:=HEPPublicationType[entry]/.""->Null;
-ExtractHEPReferences[entry_]:=DeleteCases[ToExpression[StringDelete[HEPReferencesRecordRef[entry],"http://labs.inspirehep.net/api/literature/"]],Null];
+ExtractHEPReferences[entry_]:=DeleteCases[ToExpression[StringDelete[DeleteCases[HEPReferencesRecordRef[entry],x_/;StringContainsQ[x,"data"]],Alternatives@@literatureurls]],Null];
 ExtractHEPReferencesCount[entry_]:={HEPNumberOfReferences[entry]}; (*to be used with brief JSON*)
 ExtractHEPReferencesCount2[entry_]:={ExtractHEPReferences[entry]//Length};
 ExtractHEPRefereedFlag[entry_]:={HEPRefereed[entry]};
@@ -540,7 +561,7 @@ AuthorsDeathDate[entry_]:=entry[["metadata","death_date"]]/.Missing["KeyAbsent",
 AuthorsDeleted[entry_]:=entry[["metadata","deleted"]]/.Missing["KeyAbsent",x__]:>False;
 AuthorsDeletedRecords[entry_]:=entry[["metadata","deleted_records"]]/.Missing["KeyAbsent",x__]:>{ObjectJSONReference};
 	AuthorsDeletedRecordsRef[entry_]:=#[["$ref"]]&/@AuthorsDeletedRecords[entry]/.Missing["KeyAbsent",x__]:>"";
-AuthorsEarliestDate[entry_]:=entry[["metadata","earliest_date"]]/.Missing["KeyAbsent",x__]:>"";
+(*AuthorsEarliestDate[entry_]:=entry[["metadata","earliest_date"]]/.Missing["KeyAbsent",x__]:>"";*)
 AuthorsEmailAddresses[entry_]:=entry[["metadata","email_addresses"]]/.Missing["KeyAbsent",x__]:>{ObjectEmailAddress};
 	AuthorsEmailAddressesCurrent[entry_]:=(#[["current"]]&/@AuthorsEmailAddresses[entry])/.Missing["KeyAbsent",x__]:>False;
 	AuthorsEmailAddressesHidden[entry_]:=(#[["hidden"]]&/@AuthorsEmailAddresses[entry])/.Missing["KeyAbsent",x__]:>False;
@@ -605,16 +626,17 @@ AuthorsURLs[entry_]:=entry[["metadata","urls"]]/.Missing["KeyAbsent",x__]:>{Obje
 
 
 ExtractAuthorsID[entry_]:=RecordID[entry];
-ExtractAuthorsDateCreated[entry_]:={RecordCreated[entry]}/.""->Null;
-ExtractAuthorsDateUpdated[entry_]:={RecordUpdated[entry]}/.""->Null;
-ExtractAuthorsEarliestDate[entry_]:=AuthorsEarliestDate[entry]/.""->Null;(*{StringToDate@AuthorsEarliestDate[entry]}/.""\[Rule]Null;*)
+ExtractAuthorsDateCreated[entry_]:=RecordCreated[entry]/.""->{Null};
+ExtractAuthorsDateUpdated[entry_]:=RecordUpdated[entry]/.""->{Null};
+(*ExtractAuthorsEarliestDate[entry_]:=AuthorsEarliestDate[entry]/.""->Null;*)(*{AuthorsEarliestDate[entry]}/.""\[Rule]Null;*)
 ExtractAuthorsHEPNames[entry_]:=AuthorsIDsArray[entry]/.""->Null;
 ExtractAuthorsName[entry_]:=AuthorsNameValue[entry]/.""->Null;(*{AuthorsNamePreferredName[entry],AuthorsNameValue[entry]}/.""\[Rule]Null;*)
 ExtractAuthorsPreferredName[entry_]:=AuthorsNamePreferredName[entry]/.""->Null;
 ExtractAuthorsNativeNames[entry_]:=DeleteCases[AuthorsNameNativeNames[entry],""];(*{AuthorsNamePreferredName[entry],AuthorsNameValue[entry]}/.""\[Rule]Null;*)
 ExtractAuthorsAdvisors[entry_]:=Transpose@{AuthorsAdvisorsDegreeType[entry],AuthorsAdvisorsName[entry]}/.""->Null/.{{Null,Null}}->{Null,Null}
 ExtractAuthorsArxivCategories[entry_]:=AuthorsArXivCategories[entry]/.{""}->{};
-ExtractAuthorsPositions[entry_]:=If[AuthorsPositions[entry]!={<|"curated_relation"->False,"current"->False,"end_date"->"","institution"->"","rank"->"","record"-><|"$ref"->""|>,"start_date"->""|>},Transpose@{StringDelete[AuthorsPositionsRecordRef[entry],"http://labs.inspirehep.net/api/institutions/"]/.""->{}(*/.{""}\[Rule]{{}}*),AuthorsPositionsInstitution[entry]/.""->Null,AuthorsPositionsStartDate[entry]/.""->Null,AuthorsPositionsEndDate[entry]/.""->Null,AuthorsPositionsRank[entry]/.""->Null,ConstantArray[Null,Length[AuthorsPositionsRecordRef[entry]]],AuthorsPositionsCurrent[entry]},{{Null,Null,Null,Null,Null,{Null},Null}}];
+ExtractAuthorsAuthorsLegacyCreationDate[entry_]:=AuthorsLegacyCreationDate[entry]/.""->{Null};
+ExtractAuthorsPositions[entry_]:=If[AuthorsPositions[entry]!={<|"curated_relation"->False,"current"->False,"end_date"->"","institution"->"","rank"->"","record"-><|"$ref"->""|>,"start_date"->""|>},Transpose@{StringDelete[AuthorsPositionsRecordRef[entry],Alternatives@@institutionsurls]/.""->{}(*/.{""}\[Rule]{{}}*),AuthorsPositionsInstitution[entry]/.""->Null,AuthorsPositionsStartDate[entry]/.""->Null,AuthorsPositionsEndDate[entry]/.""->Null,AuthorsPositionsRank[entry]/.""->Null,ConstantArray[Null,Length[AuthorsPositionsRecordRef[entry]]],AuthorsPositionsCurrent[entry]},{{Null,Null,Null,Null,Null,{Null},Null}}];
 ExtractAuthorsStatus[entry_]:=AuthorsStatus[entry]/.""->Null;
 ExtractAuthorsStub[entry_]:=AuthorsStub[entry]/.""->Null;
 ExtractAuthorsURLs[entry_]:=AuthorsURLsValue[entry]/.{""}->{};
@@ -703,7 +725,7 @@ JournalsURLs[entry_]:=entry[["metadata","urls"]]/.Missing["KeyAbsent",x__]:>{Obj
 ExtractJournalsID[entry_]:={RecordID[entry]};
 ExtractJournalsDateCreated[entry_]:={RecordCreated[entry]}/.""->Null;
 ExtractJournalsDateUpdated[entry_]:={RecordUpdated[entry]}/.""->Null;
-ExtractJournalsEarliestDate[entry_]:={StringToDate@JournalsEarliestDate[entry]}/.""->Null;
+ExtractJournalsEarliestDate[entry_]:={JournalsEarliestDate[entry]}/.""->Null;
 ExtractJournalsShortTitle[entry_]:={JournalsShortTitle[entry]}/.""->Null;
 
 
@@ -792,7 +814,7 @@ InstitutionsURLs[entry_]:=entry[["metadata","urls"]]/.Missing["KeyAbsent",x__]:>
 ExtractInstitutionsID[entry_]:={RecordID[entry]};
 ExtractInstitutionsDateCreated[entry_]:={RecordCreated[entry]}/.""->Null;
 ExtractInstitutionsDateUpdated[entry_]:={RecordUpdated[entry]}/.""->Null;
-ExtractInstitutionsEarliestDate[entry_]:={StringToDate@InstitutionsEarliestDate[entry]}/.""->Null;
+ExtractInstitutionsEarliestDate[entry_]:={InstitutionsEarliestDate[entry]}/.""->Null;
 ExtractInstitutionAddressesCities[entry_]:=InstitutionAddressesCities[entry];
 ExtractInstitutionAddressesCountryCode[entry_]:=InstitutionAddressesCountryCode[entry];
 ExtractInstitutionAddressesLatitude[entry_]:=InstitutionAddressesLatitude[entry];
@@ -814,15 +836,15 @@ ExtractCountryCodeAndState[entry_]:=Transpose@{CountryData/@ExtractInstitutionAd
 (*Literature: Convert each JSON entry to a Mathematica Record with format RecordLegend*)
 
 
-HEPEntryToRecord[JSON_,JSONbrief_]:=If[ToString[JSONbrief]!="Null",{ExtractHEPID[JSON],(*ExtractHEPDateCreated[JSON],*)ExtractHEPEarliestDate[JSON],ExtractHEPDateUpdated[JSON],ExtractHEPTitle[JSON],ExtractHEPAbstract[JSON],ExtractHEPExperiments[JSON],ExtractHEPArXivCategories[JSON],ExtractHEPArXivFirstCategory[JSON],ExtractHEPArXivIDs[JSON],ExtractHEPAuthorsCount[JSONbrief],ExtractHEPAuthorsAll[JSON],ExtractHEPCiteableFlag[JSON],ExtractHEPReferencesCount[JSONbrief],ExtractHEPCollaborations[JSON],ExtractHEPCore[JSON],ExtractHEPCurated[JSON],ExtractHEPDocumentTypes[JSON],ExtractHEPDOIs[JSON],ExtractHEPExternalIDs[JSON],ExtractHEPNumberofPages[JSONbrief],ExtractHEPNumberofFigures[JSON],ExtractHEPInspireCategories[JSON],ExtractHEPISBNs[JSON],ExtractHEPKeywords[JSON],ExtractHEPPreprintDate[JSON],ExtractHEPJournalArtID[JSON],ExtractHEPJournalID[JSON],ExtractHEPJournalName[JSON],ExtractHEPJournalVolume[JSON],ExtractHEPJournalIssue[JSON],ExtractHEPJournalPageStart[JSON],ExtractHEPJournalPageEnd[JSON],ExtractHEPJournalDate[JSON],ExtractHEPPublicationType[JSON],ExtractHEPRefereedFlag[JSON],ExtractHEPReferences[JSON],ExtractHEPReportNumbers[JSON],ExtractHEPURL[JSON],ExtractHEPTeXKeys[JSON],ExtractHEPThesisInfo[JSON],ExtractHEPExternalURLs[JSON],ExtractHEPWithdrawnFlag[JSON]},{ExtractHEPID[JSON],(*ExtractHEPDateCreated[JSON],*)ExtractHEPEarliestDate[JSON],ExtractHEPDateUpdated[JSON],ExtractHEPTitle[JSON],ExtractHEPAbstract[JSON],ExtractHEPExperiments[JSON],ExtractHEPArXivCategories[JSON],ExtractHEPArXivFirstCategory[JSON],ExtractHEPArXivIDs[JSON],ExtractHEPAuthorsCount[JSON],ExtractHEPAuthorsAll[JSON],ExtractHEPCiteableFlag[JSON],ExtractHEPReferencesCount[JSON],ExtractHEPCollaborations[JSON],ExtractHEPCore[JSON],ExtractHEPCurated[JSON],ExtractHEPDocumentTypes[JSON],ExtractHEPDOIs[JSON],ExtractHEPExternalIDs[JSON],ExtractHEPNumberofPages[JSON],ExtractHEPNumberofFigures[JSON],ExtractHEPInspireCategories[JSON],ExtractHEPISBNs[JSON],ExtractHEPKeywords[JSON],ExtractHEPPreprintDate[JSON],ExtractHEPJournalArtID[JSON],ExtractHEPJournalID[JSON],ExtractHEPJournalName[JSON],ExtractHEPJournalVolume[JSON],ExtractHEPJournalIssue[JSON],ExtractHEPJournalPageStart[JSON],ExtractHEPJournalPageEnd[JSON],ExtractHEPJournalDate[JSON],ExtractHEPPublicationType[JSON],ExtractHEPRefereedFlag[JSON],ExtractHEPReferences[JSON],ExtractHEPReportNumbers[JSON],ExtractHEPURL[JSON],ExtractHEPTeXKeys[JSON],ExtractHEPThesisInfo[JSON],ExtractHEPExternalURLs[JSON],ExtractHEPWithdrawnFlag[JSON]}]
-HEPRecordLegend=Table[ToString[i]<>". "<>ToExpression[StringReplace[StringTrim[StringSplit[StringSplit[ToString[Definition[HEPEntryToRecord]],{"Null, "," &"}][[2]],"}, "][[2]],"]"],{"ExtractHEP"->"\"","[JSON]"->"\""}]][[i]],{i,1,ToExpression[StringReplace[StringTrim[StringSplit[StringSplit[ToString[Definition[HEPEntryToRecord]],{"Null, "," &"}][[2]],"}, "][[2]],"]"],{"ExtractHEP"->"\"","[JSON]"->"\""}]]//Length}]
+HEPEntryToRecord[JSON_,JSONbrief_]:=If[ToString[JSONbrief]!="Null",{ExtractHEPID[JSON],ExtractHEPDateCreated[JSON],ExtractHEPEarliestDate[JSONbrief],ExtractHEPDateUpdated[JSON],ExtractHEPTitle[JSON],ExtractHEPAbstract[JSON],ExtractHEPExperiments[JSON],ExtractHEPArXivCategories[JSON],ExtractHEPArXivFirstCategory[JSON],ExtractHEPArXivIDs[JSON],ExtractHEPAuthorsCount[JSONbrief],ExtractHEPAuthorsAll[JSON],ExtractHEPCitations[JSON],ExtractHEPCitationsNoSelf[JSON],ExtractHEPCiteableFlag[JSON],ExtractHEPReferencesCount[JSONbrief],ExtractHEPCollaborations[JSON],ExtractHEPCore[JSON],ExtractHEPCurated[JSON],ExtractHEPDocumentTypes[JSON],ExtractHEPDOIs[JSON],ExtractHEPExternalIDs[JSON],ExtractHEPNumberofPages[JSONbrief],ExtractHEPNumberofFigures[JSON],ExtractHEPInspireCategories[JSON],ExtractHEPISBNs[JSON],ExtractHEPKeywords[JSON],ExtractHEPPreprintDate[JSON],ExtractHEPJournalArtID[JSON],ExtractHEPJournalID[JSON],ExtractHEPJournalName[JSON],ExtractHEPJournalVolume[JSON],ExtractHEPJournalIssue[JSON],ExtractHEPJournalPageStart[JSON],ExtractHEPJournalPageEnd[JSON],ExtractHEPJournalDate[JSON],ExtractHEPPublicationType[JSON],ExtractHEPRefereedFlag[JSON],ExtractHEPReferences[JSON],ExtractHEPReportNumbers[JSON],ExtractHEPURL[JSON],ExtractHEPTeXKeys[JSON],ExtractHEPThesisInfo[JSON],ExtractHEPExternalURLs[JSON],ExtractHEPWithdrawnFlag[JSON]},{ExtractHEPID[JSON],ExtractHEPDateCreated[JSON],ExtractHEPEarliestDate[JSON],ExtractHEPDateUpdated[JSON],ExtractHEPTitle[JSON],ExtractHEPAbstract[JSON],ExtractHEPExperiments[JSON],ExtractHEPArXivCategories[JSON],ExtractHEPArXivFirstCategory[JSON],ExtractHEPArXivIDs[JSON],ExtractHEPAuthorsCount[JSON],ExtractHEPAuthorsAll[JSON],ExtractHEPCitations[JSON],ExtractHEPCitationsNoSelf[JSON],ExtractHEPCiteableFlag[JSON],ExtractHEPReferencesCount[JSON],ExtractHEPCollaborations[JSON],ExtractHEPCore[JSON],ExtractHEPCurated[JSON],ExtractHEPDocumentTypes[JSON],ExtractHEPDOIs[JSON],ExtractHEPExternalIDs[JSON],ExtractHEPNumberofPages[JSON],ExtractHEPNumberofFigures[JSON],ExtractHEPInspireCategories[JSON],ExtractHEPISBNs[JSON],ExtractHEPKeywords[JSON],ExtractHEPPreprintDate[JSON],ExtractHEPJournalArtID[JSON],ExtractHEPJournalID[JSON],ExtractHEPJournalName[JSON],ExtractHEPJournalVolume[JSON],ExtractHEPJournalIssue[JSON],ExtractHEPJournalPageStart[JSON],ExtractHEPJournalPageEnd[JSON],ExtractHEPJournalDate[JSON],ExtractHEPPublicationType[JSON],ExtractHEPRefereedFlag[JSON],ExtractHEPReferences[JSON],ExtractHEPReportNumbers[JSON],ExtractHEPURL[JSON],ExtractHEPTeXKeys[JSON],ExtractHEPThesisInfo[JSON],ExtractHEPExternalURLs[JSON],ExtractHEPWithdrawnFlag[JSON]}];
+HEPRecordLegend=Table[ToString[i]<>". "<>ToExpression[StringReplace[DeleteDuplicates[StringDelete[StringSplit[StringSplit[StringSplit[ToString[Definition[HEPEntryToRecord]],"Null, "][[2]],"}"][[1]],", "],{"[","]","{","}"}]],{"ExtractHEP"->"\"","JSONbrief"->"\"","JSON"->"\""}]][[i]],{i,1,Quiet[HEPEntryToRecord[a,b]//Length]}];
 
 
 (* ::Text:: *)
 (*Authors: Convert each JSON entry to a Mathematica Record with format RecordLegend*)
 
 
-AuthorsEntryToRecord[entry_]:={ExtractAuthorsID[#],(*ExtractAuthorsDateCreated[#],*)ExtractAuthorsEarliestDate[#],ExtractAuthorsHEPNames[#],ExtractAuthorsName[#],ExtractAuthorsPreferredName[#],ExtractAuthorsNativeNames[#],ExtractAuthorsAdvisors[#],ExtractAuthorsArxivCategories[#],ExtractAuthorsPositions[#],ExtractAuthorsStatus[#],ExtractAuthorsStub[#],ExtractAuthorsURLs[#]}&@entry
+AuthorsEntryToRecord[entry_]:={ExtractAuthorsID[#],ExtractAuthorsDateCreated[#],ExtractAuthorsAuthorsLegacyCreationDate[#],ExtractAuthorsHEPNames[#],ExtractAuthorsName[#],ExtractAuthorsPreferredName[#],ExtractAuthorsNativeNames[#],ExtractAuthorsAdvisors[#],ExtractAuthorsArxivCategories[#],ExtractAuthorsPositions[#],ExtractAuthorsStatus[#],ExtractAuthorsStub[#],ExtractAuthorsURLs[#]}&@entry
 AuthorsRecordLegend=Table[ToString[i]<>". "<>ToExpression[StringDelete[StringReplace[StringSplit[ToString[Definition[AuthorsEntryToRecord]],{":= ("," &"}][[2]],{"ExtractAuthors"->"\"","[#1]"->"\""}],"AuthorsDB"]][[i]],{i,1,ToExpression[StringDelete[StringReplace[StringSplit[ToString[Definition[AuthorsEntryToRecord]],{":= ("," &"}][[2]],{"ExtractAuthors"->"\"","[#1]"->"\""}],"AuthorsDB"]]//Length}]
 
 
@@ -831,9 +853,9 @@ AuthorsRecordLegend=Table[ToString[i]<>". "<>ToExpression[StringDelete[StringRep
 
 
 Clear[ImportInspireRecIDSearch,ImportInspireRecord]
-ImportInspireRecIDSearch[str_,n_]:=Module[{out,existing,number,split,recidlist},out=Import["https://labs.inspirehep.net/api/literature?sort=mostrecent&size=25&q="<>StringRiffle[StringSplit[str],"+"],"RawJSON"];existing=out[["hits",2]];If[existing==0,Print["The search did not match any result."],If[n>existing,Print["The number of records found is ",existing," and is less than ",n,". Search reduced to ",existing," records."];number=existing,number=n];split=If[IntegerQ[number/100],split=number/100,IntegerPart[number/100]+1];
-recidlist=Sort[Flatten[(ExtractHEPID/@(Import["https://labs.inspirehep.net/api/literature?sort=mostrecent&q="<>StringRiffle[StringSplit[str],"+"]<>"&page="<>ToString@#<>"&size=100","RawJSON"][["hits","hits"]]))&/@Range[split]]];Take[recidlist,number]]];
-URLRecord[recid_]:="https://labs.inspirehep.net/api/literature/"<>ToString@recid;
+ImportInspireRecIDSearch[str_,n_]:=Module[{out,existing,number,split,recidlist},out=Import["https://inspirehep.net/api/literature?sort=mostrecent&size=25&q="<>StringRiffle[StringSplit[str],"+"],"RawJSON"];existing=out[["hits",2]];If[existing==0,Print["The search did not match any result."],If[n>existing,Print["The number of records found is ",existing," and is less than ",n,". Search reduced to ",existing," records."];number=existing,number=n];split=If[IntegerQ[number/100],split=number/100,IntegerPart[number/100]+1];
+recidlist=Sort[Flatten[(ExtractHEPID/@(Import["https://inspirehep.net/api/literature?sort=mostrecent&q="<>StringRiffle[StringSplit[str],"+"]<>"&page="<>ToString@#<>"&size=100","RawJSON"][["hits","hits"]]))&/@Range[split]]];Take[recidlist,number]]];
+URLRecord[recid_]:="https://inspirehep.net/api/literature/"<>ToString@recid;
 ImportInspireRecord[recidd___]:=Module[{bibnjsonbrief,bibnjson,recid},recid=Flatten@{recidd};
 bibnjson=Quiet[Check[Import[URLRecord[#],"RawJSON"],Null]]&/@recid;
 bibnjsonbrief=Quiet[Check[Import[HTTPRequest[URLRecord[#],<|"Headers"->{"Accept"->"application/vnd+inspire.record.ui+json"}|>],"RawJSON"],Null]]&/@recid;Prepend[MapThread[Quiet[HEPEntryToRecord[#1,#2]]&,{bibnjson,bibnjsonbrief}],HEPRecordLegend]]

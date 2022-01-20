@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[    585782,      14628]
-NotebookOptionsPosition[    576513,      14465]
-NotebookOutlinePosition[    577273,      14489]
-CellTagsIndexPosition[    577182,      14484]
+NotebookDataLength[    596110,      14869]
+NotebookOptionsPosition[    586707,      14708]
+NotebookOutlinePosition[    587465,      14732]
+CellTagsIndexPosition[    587374,      14727]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -45,42 +45,276 @@ b16804667d58"],
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"StringToDate", "[", "string_", "]"}], ":=", 
-  RowBox[{
-   RowBox[{"Check", "[", 
+  RowBox[{"(*", 
+   RowBox[{
     RowBox[{
-     RowBox[{
-      RowBox[{"First", "[", 
-       RowBox[{"Cases", "[", 
+     RowBox[{"InterpretDate", "[", "str_", "]"}], ":=", 
+     RowBox[{"DateObject", "[", 
+      RowBox[{
+       RowBox[{"{", 
         RowBox[{
+         RowBox[{
+          RowBox[{"StringSplit", "[", 
+           RowBox[{"str", ",", "\"\<+\>\""}], "]"}], "\[LeftDoubleBracket]", 
+          "1", "\[RightDoubleBracket]"}], ",", 
          RowBox[{"{", 
-          RowBox[{"DateList", "[", "string", "]"}], "}"}], ",", 
-         RowBox[{"x_", "\[RuleDelayed]", 
+          RowBox[{
+          "\"\<Year\>\"", ",", "\"\<-\>\"", ",", "\"\<Month\>\"", ",", 
+           "\"\<-\>\"", ",", "\"\<Day\>\"", ",", "\"\<T\>\"", ",", 
+           "\"\<Hour\>\"", ",", "\"\<:\>\"", ",", "\"\<Minute\>\"", ",", 
+           "\"\<:\>\"", ",", "\"\<Second\>\""}], "}"}]}], "}"}], " ", ",", 
+       RowBox[{"TimeZone", "\[Rule]", "\"\<UTC\>\""}]}], "]"}]}], ";"}], 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"StringToDateOld", "[", "string_", "]"}], ":=", 
+     RowBox[{
+      RowBox[{"Check", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"First", "[", 
+          RowBox[{"Cases", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"DateList", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"StringSplit", "[", 
+                 RowBox[{"string", ",", "\"\<+\>\""}], "]"}], 
+                "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], " ", 
+               ",", 
+               RowBox[{"TimeZone", "\[Rule]", "\"\<UTC\>\""}]}], " ", "]"}], 
+             "}"}], ",", 
+            RowBox[{"x_", "\[RuleDelayed]", 
+             RowBox[{
+              RowBox[{
+              "x", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+              "+", 
+              FractionBox[
+               RowBox[{
+                RowBox[{
+                "x", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+                "-", "1"}], "12"], "+", 
+              FractionBox[
+               RowBox[{
+                RowBox[{
+                "x", "\[LeftDoubleBracket]", "3", "\[RightDoubleBracket]"}], 
+                "-", "1"}], "365"]}]}]}], "]"}], "]"}], "//", "N"}], ",", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"ToString", "[", 
+            RowBox[{"Head", "[", 
+             RowBox[{"ToExpression", "[", "string", "]"}], "]"}], "]"}], 
+           "\[Equal]", "\"\<Real\>\""}], ",", 
+          RowBox[{"ToExpression", "[", "string", "]"}], ",", "string"}], 
+         "]"}]}], "]"}], "//", "Quiet"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"StringToDateNew", "[", "string_", "]"}], ":=", 
+     RowBox[{
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"dateobj", ",", "datelist", ",", "instant", ",", "result"}], 
+         "}"}], ",", 
+        RowBox[{"Check", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"dateobj", "=", 
+            RowBox[{"DateObject", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"StringSplit", "[", 
+                RowBox[{"string", ",", "\"\<+\>\""}], "]"}], 
+               "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], ",", 
+              "\"\<Instant\>\"", " ", ",", 
+              RowBox[{"TimeZone", "\[Rule]", "\"\<UTC\>\""}]}], " ", "]"}]}], 
+           ";", 
+           RowBox[{"datelist", "=", 
+            RowBox[{"DateList", "[", "dateobj", "]"}]}], ";", 
+           RowBox[{"instant", "=", 
+            RowBox[{
+             RowBox[{"datelist", "\[LeftDoubleBracket]", 
+              RowBox[{"-", "1"}], "\[RightDoubleBracket]"}], "-", 
+             RowBox[{"Floor", "[", 
+              RowBox[{"datelist", "\[LeftDoubleBracket]", 
+               RowBox[{"-", "1"}], "\[RightDoubleBracket]"}], "]"}]}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"result", "=", 
+            RowBox[{"1900", "+", 
+             FractionBox[
+              RowBox[{
+               RowBox[{"AbsoluteTime", "[", 
+                RowBox[{"dateobj", ",", 
+                 RowBox[{"TimeZone", "\[Rule]", "\"\<UTC\>\""}]}], " ", "]"}],
+                "+", "instant"}], 
+              RowBox[{"365.2422", "*", "24", "*", "60", "*", "60."}]]}]}], 
+           ";", "\[IndentingNewLine]", 
+           RowBox[{"{", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Abs", "[", 
+                RowBox[{"result", "-", 
+                 RowBox[{"Round", "[", "result", "]"}]}], "]"}], "<", 
+               "0.0027"}], ",", 
+              RowBox[{"N", "[", 
+               RowBox[{"Round", "[", "result", "]"}], "]"}], ",", "result"}], 
+             "]"}], "}"}]}], ",", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"ToString", "[", 
+              RowBox[{"Head", "[", 
+               RowBox[{"ToExpression", "[", "string", "]"}], "]"}], "]"}], 
+             "\[Equal]", "\"\<Real\>\""}], ",", 
+            RowBox[{"ToExpression", "[", "string", "]"}], ",", "string"}], 
+           "]"}]}], "]"}]}], "]"}], "//", "Quiet"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"StringToDate", "[", "string_", "]"}], " ", ":=", " ", 
+     RowBox[{"StringToDateNew", "[", "string", "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"DateToDateObject", "[", "date_", "]"}], ":=", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"tmp", ",", "datelist", ",", "instant", ",", "newdatelist"}], 
+        "}"}], ",", 
+       RowBox[{
+        RowBox[{"tmp", "=", 
+         RowBox[{"FromAbsoluteTime", "[", 
           RowBox[{
            RowBox[{
-           "x", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "+", 
-           FractionBox[
-            RowBox[{
-             RowBox[{
-             "x", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], "-",
-              "1"}], "12"], "+", 
-           FractionBox[
-            RowBox[{
-             RowBox[{
-             "x", "\[LeftDoubleBracket]", "3", "\[RightDoubleBracket]"}], "-",
-              "1"}], "365"]}]}]}], "]"}], "]"}], "//", "N"}], ",", 
-     RowBox[{"If", "[", 
-      RowBox[{
+            RowBox[{"(", 
+             RowBox[{"date", "-", "1900"}], ")"}], "*", "365.2422", "*", "24",
+             "*", "60", "*", "60."}], ",", 
+           RowBox[{"TimeZone", "\[Rule]", "\"\<UTC\>\""}]}], "]"}]}], ";", 
+        "\[IndentingNewLine]", "tmp"}]}], "]"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"GetDateFromArXivNumber", "[", "arxivnumber_", "]"}], ":=", 
+     RowBox[{
+      RowBox[{"If", "[", 
        RowBox[{
-        RowBox[{"ToString", "[", 
-         RowBox[{"Head", "[", 
-          RowBox[{"ToExpression", "[", "string", "]"}], "]"}], "]"}], 
-        "\[Equal]", "\"\<Real\>\""}], ",", 
-       RowBox[{"ToExpression", "[", "string", "]"}], ",", "string"}], "]"}]}],
-     "]"}], "//", "Quiet"}]}]], "Input",
+        RowBox[{
+         RowBox[{"ToString", "[", "arxivnumber", "]"}], "\[NotEqual]", 
+         RowBox[{"ToString", "[", "Null", "]"}]}], ",", 
+        RowBox[{"StringCases", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"StringCases", "[", 
+            RowBox[{
+             RowBox[{"StringDelete", "[", 
+              RowBox[{"arxivnumber", ",", "\"\<.\>\""}], "]"}], ",", 
+             RowBox[{"DigitCharacter", ".."}]}], "]"}], 
+           "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], ",", 
+          RowBox[{
+           RowBox[{"w_", "~~", "x_", "~~", "y_", "~~", "z_", "~~", "k__"}], 
+           "\[RuleDelayed]", 
+           RowBox[{"Which", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"ToExpression", "[", 
+               RowBox[{"w", "<>", "x"}], "]"}], "\[LessEqual]", "50"}], ",", 
+             RowBox[{
+              RowBox[{"ToExpression", "[", 
+               RowBox[{"w", "<>", "x"}], "]"}], "+", "2000", "+", 
+              FractionBox[
+               RowBox[{
+                RowBox[{"ToExpression", "[", 
+                 RowBox[{"y", "<>", "z"}], "]"}], "-", "1"}], "12."], "+", 
+              FractionBox[
+               RowBox[{"ToExpression", "[", "k", "]"}], "1000000."]}], ",", 
+             RowBox[{
+              RowBox[{"ToExpression", "[", 
+               RowBox[{"w", "<>", "x"}], "]"}], ">", "50"}], ",", 
+             RowBox[{
+              RowBox[{"ToExpression", "[", 
+               RowBox[{"w", "<>", "x"}], "]"}], "+", "1900", "+", 
+              FractionBox[
+               RowBox[{
+                RowBox[{"ToExpression", "[", 
+                 RowBox[{"y", "<>", "z"}], "]"}], "-", "1"}], "12."], "+", 
+              FractionBox[
+               RowBox[{"ToExpression", "[", "k", "]"}], "1000000."]}]}], 
+            "]"}]}]}], "]"}], ",", 
+        RowBox[{"{", "Null", "}"}]}], "]"}], "\[LeftDoubleBracket]", "1", 
+      "\[RightDoubleBracket]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"SelectSmallestDate", "[", "list_", "]"}], ":=", 
+     RowBox[{"Quiet", "[", 
+      RowBox[{"Check", "[", 
+       RowBox[{
+        RowBox[{"Module", "[", 
+         RowBox[{
+          RowBox[{"{", "tmp", "}"}], ",", 
+          RowBox[{
+           RowBox[{"tmp", "=", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"N", "[", "#", "]"}], "&"}], "/@", 
+             RowBox[{"DeleteDuplicates", "[", 
+              RowBox[{"Sort", "[", 
+               RowBox[{"MinimalBy", "[", 
+                RowBox[{
+                 RowBox[{"DeleteCases", "[", 
+                  RowBox[{
+                   RowBox[{"Flatten", "[", "list", "]"}], ",", "Null"}], 
+                  "]"}], ",", 
+                 RowBox[{
+                  RowBox[{"IntegerPart", "[", "#", "]"}], "&"}]}], "]"}], 
+               "]"}], "]"}]}]}], ";", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Length", "[", "tmp", "]"}], "\[Equal]", "1"}], ",", 
+             RowBox[{
+             "tmp", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+             ",", 
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                 "tmp", "\[LeftDoubleBracket]", "1", 
+                  "\[RightDoubleBracket]"}], "-", 
+                 RowBox[{"IntegerPart", "[", 
+                  RowBox[{
+                  "tmp", "\[LeftDoubleBracket]", "1", 
+                   "\[RightDoubleBracket]"}], "]"}]}], "\[Equal]", "0"}], ",", 
+               RowBox[{
+               "tmp", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+               ",", 
+               RowBox[{
+               "tmp", "\[LeftDoubleBracket]", "1", 
+                "\[RightDoubleBracket]"}]}], "]"}]}], "]"}]}]}], "]"}], ",", 
+        "Null"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ArXivCat", "[", "string_", "]"}], ":=", 
+     RowBox[{"StringReplace", "[", 
+      RowBox[{"string", ",", 
+       RowBox[{
+        RowBox[{"RegularExpression", "[", "\"\<\\\\.(.*)\>\"", "]"}], ":>", 
+        "\"\<\>\""}]}], "]"}]}], ";"}]}]}]], "Input",
  CellChangeTimes->{{3.7640411640077143`*^9, 3.764041165571445*^9}, {
-  3.8167487427864428`*^9, 
-  3.816748743571638*^9}},ExpressionUUID->"152877a5-1e4a-47cf-afb1-\
+   3.8167487427864428`*^9, 3.816748743571638*^9}, {3.818948919892833*^9, 
+   3.818948963676371*^9}, {3.8190053410325994`*^9, 3.8190053429581037`*^9}, {
+   3.8198572338799057`*^9, 3.819857238752532*^9}, {3.819879602191244*^9, 
+   3.819879605509242*^9}, {3.819879696227301*^9, 3.819879702485937*^9}, {
+   3.819879862204153*^9, 3.819879862362154*^9}, {3.819880556009264*^9, 
+   3.8198805646689568`*^9}, {3.823941880131358*^9, 3.823941909526244*^9}, {
+   3.823942046645961*^9, 3.823942061794987*^9}, {3.823942149962325*^9, 
+   3.8239421503623247`*^9}, 
+   3.8241058952800217`*^9},ExpressionUUID->"152877a5-1e4a-47cf-afb1-\
 8c2d1a5a99ed"]
 }, Open  ]],
 
@@ -355,6 +589,49 @@ Cell["Schema: General elements for all records and objects", "Subsection",
   3.755881654497048*^9}},ExpressionUUID->"f5ab44ff-f914-46e5-98f6-\
 dd6cb47d5835"],
 
+Cell["Possible URLS appearing in records", "Text",
+ CellChangeTimes->{{3.7250906723092957`*^9, 3.7250906995352054`*^9}, {
+  3.728630746350569*^9, 3.728630771462687*^9}, {3.72863081823079*^9, 
+  3.7286308670564547`*^9}, {3.7305424213086967`*^9, 3.730542518662966*^9}, {
+  3.746426097126883*^9, 3.746426099174822*^9}, {3.755838020401373*^9, 
+  3.7558380737592573`*^9}, {3.8189416361594906`*^9, 
+  3.8189416462495184`*^9}},ExpressionUUID->"56b06a5b-3ee2-4dbd-b17b-\
+4fd8c3a79943"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"authorsurls", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<https://labs.inspirehep.net/api/authors/\>\"", ",", 
+     "\"\<https://inspirehep.net/api/authors/\>\""}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"institutionsurls", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<https://labs.inspirehep.net/api/institutions/\>\"", ",", 
+     "\"\<https://inspirehep.net/api/institutions/\>\""}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"journalsurls", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<https://labs.inspirehep.net/api/journals/\>\"", ",", 
+     "\"\<https://inspirehep.net/api/journals/\>\""}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"literatureurls", " ", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<https://labs.inspirehep.net/api/literature/\>\"", ",", 
+     "\"\<https://inspirehep.net/api/literature/\>\""}], "}"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.8189417524094076`*^9, 3.8189417526434083`*^9}, {
+  3.8189417984767084`*^9, 
+  3.818941847704549*^9}},ExpressionUUID->"5c4516e9-bbbb-49ea-bcbe-\
+b9e48312e02d"],
+
 Cell["\<\
 Functions that correspond to all general elements for each JSON entry (in all \
 records: authors, conferences, data, experiments, hep, insitutions, jobs, \
@@ -371,14 +648,15 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"RecordID", "[", "entry_", "]"}], ":=", 
-   RowBox[{
+   RowBox[{"ToExpression", "[", 
     RowBox[{
-    "entry", "\[LeftDoubleBracket]", "\"\<id\>\"", "\[RightDoubleBracket]"}], 
-    "/.", 
-    RowBox[{
-     RowBox[{"Missing", "[", 
-      RowBox[{"\"\<KeyAbsent\>\"", ",", "x__"}], "]"}], "\[RuleDelayed]", 
-     "0"}]}]}], ";"}], "\[IndentingNewLine]", 
+     RowBox[{
+     "entry", "\[LeftDoubleBracket]", "\"\<id\>\"", "\[RightDoubleBracket]"}],
+      "/.", 
+     RowBox[{
+      RowBox[{"Missing", "[", 
+       RowBox[{"\"\<KeyAbsent\>\"", ",", "x__"}], "]"}], "\[RuleDelayed]", 
+      "0"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"RecordLinks", "[", "entry_", "]"}], ":=", 
@@ -413,9 +691,11 @@ Cell[BoxData[{
       RowBox[{"\"\<KeyAbsent\>\"", ",", "x__"}], "]"}], "\[RuleDelayed]", 
      "\"\<\>\""}]}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.7558811308555727`*^9, 3.755881148670982*^9}, {
-  3.7558816861352367`*^9, 3.7558817051505833`*^9}, {3.755881738637319*^9, 
-  3.755881768219228*^9}},
- CellLabel->"In[44]:=",ExpressionUUID->"d708fcf9-4a7f-4f91-8280-d03ae930fd2a"],
+   3.7558816861352367`*^9, 3.7558817051505833`*^9}, {3.755881738637319*^9, 
+   3.755881768219228*^9}, {3.8192691702685833`*^9, 3.8192691741940155`*^9}, 
+   3.819269428920231*^9, 
+   3.819270208372978*^9},ExpressionUUID->"d708fcf9-4a7f-4f91-8280-\
+d03ae930fd2a"],
 
 Cell[BoxData[
  RowBox[{"\[IndentingNewLine]", 
@@ -2273,6 +2553,30 @@ Cell[BoxData[{
    ";"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
+   RowBox[{"HEPCitations", "[", "entry_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"entry", "\[LeftDoubleBracket]", 
+     RowBox[{"\"\<metadata\>\"", ",", "\"\<citation_count\>\""}], 
+     "\[RightDoubleBracket]"}], "/.", 
+    RowBox[{
+     RowBox[{"Missing", "[", 
+      RowBox[{"\"\<KeyAbsent\>\"", ",", "x__"}], "]"}], "\[RuleDelayed]", 
+     "True"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"HEPCitationsNoSelf", "[", "entry_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"entry", "\[LeftDoubleBracket]", 
+     RowBox[{
+     "\"\<metadata\>\"", ",", 
+      "\"\<citation_count_without_self_citations\>\""}], 
+     "\[RightDoubleBracket]"}], "/.", 
+    RowBox[{
+     RowBox[{"Missing", "[", 
+      RowBox[{"\"\<KeyAbsent\>\"", ",", "x__"}], "]"}], "\[RuleDelayed]", 
+     "True"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
    RowBox[{"HEPCiteable", "[", "entry_", "]"}], ":=", 
    RowBox[{
     RowBox[{"entry", "\[LeftDoubleBracket]", 
@@ -2768,7 +3072,7 @@ Cell[BoxData[{
    RowBox[{"HEPEarliestDate", "[", "entry_", "]"}], ":=", 
    RowBox[{
     RowBox[{"entry", "\[LeftDoubleBracket]", 
-     RowBox[{"\"\<metadata\>\"", ",", "\"\<earliest_date\>\""}], 
+     RowBox[{"\"\<metadata\>\"", ",", "\"\<date\>\""}], 
      "\[RightDoubleBracket]"}], "/.", 
     RowBox[{
      RowBox[{"Missing", "[", 
@@ -3949,7 +4253,7 @@ Cell[BoxData[{
      RowBox[{
       RowBox[{"Missing", "[", 
        RowBox[{"\"\<KeyAbsent\>\"", ",", "x__"}], "]"}], "\[RuleDelayed]", 
-      "0"}]}]}], ";"}]}], "\[IndentingNewLine]", 
+      "\"\<\>\""}]}]}], ";"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"HEPPublicationInfoArray", "[", "entry_", "]"}], ":=", 
@@ -6138,8 +6442,12 @@ Cell[BoxData[{
    3.755952797631495*^9}, {3.756008055080372*^9, 3.7560080566945972`*^9}, {
    3.756010722251019*^9, 3.756010723041061*^9}, {3.756012007521254*^9, 
    3.756012021780529*^9}, {3.756037217191565*^9, 3.756037218603194*^9}, {
-   3.7560385751019373`*^9, 3.7560385797861357`*^9}},
- CellLabel->"In[96]:=",ExpressionUUID->"ad46297d-9a40-4f78-93ad-3d5bf4220820"],
+   3.7560385751019373`*^9, 3.7560385797861357`*^9}, {3.816775536783778*^9, 
+   3.816775575729705*^9}, 3.8188300684391727`*^9, {3.819270126562704*^9, 
+   3.8192701329586143`*^9}, {3.819270166323453*^9, 3.8192701700455165`*^9}, {
+   3.8192703415968585`*^9, 
+   3.819270342043107*^9}},ExpressionUUID->"ad46297d-9a40-4f78-93ad-\
+3d5bf4220820"],
 
 Cell["\<\
 Literature: Functions to extract additional information contained in the \
@@ -6241,9 +6549,9 @@ Cell[BoxData[{
     RowBox[{
      RowBox[{"ToExpression", "/@", 
       RowBox[{"StringDelete", "[", 
-       RowBox[{
-       "#", ",", "\"\<http://labs.inspirehep.net/api/institutions/\>\""}], 
-       "]"}]}], "&"}], "/@", 
+       RowBox[{"#", ",", 
+        RowBox[{"Alternatives", "@@", "institutionsurls"}]}], "]"}]}], "&"}], 
+    "/@", 
     RowBox[{"HEPAuthorsAffiliationsRecordRef", "[", "entry", "]"}]}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
@@ -6317,7 +6625,7 @@ Cell[BoxData[{
     RowBox[{"StringDelete", "[", 
      RowBox[{
       RowBox[{"HEPAuthorsRecordRef", "[", "entry", "]"}], ",", 
-      "\"\<http://labs.inspirehep.net/api/authors/\>\""}], "]"}], "]"}]}], 
+      RowBox[{"Alternatives", "@@", "authorsurls"}]}], "]"}], "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -6341,6 +6649,18 @@ Cell[BoxData[{
     RowBox[{
      RowBox[{"{", "}"}], "\[Rule]", 
      RowBox[{"{", "Null", "}"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ExtractHEPCitations", "[", "entry_", "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{"HEPCitations", "[", "entry", "]"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ExtractHEPCitationsNoSelf", "[", "entry_", "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{"HEPCitationsNoSelf", "[", "entry", "]"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{
@@ -6387,16 +6707,16 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"ExtractHEPDateCreated", "[", "entry_", "]"}], ":=", 
    RowBox[{
-    RowBox[{"{", 
-     RowBox[{"RecordCreated", "[", "entry", "]"}], "}"}], "/.", 
-    RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], "\[IndentingNewLine]", 
+    RowBox[{"RecordCreated", "[", "entry", "]"}], "/.", 
+    RowBox[{"\"\<\>\"", "\[Rule]", 
+     RowBox[{"{", "Null", "}"}]}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"ExtractHEPDateUpdated", "[", "entry_", "]"}], ":=", 
    RowBox[{
-    RowBox[{"{", 
-     RowBox[{"RecordUpdated", "[", "entry", "]"}], "}"}], "/.", 
-    RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], "\[IndentingNewLine]", 
+    RowBox[{"RecordUpdated", "[", "entry", "]"}], "/.", 
+    RowBox[{"\"\<\>\"", "\[Rule]", 
+     RowBox[{"{", "Null", "}"}]}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"ExtractHEPDocumentTypes", "[", "entry_", "]"}], ":=", 
@@ -6413,10 +6733,9 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"ExtractHEPEarliestDate", "[", "entry_", "]"}], ":=", 
    RowBox[{
-    RowBox[{"{", 
-     RowBox[{"StringToDate", "@", 
-      RowBox[{"HEPEarliestDate", "[", "entry", "]"}]}], "}"}], "/.", 
-    RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], "\[IndentingNewLine]", 
+    RowBox[{"HEPEarliestDate", "[", "entry", "]"}], "/.", 
+    RowBox[{"\"\<\>\"", "\[Rule]", 
+     RowBox[{"{", "Null", "}"}]}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"ExtractHEPExperiments", "[", "entry_", "]"}], ":=", 
@@ -6464,11 +6783,11 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{
    RowBox[{"ExtractHEPJournalDate", "[", "entry_", "]"}], ":=", 
-   RowBox[{
-    RowBox[{"{", 
-     RowBox[{"HEPPublicationInfoYear", "[", "entry", "]"}], "}"}], "/.", " ", 
-    
-    RowBox[{"0", "\[Rule]", "Null"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"HEPPublicationInfoYear", "[", "entry", "]"}], "/.", " ", 
+     RowBox[{"\"\<\>\"", "\[Rule]", 
+      RowBox[{"{", "Null", "}"}]}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"ExtractHEPJournalID", "[", "entry_", "]"}], ":=", 
@@ -6476,9 +6795,9 @@ Cell[BoxData[{
     RowBox[{"ToExpression", "[", 
      RowBox[{"StringDelete", "[", 
       RowBox[{
-       RowBox[{"HEPPublicationInfoJournalRecordRef", "[", "entry", "]"}], 
-       ",", "\"\<http://labs.inspirehep.net/api/journals/\>\""}], "]"}], 
-     "]"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+       RowBox[{"HEPPublicationInfoJournalRecordRef", "[", "entry", "]"}], ",", 
+       RowBox[{"Alternatives", "@@", "journalsurls"}]}], "]"}], "]"}], 
+    "}"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"ExtractHEPJournalIssue", "[", "entry_", "]"}], ":=", 
@@ -6522,11 +6841,12 @@ Cell[BoxData[{
     RowBox[{"HEPKeywordsValue", "[", "entry", "]"}], "/.", 
     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"ExtractHEPPreprintDate", "[", "entry_", "]"}], ":=", 
   RowBox[{
-   RowBox[{"{", 
-    RowBox[{"HEPPreprintDate", "[", "entry", "]"}], "}"}], "/.", 
-   RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], "\[IndentingNewLine]", 
+   RowBox[{"ExtractHEPPreprintDate", "[", "entry_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"HEPPreprintDate", "[", "entry", "]"}], "/.", 
+    RowBox[{"\"\<\>\"", "\[Rule]", 
+     RowBox[{"{", "Null", "}"}]}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{
@@ -6567,21 +6887,23 @@ Cell[BoxData[{
      RowBox[{"ToExpression", "[", 
       RowBox[{"StringDelete", "[", 
        RowBox[{
-        RowBox[{"HEPReferencesRecordRef", "[", "entry", "]"}], ",", 
-        "\"\<http://labs.inspirehep.net/api/literature/\>\""}], "]"}], "]"}], 
-     ",", "Null"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+        RowBox[{"DeleteCases", "[", 
+         RowBox[{
+          RowBox[{"HEPReferencesRecordRef", "[", "entry", "]"}], ",", 
+          RowBox[{"x_", "/;", 
+           RowBox[{"StringContainsQ", "[", 
+            RowBox[{"x", ",", "\"\<data\>\""}], "]"}]}]}], "]"}], ",", 
+        RowBox[{"Alternatives", "@@", "literatureurls"}]}], "]"}], "]"}], ",",
+      "Null"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
-   RowBox[{
-    RowBox[{"ExtractHEPReferencesCount", "[", "entry_", "]"}], ":=", 
-    RowBox[{"{", 
-     RowBox[{"HEPNumberOfReferences", "[", "entry", "]"}], "}"}]}], ";"}], 
-  " ", 
+   RowBox[{"ExtractHEPReferencesCount", "[", "entry_", "]"}], ":=", 
+   RowBox[{"{", 
+    RowBox[{"HEPNumberOfReferences", "[", "entry", "]"}], "}"}]}], ";", " ", 
   RowBox[{"(*", 
    RowBox[{
    "to", " ", "be", " ", "used", " ", "with", " ", "brief", " ", "JSON"}], 
-   "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
+   "*)"}], "\[IndentingNewLine]", 
   RowBox[{
    RowBox[{"ExtractHEPReferencesCount2", "[", "entry_", "]"}], ":=", 
    RowBox[{"{", 
@@ -6691,11 +7013,22 @@ Cell[BoxData[{
    3.75635843424367*^9, 3.7563584530256233`*^9}, {3.756358526171986*^9, 
    3.756358532225881*^9}, {3.756358593721037*^9, 3.7563585985049257`*^9}, {
    3.756358646867651*^9, 3.756358652579959*^9}, {3.7563586936121273`*^9, 
-   3.756358696961999*^9}},
- CellLabel->
-  "In[414]:=",ExpressionUUID->"ce542201-9ab8-4a2b-9495-8404c0675bf3"]
-}, Closed]]
-}, Closed]],
+   3.756358696961999*^9}, {3.81677453548341*^9, 3.816774573580234*^9}, {
+   3.816775625759651*^9, 3.816775630799111*^9}, {3.816775757702126*^9, 
+   3.8167757643159447`*^9}, {3.818941672747851*^9, 3.8189416756858597`*^9}, {
+   3.818941733678599*^9, 3.8189417370310917`*^9}, {3.8189417865534286`*^9, 
+   3.8189417891874323`*^9}, {3.818941857618555*^9, 3.8189418599533973`*^9}, {
+   3.8189491118306646`*^9, 3.818949117736512*^9}, {3.8192694623237267`*^9, 
+   3.8192694673753214`*^9}, {3.819269636505866*^9, 3.81926964250485*^9}, {
+   3.8192698181268854`*^9, 3.8192698227069683`*^9}, {3.819269854700091*^9, 
+   3.8192698618324776`*^9}, 3.81927040371247*^9, {3.81927045449257*^9, 
+   3.819270456539161*^9}, {3.8198571031121826`*^9, 3.819857105957595*^9}, 
+   3.819857145117838*^9, {3.819857186292055*^9, 3.819857193537969*^9}, {
+   3.851682858104892*^9, 3.8516828623786373`*^9}, {3.851682897799341*^9, 
+   3.85168291071954*^9}},ExpressionUUID->"ce542201-9ab8-4a2b-9495-\
+8404c0675bf3"]
+}, Open  ]]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -7309,18 +7642,19 @@ Cell[BoxData[{
      RowBox[{
       RowBox[{"Missing", "[", 
        RowBox[{"\"\<KeyAbsent\>\"", ",", "x__"}], "]"}], "\[RuleDelayed]", 
-      "\"\<\>\""}]}]}], ";"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"AuthorsEarliestDate", "[", "entry_", "]"}], ":=", 
+      "\"\<\>\""}]}]}], ";"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
    RowBox[{
-    RowBox[{"entry", "\[LeftDoubleBracket]", 
-     RowBox[{"\"\<metadata\>\"", ",", "\"\<earliest_date\>\""}], 
-     "\[RightDoubleBracket]"}], "/.", 
     RowBox[{
-     RowBox[{"Missing", "[", 
-      RowBox[{"\"\<KeyAbsent\>\"", ",", "x__"}], "]"}], "\[RuleDelayed]", 
-     "\"\<\>\""}]}]}], ";"}], "\[IndentingNewLine]", 
+     RowBox[{"AuthorsEarliestDate", "[", "entry_", "]"}], ":=", 
+     RowBox[{
+      RowBox[{"entry", "\[LeftDoubleBracket]", 
+       RowBox[{"\"\<metadata\>\"", ",", "\"\<earliest_date\>\""}], 
+       "\[RightDoubleBracket]"}], "/.", 
+      RowBox[{
+       RowBox[{"Missing", "[", 
+        RowBox[{"\"\<KeyAbsent\>\"", ",", "x__"}], "]"}], "\[RuleDelayed]", 
+       "\"\<\>\""}]}]}], ";"}], "*)"}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"AuthorsEmailAddresses", "[", "entry_", "]"}], ":=", 
@@ -8115,9 +8449,9 @@ Cell[BoxData[{
    3.756024825149583*^9}, {3.756024910578103*^9, 3.7560249128742313`*^9}, 
    3.756024949652151*^9, {3.756024983360137*^9, 3.756025003707862*^9}, {
    3.756025071091674*^9, 3.756025195148625*^9}, {3.756025360332144*^9, 
-   3.756025389891905*^9}, {3.7561847896212063`*^9, 3.7561847949367332`*^9}},
- CellLabel->
-  "In[463]:=",ExpressionUUID->"6e9e6a7d-4397-4c2d-8a75-d2486bb4542d"]
+   3.756025389891905*^9}, {3.7561847896212063`*^9, 3.7561847949367332`*^9}, 
+   3.819304446170788*^9},ExpressionUUID->"6e9e6a7d-4397-4c2d-8a75-\
+d2486bb4542d"]
 }, Closed]],
 
 Cell[CellGroupData[{
@@ -8142,29 +8476,29 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"ExtractAuthorsDateCreated", "[", "entry_", "]"}], ":=", 
    RowBox[{
-    RowBox[{"{", 
-     RowBox[{"RecordCreated", "[", "entry", "]"}], "}"}], "/.", 
-    RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"ExtractAuthorsDateUpdated", "[", "entry_", "]"}], ":=", 
-   RowBox[{
-    RowBox[{"{", 
-     RowBox[{"RecordUpdated", "[", "entry", "]"}], "}"}], "/.", 
-    RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], "\[IndentingNewLine]", 
+    RowBox[{"RecordCreated", "[", "entry", "]"}], "/.", 
+    RowBox[{"\"\<\>\"", "\[Rule]", 
+     RowBox[{"{", "Null", "}"}]}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{
-    RowBox[{"ExtractAuthorsEarliestDate", "[", "entry_", "]"}], ":=", 
+    RowBox[{"ExtractAuthorsDateUpdated", "[", "entry_", "]"}], ":=", 
     RowBox[{
-     RowBox[{"AuthorsEarliestDate", "[", "entry", "]"}], "/.", 
-     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], 
+     RowBox[{"RecordUpdated", "[", "entry", "]"}], "/.", 
+     RowBox[{"\"\<\>\"", "\[Rule]", 
+      RowBox[{"{", "Null", "}"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ExtractAuthorsEarliestDate", "[", "entry_", "]"}], ":=", 
+     RowBox[{
+      RowBox[{"AuthorsEarliestDate", "[", "entry", "]"}], "/.", 
+      RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], "*)"}], 
   RowBox[{"(*", 
    RowBox[{
     RowBox[{
      RowBox[{"{", 
-      RowBox[{"StringToDate", "@", 
-       RowBox[{"AuthorsEarliestDate", "[", "entry", "]"}]}], "}"}], "/.", 
+      RowBox[{"AuthorsEarliestDate", "[", "entry", "]"}], "}"}], "/.", 
      RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}], ";"}], 
    "*)"}]}], "\[IndentingNewLine]", 
  RowBox[{
@@ -8175,11 +8509,10 @@ Cell[BoxData[{
     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
+   RowBox[{"ExtractAuthorsName", "[", "entry_", "]"}], ":=", 
    RowBox[{
-    RowBox[{"ExtractAuthorsName", "[", "entry_", "]"}], ":=", 
-    RowBox[{
-     RowBox[{"AuthorsNameValue", "[", "entry", "]"}], "/.", 
-     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], 
+    RowBox[{"AuthorsNameValue", "[", "entry", "]"}], "/.", 
+    RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";", 
   RowBox[{"(*", 
    RowBox[{
     RowBox[{
@@ -8187,9 +8520,8 @@ Cell[BoxData[{
       RowBox[{
        RowBox[{"AuthorsNamePreferredName", "[", "entry", "]"}], ",", 
        RowBox[{"AuthorsNameValue", "[", "entry", "]"}]}], "}"}], "/.", 
-     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}], ";"}], 
-   "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
+     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}], ";"}], "*)"}], 
+  "\[IndentingNewLine]", 
   RowBox[{
    RowBox[{"ExtractAuthorsPreferredName", "[", "entry_", "]"}], ":=", 
    RowBox[{
@@ -8197,12 +8529,11 @@ Cell[BoxData[{
     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
-   RowBox[{
-    RowBox[{"ExtractAuthorsNativeNames", "[", "entry_", "]"}], ":=", 
-    RowBox[{"DeleteCases", "[", 
-     RowBox[{
-      RowBox[{"AuthorsNameNativeNames", "[", "entry", "]"}], ",", 
-      "\"\<\>\""}], "]"}]}], ";"}], 
+   RowBox[{"ExtractAuthorsNativeNames", "[", "entry_", "]"}], ":=", 
+   RowBox[{"DeleteCases", "[", 
+    RowBox[{
+     RowBox[{"AuthorsNameNativeNames", "[", "entry", "]"}], ",", "\"\<\>\""}],
+     "]"}]}], ";", 
   RowBox[{"(*", 
    RowBox[{
     RowBox[{
@@ -8210,24 +8541,24 @@ Cell[BoxData[{
       RowBox[{
        RowBox[{"AuthorsNamePreferredName", "[", "entry", "]"}], ",", 
        RowBox[{"AuthorsNameValue", "[", "entry", "]"}]}], "}"}], "/.", 
-     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}], ";"}], 
-   "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"ExtractAuthorsAdvisors", "[", "entry_", "]"}], ":=", 
+     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}], ";"}], "*)"}], 
+  "\[IndentingNewLine]", 
   RowBox[{
+   RowBox[{"ExtractAuthorsAdvisors", "[", "entry_", "]"}], ":=", 
    RowBox[{
-    RowBox[{"Transpose", "@", 
+    RowBox[{
+     RowBox[{"Transpose", "@", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"AuthorsAdvisorsDegreeType", "[", "entry", "]"}], ",", 
+        RowBox[{"AuthorsAdvisorsName", "[", "entry", "]"}]}], "}"}]}], "/.", 
+     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}], "/.", 
+    RowBox[{
      RowBox[{"{", 
-      RowBox[{
-       RowBox[{"AuthorsAdvisorsDegreeType", "[", "entry", "]"}], ",", 
-       RowBox[{"AuthorsAdvisorsName", "[", "entry", "]"}]}], "}"}]}], "/.", 
-    RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}], "/.", 
-   RowBox[{
-    RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"Null", ",", "Null"}], "}"}], "}"}], "\[Rule]", 
      RowBox[{"{", 
-      RowBox[{"Null", ",", "Null"}], "}"}], "}"}], "\[Rule]", 
-    RowBox[{"{", 
-     RowBox[{"Null", ",", "Null"}], "}"}]}]}]}], "\[IndentingNewLine]", 
+      RowBox[{"Null", ",", "Null"}], "}"}]}]}]}]}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"ExtractAuthorsArxivCategories", "[", "entry_", "]"}], ":=", 
@@ -8236,6 +8567,13 @@ Cell[BoxData[{
     RowBox[{
      RowBox[{"{", "\"\<\>\"", "}"}], "\[Rule]", 
      RowBox[{"{", "}"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ExtractAuthorsAuthorsLegacyCreationDate", "[", "entry_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"AuthorsLegacyCreationDate", "[", "entry", "]"}], "/.", 
+    RowBox[{"\"\<\>\"", "\[Rule]", 
+     RowBox[{"{", "Null", "}"}]}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
    RowBox[{"ExtractAuthorsPositions", "[", "entry_", "]"}], ":=", 
@@ -8263,7 +8601,8 @@ Cell[BoxData[{
          RowBox[{"StringDelete", "[", 
           RowBox[{
            RowBox[{"AuthorsPositionsRecordRef", "[", "entry", "]"}], ",", 
-           "\"\<http://labs.inspirehep.net/api/institutions/\>\""}], "]"}], "/.", 
+           RowBox[{"Alternatives", "@@", "institutionsurls"}]}], "]"}], "/.", 
+         
          RowBox[{"\"\<\>\"", "\[Rule]", 
           RowBox[{"{", "}"}]}]}], 
         RowBox[{"(*", 
@@ -8349,9 +8688,12 @@ Cell[BoxData[{
    3.7564661416498747`*^9}, 3.7564662059568267`*^9, {3.75646630535134*^9, 
    3.7564663240073323`*^9}, {3.7564663607134323`*^9, 3.756466400993456*^9}, {
    3.7564666733213205`*^9, 3.7564666928057013`*^9}, {3.756551356051054*^9, 
-   3.756551382385491*^9}, {3.7565514607837267`*^9, 3.7565514724828777`*^9}},
- CellLabel->
-  "In[562]:=",ExpressionUUID->"4776d257-d65d-41b8-adf6-b8fac2da3a18"]
+   3.756551382385491*^9}, {3.7565514607837267`*^9, 3.7565514724828777`*^9}, 
+   3.816774550725704*^9, {3.8189418688799276`*^9, 3.818941880626155*^9}, {
+   3.8193043159316826`*^9, 3.819304330709313*^9}, 3.819304484409811*^9, {
+   3.81930473668283*^9, 3.8193047368608303`*^9}, {3.8198572000520043`*^9, 
+   3.8198572441738267`*^9}},ExpressionUUID->"4776d257-d65d-41b8-adf6-\
+b8fac2da3a18"]
 }, Closed]]
 }, Closed]],
 
@@ -9249,8 +9591,7 @@ Cell[BoxData[{
    RowBox[{"ExtractJournalsEarliestDate", "[", "entry_", "]"}], ":=", 
    RowBox[{
     RowBox[{"{", 
-     RowBox[{"StringToDate", "@", 
-      RowBox[{"JournalsEarliestDate", "[", "entry", "]"}]}], "}"}], "/.", 
+     RowBox[{"JournalsEarliestDate", "[", "entry", "]"}], "}"}], "/.", 
     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -9274,9 +9615,9 @@ Cell[BoxData[{
    3.756032269536541*^9, 3.7560322782802362`*^9}, {3.756032313729651*^9, 
    3.756032321704619*^9}, {3.7561857579558697`*^9, 3.756185815856371*^9}, {
    3.7561860381757193`*^9, 3.756186067135206*^9}, {3.756190637475102*^9, 
-   3.7561906383975677`*^9}},
- CellLabel->
-  "In[638]:=",ExpressionUUID->"4c36ebd6-8ee8-44fb-942a-3c65dd57e365"]
+   3.7561906383975677`*^9}, 
+   3.8198572206837177`*^9},ExpressionUUID->"4c36ebd6-8ee8-44fb-942a-\
+3c65dd57e365"]
 }, Closed]]
 }, Closed]],
 
@@ -10279,9 +10620,7 @@ Cell[BoxData[{
    RowBox[{"ExtractInstitutionsEarliestDate", "[", "entry_", "]"}], ":=", 
    RowBox[{
     RowBox[{"{", 
-     RowBox[{"StringToDate", "@", 
-      RowBox[{"InstitutionsEarliestDate", "[", "entry", "]"}]}], "}"}], "/.", 
-    
+     RowBox[{"InstitutionsEarliestDate", "[", "entry", "]"}], "}"}], "/.", 
     RowBox[{"\"\<\>\"", "\[Rule]", "Null"}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -10388,9 +10727,9 @@ Cell[BoxData[{
    3.7561905892095327`*^9}, {3.756201252939602*^9, 3.756201413597199*^9}, {
    3.7562067627068357`*^9, 3.756206762893444*^9}, {3.75730663722501*^9, 
    3.757306645500402*^9}, 3.757396104026527*^9, {3.757396241342249*^9, 
-   3.757396253154211*^9}, {3.7573964077032967`*^9, 3.757396410913516*^9}},
- CellLabel->
-  "In[707]:=",ExpressionUUID->"c5a4b030-bac3-4df6-9f3a-34ff300883f2"]
+   3.757396253154211*^9}, {3.7573964077032967`*^9, 3.757396410913516*^9}, 
+   3.819857225567786*^9},ExpressionUUID->"c5a4b030-bac3-4df6-9f3a-\
+34ff300883f2"]
 }, Closed]]
 }, Closed]],
 
@@ -10434,10 +10773,8 @@ Cell[BoxData[{
     RowBox[{"{", 
      RowBox[{
       RowBox[{"ExtractHEPID", "[", "JSON", "]"}], ",", 
-      RowBox[{"(*", 
-       RowBox[{
-        RowBox[{"ExtractHEPDateCreated", "[", "JSON", "]"}], ","}], "*)"}], 
-      RowBox[{"ExtractHEPEarliestDate", "[", "JSON", "]"}], ",", 
+      RowBox[{"ExtractHEPDateCreated", "[", "JSON", "]"}], ",", 
+      RowBox[{"ExtractHEPEarliestDate", "[", "JSONbrief", "]"}], ",", 
       RowBox[{"ExtractHEPDateUpdated", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPTitle", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPAbstract", "[", "JSON", "]"}], ",", 
@@ -10447,6 +10784,8 @@ Cell[BoxData[{
       RowBox[{"ExtractHEPArXivIDs", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPAuthorsCount", "[", "JSONbrief", "]"}], ",", 
       RowBox[{"ExtractHEPAuthorsAll", "[", "JSON", "]"}], ",", 
+      RowBox[{"ExtractHEPCitations", "[", "JSON", "]"}], ",", 
+      RowBox[{"ExtractHEPCitationsNoSelf", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPCiteableFlag", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPReferencesCount", "[", "JSONbrief", "]"}], ",", 
       RowBox[{"ExtractHEPCollaborations", "[", "JSON", "]"}], ",", 
@@ -10481,9 +10820,7 @@ Cell[BoxData[{
     RowBox[{"{", 
      RowBox[{
       RowBox[{"ExtractHEPID", "[", "JSON", "]"}], ",", 
-      RowBox[{"(*", 
-       RowBox[{
-        RowBox[{"ExtractHEPDateCreated", "[", "JSON", "]"}], ","}], "*)"}], 
+      RowBox[{"ExtractHEPDateCreated", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPEarliestDate", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPDateUpdated", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPTitle", "[", "JSON", "]"}], ",", 
@@ -10494,6 +10831,8 @@ Cell[BoxData[{
       RowBox[{"ExtractHEPArXivIDs", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPAuthorsCount", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPAuthorsAll", "[", "JSON", "]"}], ",", 
+      RowBox[{"ExtractHEPCitations", "[", "JSON", "]"}], ",", 
+      RowBox[{"ExtractHEPCitationsNoSelf", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPCiteableFlag", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPReferencesCount", "[", "JSON", "]"}], ",", 
       RowBox[{"ExtractHEPCollaborations", "[", "JSON", "]"}], ",", 
@@ -10535,56 +10874,40 @@ Cell[BoxData[{
       RowBox[{"ToExpression", "[", 
        RowBox[{"StringReplace", "[", 
         RowBox[{
-         RowBox[{"StringTrim", "[", 
-          RowBox[{
+         RowBox[{"DeleteDuplicates", "[", 
+          RowBox[{"StringDelete", "[", 
            RowBox[{
             RowBox[{"StringSplit", "[", 
              RowBox[{
               RowBox[{
                RowBox[{"StringSplit", "[", 
                 RowBox[{
-                 RowBox[{"ToString", "[", 
-                  RowBox[{"Definition", "[", "HEPEntryToRecord", "]"}], "]"}],
-                  ",", 
-                 RowBox[{"{", 
-                  RowBox[{"\"\<Null, \>\"", ",", "\"\< &\>\""}], "}"}]}], 
-                "]"}], "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}],
-               ",", "\"\<}, \>\""}], "]"}], "\[LeftDoubleBracket]", "2", 
-            "\[RightDoubleBracket]"}], ",", "\"\<]\>\""}], "]"}], ",", 
+                 RowBox[{
+                  RowBox[{"StringSplit", "[", 
+                   RowBox[{
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"Definition", "[", "HEPEntryToRecord", "]"}], 
+                    "]"}], ",", "\"\<Null, \>\""}], "]"}], 
+                  "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+                 ",", "\"\<}\>\""}], "]"}], "\[LeftDoubleBracket]", "1", 
+               "\[RightDoubleBracket]"}], ",", "\"\<, \>\""}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{
+             "\"\<[\>\"", ",", "\"\<]\>\"", ",", "\"\<{\>\"", ",", 
+              "\"\<}\>\""}], "}"}]}], "]"}], "]"}], ",", 
          RowBox[{"{", 
           RowBox[{
            RowBox[{"\"\<ExtractHEP\>\"", "->", "\"\<\\\"\>\""}], ",", 
-           RowBox[{"\"\<[JSON]\>\"", "->", "\"\<\\\"\>\""}]}], "}"}]}], "]"}],
-        "]"}], "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}]}], ",", 
-    
+           RowBox[{"\"\<JSONbrief\>\"", "->", "\"\<\\\"\>\""}], ",", 
+           RowBox[{"\"\<JSON\>\"", "->", "\"\<\\\"\>\""}]}], "}"}]}], "]"}], 
+       "]"}], "\[LeftDoubleBracket]", "i", "\[RightDoubleBracket]"}]}], ",", 
     RowBox[{"{", 
      RowBox[{"i", ",", "1", ",", 
-      RowBox[{
-       RowBox[{"ToExpression", "[", 
-        RowBox[{"StringReplace", "[", 
-         RowBox[{
-          RowBox[{"StringTrim", "[", 
-           RowBox[{
-            RowBox[{
-             RowBox[{"StringSplit", "[", 
-              RowBox[{
-               RowBox[{
-                RowBox[{"StringSplit", "[", 
-                 RowBox[{
-                  RowBox[{"ToString", "[", 
-                   RowBox[{"Definition", "[", "HEPEntryToRecord", "]"}], 
-                   "]"}], ",", 
-                  RowBox[{"{", 
-                   RowBox[{"\"\<Null, \>\"", ",", "\"\< &\>\""}], "}"}]}], 
-                 "]"}], "\[LeftDoubleBracket]", "2", 
-                "\[RightDoubleBracket]"}], ",", "\"\<}, \>\""}], "]"}], 
-             "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], ",", 
-            "\"\<]\>\""}], "]"}], ",", 
-          RowBox[{"{", 
-           RowBox[{
-            RowBox[{"\"\<ExtractHEP\>\"", "->", "\"\<\\\"\>\""}], ",", 
-            RowBox[{"\"\<[JSON]\>\"", "->", "\"\<\\\"\>\""}]}], "}"}]}], 
-         "]"}], "]"}], "//", "Length"}]}], "}"}]}], "]"}]}]}], "Input",
+      RowBox[{"Quiet", "[", 
+       RowBox[{
+        RowBox[{"HEPEntryToRecord", "[", 
+         RowBox[{"a", ",", "b"}], "]"}], "//", "Length"}], "]"}]}], "}"}]}], 
+   "]"}]}]}], "Input",
  CellChangeTimes->{{3.7191678117699313`*^9, 3.719167842367209*^9}, {
    3.719167967274729*^9, 3.7191680029952726`*^9}, {3.71916875125688*^9, 
    3.7191687519378815`*^9}, 3.71916974642903*^9, 3.719316042518261*^9, 
@@ -10602,10 +10925,16 @@ Cell[BoxData[{
    3.756032354646962*^9, 3.756032355238323*^9}, {3.7560325704225082`*^9, 
    3.756032571489105*^9}, {3.7560328027166862`*^9, 3.7560328346279297`*^9}, {
    3.756032941846798*^9, 3.756032943318201*^9}, {3.7564636742189016`*^9, 
-   3.7564636799359007`*^9}, {3.7640410221130047`*^9, 3.7640410258808937`*^9}},
- 
- CellLabel->
-  "In[722]:=",ExpressionUUID->"8f620843-b2f2-4d5d-bf05-8598548604ea"],
+   3.7564636799359007`*^9}, {3.7640410221130047`*^9, 
+   3.7640410258808937`*^9}, {3.816775850987278*^9, 3.8167758624174147`*^9}, {
+   3.816776366536331*^9, 3.816776368995882*^9}, {3.816776540078289*^9, 
+   3.816776569730934*^9}, {3.816776650949154*^9, 3.816776652431241*^9}, {
+   3.816776808822226*^9, 3.816776810191338*^9}, {3.816776862724654*^9, 
+   3.816776863944334*^9}, 3.81894415185392*^9, {3.8189442325488963`*^9, 
+   3.8189442326908965`*^9}, 3.818944759053824*^9, {3.819007552532912*^9, 
+   3.8190075525399117`*^9}, 
+   3.819007845733618*^9},ExpressionUUID->"8f620843-b2f2-4d5d-bf05-\
+8598548604ea"],
 
 Cell[BoxData[
  FormBox[
@@ -10615,71 +10944,30 @@ Cell[BoxData[
     ",", "\<\"5. Abstract\"\>", ",", "\<\"6. Experiments\"\>", 
     ",", "\<\"7. ArXivCategories\"\>", ",", "\<\"8. ArXivFirstCategory\"\>", 
     ",", "\<\"9. ArXivIDs\"\>", ",", "\<\"10. AuthorsCount\"\>", 
-    ",", "\<\"11. AuthorsAll\"\>", ",", "\<\"12. CiteableFlag\"\>", 
-    ",", "\<\"13. ReferencesCount\"\>", ",", "\<\"14. Collaborations\"\>", 
-    ",", "\<\"15. Core\"\>", ",", "\<\"16. Curated\"\>", 
-    ",", "\<\"17. DocumentTypes\"\>", ",", "\<\"18. DOIs\"\>", 
-    ",", "\<\"19. ExternalIDs\"\>", ",", "\<\"20. NumberofPages\"\>", 
-    ",", "\<\"21. NumberofFigures\"\>", ",", "\<\"22. InspireCategories\"\>", 
-    ",", "\<\"23. ISBNs\"\>", ",", "\<\"24. Keywords\"\>", 
-    ",", "\<\"25. PreprintDate\"\>", ",", "\<\"26. JournalArtID\"\>", 
-    ",", "\<\"27. JournalID\"\>", ",", "\<\"28. JournalName\"\>", 
-    ",", "\<\"29. JournalVolume\"\>", ",", "\<\"30. JournalIssue\"\>", 
-    ",", "\<\"31. JournalPageStart\"\>", ",", "\<\"32. JournalPageEnd\"\>", 
-    ",", "\<\"33. JournalDate\"\>", ",", "\<\"34. PublicationType\"\>", 
-    ",", "\<\"35. RefereedFlag\"\>", ",", "\<\"36. References\"\>", 
-    ",", "\<\"37. ReportNumbers\"\>", ",", "\<\"38. URL\"\>", 
-    ",", "\<\"39. TeXKeys\"\>", ",", "\<\"40. ThesisInfo\"\>", 
-    ",", "\<\"41. ExternalURLs\"\>", ",", "\<\"42. WithdrawnFlag\"\>"}], 
+    ",", "\<\"11. AuthorsAll\"\>", ",", "\<\"12. Citations\"\>", 
+    ",", "\<\"13. CitationsNoSelf\"\>", ",", "\<\"14. CiteableFlag\"\>", 
+    ",", "\<\"15. ReferencesCount\"\>", ",", "\<\"16. Collaborations\"\>", 
+    ",", "\<\"17. Core\"\>", ",", "\<\"18. Curated\"\>", 
+    ",", "\<\"19. DocumentTypes\"\>", ",", "\<\"20. DOIs\"\>", 
+    ",", "\<\"21. ExternalIDs\"\>", ",", "\<\"22. NumberofPages\"\>", 
+    ",", "\<\"23. NumberofFigures\"\>", ",", "\<\"24. InspireCategories\"\>", 
+    ",", "\<\"25. ISBNs\"\>", ",", "\<\"26. Keywords\"\>", 
+    ",", "\<\"27. PreprintDate\"\>", ",", "\<\"28. JournalArtID\"\>", 
+    ",", "\<\"29. JournalID\"\>", ",", "\<\"30. JournalName\"\>", 
+    ",", "\<\"31. JournalVolume\"\>", ",", "\<\"32. JournalIssue\"\>", 
+    ",", "\<\"33. JournalPageStart\"\>", ",", "\<\"34. JournalPageEnd\"\>", 
+    ",", "\<\"35. JournalDate\"\>", ",", "\<\"36. PublicationType\"\>", 
+    ",", "\<\"37. RefereedFlag\"\>", ",", "\<\"38. References\"\>", 
+    ",", "\<\"39. ReportNumbers\"\>", ",", "\<\"40. URL\"\>", 
+    ",", "\<\"41. TeXKeys\"\>", ",", "\<\"42. ThesisInfo\"\>", 
+    ",", "\<\"43. ExternalURLs\"\>", ",", "\<\"44. WithdrawnFlag\"\>", 
+    ",", "\<\"45. ID\"\>", ",", "\<\"46. AuthorsCount\"\>", 
+    ",", "\<\"47. ReferencesCount\"\>", ",", "\<\"48. NumberofPages\"\>"}], 
    "}"}], TraditionalForm]], "Output",
- CellChangeTimes->{
-  3.7191697470691385`*^9, 3.7192138778217483`*^9, 3.719632064952043*^9, 
-   3.719634391190235*^9, 3.7198430814182663`*^9, 3.719987145011836*^9, 
-   3.719990392688685*^9, 3.720006608674363*^9, 3.720006830407639*^9, 
-   3.720009818997476*^9, 3.720009980131312*^9, 3.7200101323127937`*^9, 
-   3.72001035420496*^9, 3.72042168381853*^9, 3.720430552710759*^9, 
-   3.720430731904553*^9, 3.7205850212987556`*^9, 3.7208568723763027`*^9, 
-   3.720934697203746*^9, 3.7209655452404656`*^9, 3.721924833271431*^9, 
-   3.721964356697381*^9, 3.7219844399752145`*^9, 3.722002487156427*^9, 
-   3.7220790767339945`*^9, 3.722101812307164*^9, 3.7221084215532503`*^9, 
-   3.7221494257567406`*^9, 3.722149977867247*^9, 3.72215003347202*^9, 
-   3.722168730507579*^9, 3.722322809749734*^9, 3.7223394232460785`*^9, 
-   3.7225835404688244`*^9, 3.7227653642467175`*^9, 3.7250098172030067`*^9, 
-   3.72508459022046*^9, 3.725089999941415*^9, {3.7250900425389204`*^9, 
-   3.725090057730446*^9}, 3.72509031805149*^9, 3.725090445818788*^9, 
-   3.72510168429031*^9, 3.725194598225341*^9, 3.72519897396552*^9, 
-   3.7253401124548645`*^9, 3.7257080887101007`*^9, 3.7257089211234074`*^9, 
-   3.7257107466292067`*^9, 3.7257170409053383`*^9, 3.7257641967620115`*^9, 
-   3.725764455967749*^9, 3.725778665667472*^9, 3.726578687225009*^9, 
-   3.72671554487218*^9, 3.726717754098638*^9, 3.7268992140245647`*^9, 
-   3.726911144512905*^9, 3.726924232778321*^9, 3.726976521312738*^9, {
-   3.726977668120646*^9, 3.7269776711726933`*^9}, 3.728577191597979*^9, 
-   3.7303638677890368`*^9, 3.730365195634081*^9, 3.7304310865519533`*^9, 
-   3.730434530863963*^9, 3.7304361097637863`*^9, 3.7309723188479424`*^9, 
-   3.7309758609059963`*^9, 3.731044285479097*^9, 3.732164670251875*^9, 
-   3.732165635054044*^9, 3.737692425756857*^9, 3.744266265498313*^9, 
-   3.744345330724161*^9, 3.7443471010093107`*^9, 3.744375279436615*^9, 
-   3.744560880846621*^9, 3.745944982395492*^9, 3.755953133311948*^9, 
-   3.755954123725504*^9, 3.755956798413291*^9, 3.756030691374839*^9, 
-   3.756032154500699*^9, 3.756032357272667*^9, {3.756032572395356*^9, 
-   3.756032587291754*^9}, 3.756032808234624*^9, 3.756032943989236*^9, 
-   3.756033938492606*^9, 3.7560346124059563`*^9, 3.756035115213244*^9, 
-   3.756035240529813*^9, 3.756035404023649*^9, 3.75603550303423*^9, 
-   3.756098073901476*^9, 3.7560983640009203`*^9, 3.756103788645358*^9, 
-   3.756106007691766*^9, 3.756117681456538*^9, 3.756202768145885*^9, 
-   3.7562050517865953`*^9, 3.756358969478414*^9, 3.756365918651163*^9, 
-   3.756373037504819*^9, 3.756460661191623*^9, 3.756468461838166*^9, 
-   3.7565315097313185`*^9, 3.756533233732431*^9, 3.756533570981136*^9, 
-   3.756533651522404*^9, 3.7565349115788*^9, 3.756538454012369*^9, 
-   3.756541604266945*^9, 3.7565420427220984`*^9, 3.756548594530982*^9, 
-   3.756623905470083*^9, 3.7566278032539377`*^9, 3.757066002818716*^9, 
-   3.757178349397629*^9, 3.757230760609457*^9, 3.757234962558002*^9, 
-   3.757235154129074*^9, 3.757305551546173*^9, 3.757307132412056*^9, 
-   3.75739495303295*^9, 3.76404111836726*^9, 3.7640559474690533`*^9, 
-   3.7640652929111624`*^9, 3.764587856998612*^9},
+ CellChangeTimes->{3.816776933145932*^9},
  CellLabel->
-  "Out[723]=",ExpressionUUID->"e0cc0934-8990-400c-8270-f6bf022cb2db"]
-}, Open  ]],
+  "Out[110]=",ExpressionUUID->"e84fe3a6-0a42-4e00-8d38-4c3577b2e49e"]
+}, Closed]],
 
 Cell[BoxData[{
  RowBox[{"Clear", "[", 
@@ -10689,8 +10977,7 @@ Cell[BoxData[{
    RowBox[{"Import", "[", 
     RowBox[{
      RowBox[{"HTTPRequest", "[", 
-      RowBox[{
-      "\"\<https://labs.inspirehep.net/api/literature/1726790\>\"", ",", 
+      RowBox[{"\"\<https://inspirehep.net/api/literature/1726790\>\"", ",", 
        RowBox[{"<|", 
         RowBox[{"\"\<Headers\>\"", "\[Rule]", 
          RowBox[{"{", 
@@ -10705,7 +10992,7 @@ Cell[BoxData[{
     RowBox[{
      RowBox[{
      "HTTPRequest", "[", 
-      "\"\<https://labs.inspirehep.net/api/literature/1726790\>\"", 
+      "\"\<https://inspirehep.net/api/literature/1726790\>\"", 
       RowBox[{"(*", 
        RowBox[{",", 
         RowBox[{"<|", 
@@ -10718,11 +11005,9 @@ Cell[BoxData[{
   ";"}]}], "Input",
  CellChangeTimes->{
   3.7560329743368597`*^9, {3.764041123338334*^9, 3.764041126893135*^9}, {
-   3.764041255550641*^9, 3.764041256261897*^9}},
- CellLabel->
-  "In[724]:=",ExpressionUUID->"ab9a5252-03de-4fbc-ba88-efb683136cec"],
-
-Cell[CellGroupData[{
+   3.764041255550641*^9, 3.764041256261897*^9}, {3.81677455478516*^9, 
+   3.816774557135458*^9}},ExpressionUUID->"ab9a5252-03de-4fbc-ba88-\
+efb683136cec"],
 
 Cell[BoxData[
  RowBox[{"{", 
@@ -10738,30 +11023,33 @@ Cell[BoxData[
 Cell[BoxData[
  FormBox[
   RowBox[{"(", "\[NoBreak]", GridBox[{
-     {"\<\"1. ID\"\>", "\<\"2. EarliestDate\"\>", "\<\"3. DateUpdated\"\>", "\
-\<\"4. Title\"\>", "\<\"5. Abstract\"\>", "\<\"6. Experiments\"\>", "\<\"7. \
-ArXivCategories\"\>", "\<\"8. ArXivFirstCategory\"\>", "\<\"9. ArXivIDs\"\>", \
-"\<\"10. AuthorsCount\"\>", "\<\"11. AuthorsAll\"\>", "\<\"12. CiteableFlag\"\
-\>", "\<\"13. ReferencesCount\"\>", "\<\"14. Collaborations\"\>", "\<\"15. \
-Core\"\>", "\<\"16. Curated\"\>", "\<\"17. DocumentTypes\"\>", "\<\"18. \
-DOIs\"\>", "\<\"19. ExternalIDs\"\>", "\<\"20. NumberofPages\"\>", "\<\"21. \
-NumberofFigures\"\>", "\<\"22. InspireCategories\"\>", "\<\"23. ISBNs\"\>", "\
-\<\"24. Keywords\"\>", "\<\"25. PreprintDate\"\>", "\<\"26. \
-JournalArtID\"\>", "\<\"27. JournalID\"\>", "\<\"28. JournalName\"\>", \
-"\<\"29. JournalVolume\"\>", "\<\"30. JournalIssue\"\>", "\<\"31. \
-JournalPageStart\"\>", "\<\"32. JournalPageEnd\"\>", "\<\"33. \
-JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
-"\<\"36. References\"\>", "\<\"37. ReportNumbers\"\>", "\<\"38. URL\"\>", "\<\
-\"39. TeXKeys\"\>", "\<\"40. ThesisInfo\"\>", "\<\"41. ExternalURLs\"\>", "\<\
-\"42. WithdrawnFlag\"\>"},
+     {"\"\<1. ID\>\"", "\"\<2. EarliestDate\>\"", "\"\<3. DateUpdated\>\"", 
+      "\"\<4. Title\>\"", "\"\<5. Abstract\>\"", "\"\<6. Experiments\>\"", 
+      "\"\<7. ArXivCategories\>\"", "\"\<8. ArXivFirstCategory\>\"", 
+      "\"\<9. ArXivIDs\>\"", "\"\<10. AuthorsCount\>\"", 
+      "\"\<11. AuthorsAll\>\"", "\"\<12. CiteableFlag\>\"", 
+      "\"\<13. ReferencesCount\>\"", "\"\<14. Collaborations\>\"", 
+      "\"\<15. Core\>\"", "\"\<16. Curated\>\"", "\"\<17. DocumentTypes\>\"", 
+      "\"\<18. DOIs\>\"", "\"\<19. ExternalIDs\>\"", 
+      "\"\<20. NumberofPages\>\"", "\"\<21. NumberofFigures\>\"", 
+      "\"\<22. InspireCategories\>\"", "\"\<23. ISBNs\>\"", 
+      "\"\<24. Keywords\>\"", "\"\<25. PreprintDate\>\"", 
+      "\"\<26. JournalArtID\>\"", "\"\<27. JournalID\>\"", 
+      "\"\<28. JournalName\>\"", "\"\<29. JournalVolume\>\"", 
+      "\"\<30. JournalIssue\>\"", "\"\<31. JournalPageStart\>\"", 
+      "\"\<32. JournalPageEnd\>\"", "\"\<33. JournalDate\>\"", 
+      "\"\<34. PublicationType\>\"", "\"\<35. RefereedFlag\>\"", 
+      "\"\<36. References\>\"", "\"\<37. ReportNumbers\>\"", 
+      "\"\<38. URL\>\"", "\"\<39. TeXKeys\>\"", "\"\<40. ThesisInfo\>\"", 
+      "\"\<41. ExternalURLs\>\"", "\"\<42. WithdrawnFlag\>\""},
      {
       RowBox[{"{", "1726790", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2019-04-17T13:05:02.744089+00:00\"\>", "}"}], 
+      RowBox[{"{", "\"\<2019-04-17T13:05:02.744089+00:00\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"Machine learning and the physical sciences\"\>", "}"}], 
+      "{", "\"\<Machine learning and the physical sciences\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"Machine learning encompasses a broad range of algorithms and \
+      "{", "\"\<Machine learning encompasses a broad range of algorithms and \
 modeling tools used for a vast array of data processing tasks, which has \
 entered most scientific disciplines in recent years. We review in a selective \
 way the recent research on the interface between machine learning and \
@@ -10775,57 +11063,56 @@ in particle physics and cosmology, quantum many body physics, quantum \
 computing, and chemical and material physics. We also highlight research and \
 development into novel computing architectures aimed at accelerating ML. In \
 each of the sections we describe recent successes as well as domain-specific \
-methodology and challenges.\"\>", "}"}], 
+methodology and challenges.\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"physics.comp-ph\"\>", ",", "\<\"astro-ph.CO\"\>", 
-        ",", "\<\"cond-mat.dis-nn\"\>", ",", "\<\"hep-th\"\>", 
-        ",", "\<\"quant-ph\"\>"}], "}"}], 
-      RowBox[{"{", "\<\"physics.comp-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"1903.10563\"\>", "}"}], 
+       RowBox[{
+       "\"\<physics.comp-ph\>\"", ",", "\"\<astro-ph.CO\>\"", ",", 
+        "\"\<cond-mat.dis-nn\>\"", ",", "\"\<hep-th\>\"", ",", 
+        "\"\<quant-ph\>\""}], "}"}], 
+      RowBox[{"{", "\"\<physics.comp-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<1903.10563\>\"", "}"}], 
       RowBox[{"{", "8", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", 
-          RowBox[{
-          "{", "\<\"G.Carleo.1\"\>", "}"}], "\<\"Carleo, Giuseppe\"\>", 
+          RowBox[{"{", "\"\<G.Carleo.1\>\"", "}"}], 
+          "\"\<Carleo, Giuseppe\>\"", 
           RowBox[{"{", "1601179", "}"}], 
-          RowBox[{"{", "\<\"Flatiron Inst., New York\"\>", "}"}]},
+          RowBox[{"{", "\"\<Flatiron Inst., New York\>\"", "}"}]},
          {"Null", 
-          RowBox[{"{", "\<\"I.I.Cirac.1\"\>", "}"}], "\<\"Cirac, Ignacio\"\>", 
+          RowBox[{"{", "\"\<I.I.Cirac.1\>\"", "}"}], "\"\<Cirac, Ignacio\>\"", 
           RowBox[{"{", "905027", "}"}], 
           RowBox[{
-          "{", "\<\"Munich, Max Planck Inst. Quantenopt.\"\>", "}"}]},
+          "{", "\"\<Munich, Max Planck Inst. Quantenopt.\>\"", "}"}]},
          {"1012846", 
-          RowBox[{
-          "{", "\<\"K.S.Cranmer.1\"\>", "}"}], "\<\"Cranmer, Kyle\"\>", 
+          RowBox[{"{", "\"\<K.S.Cranmer.1\>\"", "}"}], 
+          "\"\<Cranmer, Kyle\>\"", 
           RowBox[{"{", "909498", "}"}], 
-          RowBox[{"{", "\<\"New York U., CCPP\"\>", "}"}]},
+          RowBox[{"{", "\"\<New York U., CCPP\>\"", "}"}]},
          {"Null", 
-          RowBox[{"{", "\<\"L.Daudet.1\"\>", "}"}], "\<\"Daudet, Laurent\"\>", 
+          RowBox[{"{", "\"\<L.Daudet.1\>\"", "}"}], "\"\<Daudet, Laurent\>\"", 
           RowBox[{"{", "912221", "}"}], 
-          RowBox[{"{", "\<\"Unlisted, FR\"\>", "}"}]},
+          RowBox[{"{", "\"\<Unlisted, FR\>\"", "}"}]},
          {"Null", 
-          RowBox[{"{", "\<\"M.Schuld.1\"\>", "}"}], "\<\"Schuld, Maria\"\>", 
+          RowBox[{"{", "\"\<M.Schuld.1\>\"", "}"}], "\"\<Schuld, Maria\>\"", 
           RowBox[{"{", 
            RowBox[{"903577", ",", "912258"}], "}"}], 
           RowBox[{"{", 
-           RowBox[{"\<\"Natal U.\"\>", ",", "\<\"Unlisted, CA\"\>"}], "}"}]},
+           RowBox[{"\"\<Natal U.\>\"", ",", "\"\<Unlisted, CA\>\""}], "}"}]},
          {"Null", 
-          RowBox[{"{", "\<\"N.Tishby.2\"\>", "}"}], "\<\"Tishby, Naftali\"\>", 
+          RowBox[{"{", "\"\<N.Tishby.2\>\"", "}"}], "\"\<Tishby, Naftali\>\"", 
           RowBox[{"{", "902840", "}"}], 
-          RowBox[{"{", "\<\"Hebrew U.\"\>", "}"}]},
+          RowBox[{"{", "\"\<Hebrew U.\>\"", "}"}]},
          {"Null", 
-          RowBox[{
-          "{", "\<\"L.Vogt.Maranto.1\"\>", 
-           "}"}], "\<\"Vogt-Maranto, Leslie\"\>", 
+          RowBox[{"{", "\"\<L.Vogt.Maranto.1\>\"", "}"}], 
+          "\"\<Vogt-Maranto, Leslie\>\"", 
           RowBox[{"{", "903067", "}"}], 
-          RowBox[{"{", "\<\"New York U.\"\>", "}"}]},
+          RowBox[{"{", "\"\<New York U.\>\"", "}"}]},
          {"Null", 
-          RowBox[{
-          "{", "\<\"L.Zdeborova.1\"\>", 
-           "}"}], "\<\"Zdeborov\[AAcute], Lenka\"\>", 
+          RowBox[{"{", "\"\<L.Zdeborova.1\>\"", "}"}], 
+          "\"\<Zdeborov\[AAcute], Lenka\>\"", 
           RowBox[{"{", "1087875", "}"}], 
-          RowBox[{"{", "\<\"IPhT, Saclay\"\>", "}"}]}
+          RowBox[{"{", "\"\<IPhT, Saclay\>\"", "}"}]}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -10843,10 +11130,10 @@ methodology and challenges.\"\>", "}"}],
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "True", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"article\"\>", "}"}], 
+      RowBox[{"{", "\"\<article\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"HAL\"\>", "\<\"hal-02101667\"\>"}
+         {"\"\<HAL\>\"", "\"\<hal-02101667\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -10862,20 +11149,21 @@ methodology and challenges.\"\>", "}"}],
       RowBox[{"{", "44", "}"}], 
       RowBox[{"{", "8", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"Computing\"\>", ",", "\<\"Astrophysics\"\>", 
-        ",", "\<\"General Physics\"\>", ",", "\<\"Theory-HEP\"\>", 
-        ",", "\<\"Computing\"\>", ",", "\<\"Astrophysics\"\>", 
-        ",", "\<\"General Physics\"\>", ",", "\<\"Theory-HEP\"\>"}], "}"}], 
+       RowBox[{
+       "\"\<Computing\>\"", ",", "\"\<Astrophysics\>\"", ",", 
+        "\"\<General Physics\>\"", ",", "\"\<Theory-HEP\>\"", ",", 
+        "\"\<Computing\>\"", ",", "\"\<Astrophysics\>\"", ",", 
+        "\"\<General Physics\>\"", ",", "\"\<Theory-HEP\>\""}], "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"activity report\"\>", ",", "\<\"computer: quantum\"\>", 
-        ",", "\<\"cosmological model\"\>", ",", "\<\"many-body problem\"\>", 
-        ",", "\<\"statistics\"\>", ",", "\<\"artificial intelligence\"\>", 
-        ",", "\<\"programming\"\>", ",", "\<\"data analysis method\"\>", 
-        ",", "\<\"mathematical methods\"\>", ",", "\<\"numerical methods\"\>",
-         ",", "\<\"neural network\"\>", ",", "\<\"bibliography\"\>"}], "}"}], 
-      
-      RowBox[{"{", "\<\"2019-03-25\"\>", "}"}], 
+       RowBox[{
+       "\"\<activity report\>\"", ",", "\"\<computer: quantum\>\"", ",", 
+        "\"\<cosmological model\>\"", ",", "\"\<many-body problem\>\"", ",", 
+        "\"\<statistics\>\"", ",", "\"\<artificial intelligence\>\"", ",", 
+        "\"\<programming\>\"", ",", "\"\<data analysis method\>\"", ",", 
+        "\"\<mathematical methods\>\"", ",", "\"\<numerical methods\>\"", 
+        ",", "\"\<neural network\>\"", ",", "\"\<bibliography\>\""}], "}"}], 
+      RowBox[{"{", "\"\<2019-03-25\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null"}
         },
@@ -11021,8 +11309,8 @@ methodology and challenges.\"\>", "}"}],
         "1598526"}], "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/1726790\"\>", "}"}], 
-      RowBox[{"{", "\<\"Carleo:2019ptp\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/1726790\>\"", "}"}], 
+      RowBox[{"{", "\"\<Carleo:2019ptp\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
@@ -11050,26 +11338,11 @@ methodology and challenges.\"\>", "}"}],
         Offset[0.2], {
          Offset[0.4]}, 
         Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
-  TraditionalForm]], "Output",
+  TraditionalForm]], "Input",
  CellChangeTimes->{
-  3.756032572708625*^9, {3.756032953129788*^9, 3.7560329764449577`*^9}, {
-   3.756033044189777*^9, 3.756033050323247*^9}, 3.756033940051715*^9, 
-   3.7560980742016497`*^9, 3.75609836426877*^9, 3.756103789098502*^9, 
-   3.7561060081730547`*^9, 3.756117681854175*^9, 3.756202768473344*^9, 
-   3.756205052088352*^9, 3.756358969720406*^9, 3.756365919234128*^9, 
-   3.756373037895915*^9, 3.7564606618606353`*^9, 3.756468462379751*^9, 
-   3.7565315101649537`*^9, 3.7565332341463413`*^9, 3.756533571331194*^9, 
-   3.7565336519312696`*^9, 3.7565349119871016`*^9, 3.7565384545753117`*^9, 
-   3.756541604679531*^9, 3.756542043240766*^9, 3.756548595075346*^9, 
-   3.7566239062245607`*^9, 3.756627803635936*^9, 3.757066003117013*^9, 
-   3.757178349936597*^9, 3.757230762348198*^9, 3.75723496297841*^9, 
-   3.757235154433427*^9, 3.75730555204243*^9, 3.757307132868367*^9, 
-   3.757394953804591*^9, 3.764041133734028*^9, 3.76404117390539*^9, 
-   3.764041259020467*^9, 3.764041336969912*^9, 3.764055949224855*^9, 
-   3.7640652932695856`*^9, 3.764587857556717*^9},
- CellLabel->
-  "Out[727]=",ExpressionUUID->"592afffe-e7f6-484c-82ae-8b136fe64d63"]
-}, Open  ]],
+  3.81677457358407*^9, {3.816774623771461*^9, 
+   3.816774624859309*^9}},ExpressionUUID->"592afffe-e7f6-484c-82ae-\
+8b136fe64d63"],
 
 Cell["\<\
 Authors: Convert each JSON entry to a Mathematica Record with format \
@@ -11092,10 +11365,8 @@ Cell[BoxData[{
     RowBox[{"{", 
      RowBox[{
       RowBox[{"ExtractAuthorsID", "[", "#", "]"}], ",", 
-      RowBox[{"(*", 
-       RowBox[{
-        RowBox[{"ExtractAuthorsDateCreated", "[", "#", "]"}], ","}], "*)"}], 
-      RowBox[{"ExtractAuthorsEarliestDate", "[", "#", "]"}], ",", 
+      RowBox[{"ExtractAuthorsDateCreated", "[", "#", "]"}], ",", 
+      RowBox[{"ExtractAuthorsAuthorsLegacyCreationDate", "[", "#", "]"}], ",", 
       RowBox[{"ExtractAuthorsHEPNames", "[", "#", "]"}], ",", 
       RowBox[{"ExtractAuthorsName", "[", "#", "]"}], ",", 
       RowBox[{"ExtractAuthorsPreferredName", "[", "#", "]"}], ",", 
@@ -11162,9 +11433,10 @@ Cell[BoxData[{
    3.756032364091084*^9}, {3.756033100975832*^9, 3.756033131973246*^9}, {
    3.7564636836908994`*^9, 3.7564636989649305`*^9}, 3.756463730522904*^9, {
    3.7564639960669007`*^9, 3.7564640063759356`*^9}, {3.75655140154592*^9, 
-   3.756551405200418*^9}},
- CellLabel->
-  "In[728]:=",ExpressionUUID->"35eff4ec-37e2-4bf5-b5a1-8f8a27827f07"],
+   3.756551405200418*^9}, {3.819304537463009*^9, 3.8193045425805664`*^9}, {
+   3.8193047938110476`*^9, 
+   3.8193047953980474`*^9}},ExpressionUUID->"35eff4ec-37e2-4bf5-b5a1-\
+8f8a27827f07"],
 
 Cell[BoxData[
  FormBox[
@@ -11211,8 +11483,7 @@ Cell[BoxData[{
    RowBox[{"Import", "[", 
     RowBox[{
      RowBox[{"HTTPRequest", "[", 
-      RowBox[{
-      "\"\<https://labs.inspirehep.net/api/authors/1012846\>\"", ",", 
+      RowBox[{"\"\<https://inspirehep.net/api/authors/1012846\>\"", ",", 
        RowBox[{"<|", 
         RowBox[{"\"\<Headers\>\"", "\[Rule]", 
          RowBox[{"{", 
@@ -11226,8 +11497,7 @@ Cell[BoxData[{
    RowBox[{"Import", "[", 
     RowBox[{
      RowBox[{
-     "HTTPRequest", "[", 
-      "\"\<https://labs.inspirehep.net/api/authors/1012846\>\"", 
+     "HTTPRequest", "[", "\"\<https://inspirehep.net/api/authors/1012846\>\"", 
       RowBox[{"(*", 
        RowBox[{",", 
         RowBox[{"<|", 
@@ -11239,9 +11509,9 @@ Cell[BoxData[{
          "|>"}]}], "*)"}], "]"}], ",", "\"\<RawJSON\>\""}], "]"}]}], 
   ";"}]}], "Input",
  CellChangeTimes->{{3.7564669303034754`*^9, 3.7564669398035755`*^9}, {
-  3.764041425215219*^9, 3.764041425946003*^9}},
- CellLabel->
-  "In[730]:=",ExpressionUUID->"0c7b82b7-ff68-46bf-be4c-2357899a90fe"],
+  3.764041425215219*^9, 3.764041425946003*^9}, {3.816774561740301*^9, 
+  3.816774569490613*^9}},ExpressionUUID->"0c7b82b7-ff68-46bf-be4c-\
+2357899a90fe"],
 
 Cell[CellGroupData[{
 
@@ -11380,8 +11650,8 @@ Cell[BoxData[{
        RowBox[{"Import", "[", 
         RowBox[{
          RowBox[{
-         "\"\<https://labs.inspirehep.net/api/literature?sort=mostrecent&size=\
-25&q=\>\"", "<>", 
+         "\"\<https://inspirehep.net/api/literature?sort=mostrecent&size=25&q=\
+\>\"", "<>", 
           RowBox[{"StringRiffle", "[", 
            RowBox[{
             RowBox[{"StringSplit", "[", "str", "]"}], ",", "\"\<+\>\""}], 
@@ -11432,7 +11702,7 @@ Cell[BoxData[{
                   RowBox[{"Import", "[", 
                    RowBox[{
                     RowBox[{
-                    "\"\<https://labs.inspirehep.net/api/literature?sort=\
+                    "\"\<https://inspirehep.net/api/literature?sort=\
 mostrecent&q=\>\"", "<>", 
                     RowBox[{"StringRiffle", "[", 
                     RowBox[{
@@ -11450,7 +11720,7 @@ mostrecent&q=\>\"", "<>",
  RowBox[{
   RowBox[{
    RowBox[{"URLRecord", "[", "recid_", "]"}], ":=", 
-   RowBox[{"\"\<https://labs.inspirehep.net/api/literature/\>\"", "<>", 
+   RowBox[{"\"\<https://inspirehep.net/api/literature/\>\"", "<>", 
     RowBox[{"ToString", "@", "recid"}]}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"ImportInspireRecord", "[", "recidd___", "]"}], ":=", 
@@ -11511,9 +11781,9 @@ mostrecent&q=\>\"", "<>",
    3.764054584566558*^9, 3.76405467908677*^9}, {3.764054710455237*^9, 
    3.764054716876564*^9}, 3.764054760596766*^9, {3.764055022071706*^9, 
    3.7640550679135427`*^9}, {3.76405519441171*^9, 3.764055395088389*^9}, {
-   3.764055572278817*^9, 3.764055774239132*^9}},
- CellLabel->
-  "In[734]:=",ExpressionUUID->"1ae1886d-ceae-4e5c-b359-adc52d393234"],
+   3.764055572278817*^9, 3.764055774239132*^9}, {3.816774569495841*^9, 
+   3.816774569499682*^9}},ExpressionUUID->"1ae1886d-ceae-4e5c-b359-\
+adc52d393234"],
 
 Cell[CellGroupData[{
 
@@ -11523,8 +11793,8 @@ Cell[BoxData[
    RowBox[{"Import", "[", 
     RowBox[{
      RowBox[{
-     "\"\<https://labs.inspirehep.net/api/literature?sort=mostrecent&size=25&\
-q=\>\"", "<>", 
+     "\"\<https://inspirehep.net/api/literature?sort=mostrecent&size=25&q=\>\"\
+", "<>", 
       RowBox[{"StringRiffle", "[", 
        RowBox[{
         RowBox[{"StringSplit", "[", "\"\<a torre, r\>\"", "]"}], ",", 
@@ -11532,9 +11802,9 @@ q=\>\"", "<>",
    "\[LeftDoubleBracket]", "\"\<hits\>\"", "\[RightDoubleBracket]"}], 
   "]"}]], "Input",
  CellChangeTimes->{{3.7640625993335557`*^9, 3.7640626239171405`*^9}, {
-  3.764063429766409*^9, 3.7640634507897015`*^9}},
- CellLabel->
-  "In[738]:=",ExpressionUUID->"c4cb2901-5024-4a5d-a70f-9182a1a0a2a4"],
+   3.764063429766409*^9, 3.7640634507897015`*^9}, 
+   3.816774569503499*^9},ExpressionUUID->"c4cb2901-5024-4a5d-a70f-\
+9182a1a0a2a4"],
 
 Cell[BoxData[
  FormBox[
@@ -11592,7 +11862,7 @@ Cell[BoxData[
 f4dd2c75b5a0"]
 }, Open  ]]
 }, Open  ]]
-}, Open  ]]
+}, Closed]]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -11767,8 +12037,6 @@ Cell[BoxData[
   "Out[749]=",ExpressionUUID->"f2b90d79-907e-4cfb-9c78-794c94328aa6"]
 }, Open  ]],
 
-Cell[CellGroupData[{
-
 Cell[BoxData[
  RowBox[{"records", "\[LeftDoubleBracket]", 
   RowBox[{"1", ";;", "12"}], "\[RightDoubleBracket]"}]], "Input",
@@ -11780,28 +12048,31 @@ Cell[BoxData[
 Cell[BoxData[
  FormBox[
   RowBox[{"(", "\[NoBreak]", GridBox[{
-     {"\<\"1. ID\"\>", "\<\"2. EarliestDate\"\>", "\<\"3. DateUpdated\"\>", "\
-\<\"4. Title\"\>", "\<\"5. Abstract\"\>", "\<\"6. Experiments\"\>", "\<\"7. \
-ArXivCategories\"\>", "\<\"8. ArXivFirstCategory\"\>", "\<\"9. ArXivIDs\"\>", \
-"\<\"10. AuthorsCount\"\>", "\<\"11. AuthorsAll\"\>", "\<\"12. CiteableFlag\"\
-\>", "\<\"13. ReferencesCount\"\>", "\<\"14. Collaborations\"\>", "\<\"15. \
-Core\"\>", "\<\"16. Curated\"\>", "\<\"17. DocumentTypes\"\>", "\<\"18. \
-DOIs\"\>", "\<\"19. ExternalIDs\"\>", "\<\"20. NumberofPages\"\>", "\<\"21. \
-NumberofFigures\"\>", "\<\"22. InspireCategories\"\>", "\<\"23. ISBNs\"\>", "\
-\<\"24. Keywords\"\>", "\<\"25. PreprintDate\"\>", "\<\"26. \
-JournalArtID\"\>", "\<\"27. JournalID\"\>", "\<\"28. JournalName\"\>", \
-"\<\"29. JournalVolume\"\>", "\<\"30. JournalIssue\"\>", "\<\"31. \
-JournalPageStart\"\>", "\<\"32. JournalPageEnd\"\>", "\<\"33. \
-JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
-"\<\"36. References\"\>", "\<\"37. ReportNumbers\"\>", "\<\"38. URL\"\>", "\<\
-\"39. TeXKeys\"\>", "\<\"40. ThesisInfo\"\>", "\<\"41. ExternalURLs\"\>", "\<\
-\"42. WithdrawnFlag\"\>"},
+     {"\"\<1. ID\>\"", "\"\<2. EarliestDate\>\"", "\"\<3. DateUpdated\>\"", 
+      "\"\<4. Title\>\"", "\"\<5. Abstract\>\"", "\"\<6. Experiments\>\"", 
+      "\"\<7. ArXivCategories\>\"", "\"\<8. ArXivFirstCategory\>\"", 
+      "\"\<9. ArXivIDs\>\"", "\"\<10. AuthorsCount\>\"", 
+      "\"\<11. AuthorsAll\>\"", "\"\<12. CiteableFlag\>\"", 
+      "\"\<13. ReferencesCount\>\"", "\"\<14. Collaborations\>\"", 
+      "\"\<15. Core\>\"", "\"\<16. Curated\>\"", "\"\<17. DocumentTypes\>\"", 
+      "\"\<18. DOIs\>\"", "\"\<19. ExternalIDs\>\"", 
+      "\"\<20. NumberofPages\>\"", "\"\<21. NumberofFigures\>\"", 
+      "\"\<22. InspireCategories\>\"", "\"\<23. ISBNs\>\"", 
+      "\"\<24. Keywords\>\"", "\"\<25. PreprintDate\>\"", 
+      "\"\<26. JournalArtID\>\"", "\"\<27. JournalID\>\"", 
+      "\"\<28. JournalName\>\"", "\"\<29. JournalVolume\>\"", 
+      "\"\<30. JournalIssue\>\"", "\"\<31. JournalPageStart\>\"", 
+      "\"\<32. JournalPageEnd\>\"", "\"\<33. JournalDate\>\"", 
+      "\"\<34. PublicationType\>\"", "\"\<35. RefereedFlag\>\"", 
+      "\"\<36. References\>\"", "\"\<37. ReportNumbers\>\"", 
+      "\"\<38. URL\>\"", "\"\<39. TeXKeys\>\"", "\"\<40. ThesisInfo\>\"", 
+      "\"\<41. ExternalURLs\>\"", "\"\<42. WithdrawnFlag\>\""},
      {
       RowBox[{"{", "6222", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2018-10-12T16:49:58.998586+00:00\"\>", "}"}], 
+      RowBox[{"{", "\"\<2018-10-12T16:49:58.998586+00:00\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"REMARKS ON GAUGE VARIABLES AND SINGULAR LAGRANGIANS\"\>", 
+      "{", "\"\<REMARKS ON GAUGE VARIABLES AND SINGULAR LAGRANGIANS\>\"", 
        "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "Null", "}"}], 
@@ -11811,38 +12082,34 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
       RowBox[{"{", "6", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", 
-          RowBox[{
-          "{", "\<\"J.Chela.Flores.1\"\>", "}"}], "\<\"Chela-Flores, J.\"\>", 
-          
+          RowBox[{"{", "\"\<J.Chela.Flores.1\>\"", "}"}], 
+          "\"\<Chela-Flores, J.\>\"", 
           RowBox[{"{", "902715", "}"}], 
-          RowBox[{"{", "\<\"Caracas, IVIC\"\>", "}"}]},
+          RowBox[{"{", "\"\<Caracas, IVIC\>\"", "}"}]},
          {"Null", 
-          RowBox[{
-          "{", "\<\"R.Janica.de.la.Torre.1\"\>", 
-           "}"}], "\<\"Janica-de-la-Torre, R.\"\>", 
+          RowBox[{"{", "\"\<R.Janica.de.la.Torre.1\>\"", "}"}], 
+          "\"\<Janica-de-la-Torre, R.\>\"", 
           RowBox[{"{", "902716", "}"}], 
-          RowBox[{"{", "\<\"Caracas, U. Central\"\>", "}"}]},
+          RowBox[{"{", "\"\<Caracas, U. Central\>\"", "}"}]},
          {"Null", 
-          RowBox[{"{", "\<\"A.J.Kalnay.1\"\>", "}"}], "\<\"Kalnay, A.J.\"\>", 
+          RowBox[{"{", "\"\<A.J.Kalnay.1\>\"", "}"}], "\"\<Kalnay, A.J.\>\"", 
           
           RowBox[{"{", "902715", "}"}], 
-          RowBox[{"{", "\<\"Caracas, IVIC\"\>", "}"}]},
+          RowBox[{"{", "\"\<Caracas, IVIC\>\"", "}"}]},
          {"Null", 
-          RowBox[{
-          "{", "\<\"J.Rodriguez.Gomez.1\"\>", 
-           "}"}], "\<\"Rodriguez-Gomez, J.\"\>", 
+          RowBox[{"{", "\"\<J.Rodriguez.Gomez.1\>\"", "}"}], 
+          "\"\<Rodriguez-Gomez, J.\>\"", 
           RowBox[{"{", "902715", "}"}], 
-          RowBox[{"{", "\<\"Caracas, IVIC\"\>", "}"}]},
+          RowBox[{"{", "\"\<Caracas, IVIC\>\"", "}"}]},
          {"Null", 
-          RowBox[{
-          "{", "\<\"J.Rodriguez.Nunez.1\"\>", 
-           "}"}], "\<\"Rodriguez-Nunez, J.\"\>", 
+          RowBox[{"{", "\"\<J.Rodriguez.Nunez.1\>\"", "}"}], 
+          "\"\<Rodriguez-Nunez, J.\>\"", 
           RowBox[{"{", "902715", "}"}], 
-          RowBox[{"{", "\<\"Caracas, IVIC\"\>", "}"}]},
+          RowBox[{"{", "\"\<Caracas, IVIC\>\"", "}"}]},
          {"Null", 
-          RowBox[{"{", "\<\"R.Tascon.2\"\>", "}"}], "\<\"Tascon, R.\"\>", 
+          RowBox[{"{", "\"\<R.Tascon.2\>\"", "}"}], "\"\<Tascon, R.\>\"", 
           RowBox[{"{", "903952", "}"}], 
-          RowBox[{"{", "\<\"Caracas, Inst. U. Pedagogico\"\>", "}"}]}
+          RowBox[{"{", "\"\<Caracas, Inst. U. Pedagogico\>\"", "}"}]}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -11860,10 +12127,10 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "True", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"article\"\>", "}"}], 
-      RowBox[{"{", "\<\"10.1007/BF01812223\"\>", "}"}], 
+      RowBox[{"{", "\"\<article\>\"", "}"}], 
+      RowBox[{"{", "\"\<10.1007/BF01812223\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"SPIRES\"\>", "\<\"SPIRES-268038\"\>"}
+         {"\"\<SPIRES\>\"", "\"\<SPIRES-268038\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -11878,15 +12145,15 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"{", "4", "}"}], 
       RowBox[{"{", "0", "}"}], 
-      RowBox[{"{", "\<\"Theory-HEP\"\>", "}"}], 
+      RowBox[{"{", "\"\<Theory-HEP\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"GAUGE FIELD THEORY\"\>", 
-        ",", "\<\"FIELD THEORY: SINGULAR\"\>", 
-        ",", "\<\"TRANSFORMATION: GAUGE\"\>"}], "}"}], 
-      RowBox[{"{", "\<\"1978-02\"\>", "}"}], 
+       RowBox[{
+       "\"\<GAUGE FIELD THEORY\>\"", ",", "\"\<FIELD THEORY: SINGULAR\>\"", 
+        ",", "\"\<TRANSFORMATION: GAUGE\>\""}], "}"}], 
+      RowBox[{"{", "\"\<1978-02\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"659\"\>"}
+         {"\"\<659\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -11914,7 +12181,7 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"Int.J.Theor.Phys.\"\>"}
+         {"\"\<Int.J.Theor.Phys.\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -11928,7 +12195,7 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"16\"\>"}
+         {"\"\<16\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -11956,7 +12223,7 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"659\"\>"}
+         {"\"\<659\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12002,10 +12269,10 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
       RowBox[{"{", 
        RowBox[{
        "3729", ",", "31080", ",", "2423", ",", "86738", ",", "78026"}], "}"}], 
-      RowBox[{"{", "\<\"PRINT-78-0115 (CARACAS)\"\>", "}"}], 
+      RowBox[{"{", "\"\<PRINT-78-0115 (CARACAS)\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/6222\"\>", "}"}], 
-      RowBox[{"{", "\<\"ChelaFlores:1978nu\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/6222\>\"", "}"}], 
+      RowBox[{"{", "\"\<ChelaFlores:1978nu\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
@@ -12025,9 +12292,9 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
      {
       RowBox[{"{", "138886", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2018-10-12T17:52:30.930791+00:00\"\>", "}"}], 
+      RowBox[{"{", "\"\<2018-10-12T17:52:30.930791+00:00\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"Gauge Fields and the Hydrodynamics of Superfluid He-4\"\>", 
+      "{", "\"\<Gauge Fields and the Hydrodynamics of Superfluid He-4\>\"", 
        "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "Null", "}"}], 
@@ -12037,38 +12304,34 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
       RowBox[{"{", "6", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", 
-          RowBox[{
-          "{", "\<\"J.Chela.Flores.1\"\>", "}"}], "\<\"Chela-FLores, J.\"\>", 
+          RowBox[{"{", "\"\<J.Chela.Flores.1\>\"", "}"}], 
+          "\"\<Chela-FLores, J.\>\"", 
+          RowBox[{"{", "902715", "}"}], 
+          RowBox[{"{", "\"\<Caracas, IVIC\>\"", "}"}]},
+         {"Null", 
+          RowBox[{"{", "\"\<R.Janica.de.la.Torre.1\>\"", "}"}], 
+          "\"\<Janica-de-la-Torre, R.\>\"", 
+          RowBox[{"{", "902715", "}"}], 
+          RowBox[{"{", "\"\<Caracas, IVIC\>\"", "}"}]},
+         {"Null", 
+          RowBox[{"{", "\"\<A.J.Kalnay.1\>\"", "}"}], "\"\<Kalnay, A.J.\>\"", 
           
           RowBox[{"{", "902715", "}"}], 
-          RowBox[{"{", "\<\"Caracas, IVIC\"\>", "}"}]},
+          RowBox[{"{", "\"\<Caracas, IVIC\>\"", "}"}]},
          {"Null", 
-          RowBox[{
-          "{", "\<\"R.Janica.de.la.Torre.1\"\>", 
-           "}"}], "\<\"Janica-de-la-Torre, R.\"\>", 
+          RowBox[{"{", "\"\<J.Rodriguez.Gomez.1\>\"", "}"}], 
+          "\"\<Rodriguez-Gomez, J.\>\"", 
           RowBox[{"{", "902715", "}"}], 
-          RowBox[{"{", "\<\"Caracas, IVIC\"\>", "}"}]},
+          RowBox[{"{", "\"\<Caracas, IVIC\>\"", "}"}]},
          {"Null", 
-          RowBox[{"{", "\<\"A.J.Kalnay.1\"\>", "}"}], "\<\"Kalnay, A.J.\"\>", 
-          
+          RowBox[{"{", "\"\<J.Rodriguez.Nunez.1\>\"", "}"}], 
+          "\"\<Rodriguez-Nunez, J.\>\"", 
           RowBox[{"{", "902715", "}"}], 
-          RowBox[{"{", "\<\"Caracas, IVIC\"\>", "}"}]},
+          RowBox[{"{", "\"\<Caracas, IVIC\>\"", "}"}]},
          {"Null", 
-          RowBox[{
-          "{", "\<\"J.Rodriguez.Gomez.1\"\>", 
-           "}"}], "\<\"Rodriguez-Gomez, J.\"\>", 
-          RowBox[{"{", "902715", "}"}], 
-          RowBox[{"{", "\<\"Caracas, IVIC\"\>", "}"}]},
-         {"Null", 
-          RowBox[{
-          "{", "\<\"J.Rodriguez.Nunez.1\"\>", 
-           "}"}], "\<\"Rodriguez-Nunez, J.\"\>", 
-          RowBox[{"{", "902715", "}"}], 
-          RowBox[{"{", "\<\"Caracas, IVIC\"\>", "}"}]},
-         {"Null", 
-          RowBox[{"{", "\<\"R.Tascon.2\"\>", "}"}], "\<\"Tascon, R.\"\>", 
+          RowBox[{"{", "\"\<R.Tascon.2\>\"", "}"}], "\"\<Tascon, R.\>\"", 
           RowBox[{"{", "903952", "}"}], 
-          RowBox[{"{", "\<\"Caracas, Inst. U. Pedagogico\"\>", "}"}]}
+          RowBox[{"{", "\"\<Caracas, Inst. U. Pedagogico\>\"", "}"}]}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12086,10 +12349,10 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "False", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"article\"\>", "}"}], 
+      RowBox[{"{", "\"\<article\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"SPIRES\"\>", "\<\"SPIRES-1007505\"\>"}
+         {"\"\<SPIRES\>\"", "\"\<SPIRES-1007505\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12107,7 +12370,7 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"1978-05\"\>", "}"}], 
+      RowBox[{"{", "\"\<1978-05\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null"}
         },
@@ -12223,11 +12486,10 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "False", "}"}], 
       RowBox[{"{", "}"}], 
-      RowBox[{"{", "\<\"Print-82-0898\"\>", "}"}], 
+      RowBox[{"{", "\"\<Print-82-0898\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/138886\"\>", "}"}], 
-      
-      RowBox[{"{", "\<\"ChelaFLores:1978xx\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/138886\>\"", "}"}], 
+      RowBox[{"{", "\"\<ChelaFLores:1978xx\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
@@ -12247,11 +12509,11 @@ JournalDate\"\>", "\<\"34. PublicationType\"\>", "\<\"35. RefereedFlag\"\>", \
      {
       RowBox[{"{", "836568", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2019-03-18T14:26:34.763384+00:00\"\>", "}"}], 
+      RowBox[{"{", "\"\<2019-03-18T14:26:34.763384+00:00\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"Composite Vectors at the Large Hadron Collider\"\>", "}"}], 
+      "{", "\"\<Composite Vectors at the Large Hadron Collider\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"An unspecified strong dynamics may give rise to composite \
+      "{", "\"\<An unspecified strong dynamics may give rise to composite \
 vectors sufficiently light that their interactions, among themselves or with \
 the electroweak gauge bosons, be approximately described by an effective \
 Lagrangian invariant under $SU(2)_L\\\\times SU(2)_R/ SU(2)_{L+R}$. We study \
@@ -12264,56 +12526,53 @@ the different amplitudes in both cases. The expected rates of multi-lepton \
 events from the decay of the composite vectors are also given. A thorough \
 phenomenological analysis and the evaluation of the backgrounds to such \
 signals, aiming at assessing the visibility of composite-vector pairs at the \
-LHC, is instead deferred to future work.\"\>", "}"}], 
+LHC, is instead deferred to future work.\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"0911.1942\"\>", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<0911.1942\>\"", "}"}], 
       RowBox[{"{", "5", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"1019956", 
-          RowBox[{
-          "{", "\<\"Riccardo.Barbieri.1\"\>", 
-           "}"}], "\<\"Barbieri, Riccardo\"\>", 
+          RowBox[{"{", "\"\<Riccardo.Barbieri.1\>\"", "}"}], 
+          "\"\<Barbieri, Riccardo\>\"", 
           RowBox[{"{", 
            RowBox[{"903128", ",", "902886"}], "}"}], 
           RowBox[{"{", 
-           
-           RowBox[{"\<\"Pisa, Scuola Normale Superiore\"\>", 
-            ",", "\<\"INFN, Pisa\"\>"}], "}"}]},
+           RowBox[{
+           "\"\<Pisa, Scuola Normale Superiore\>\"", ",", 
+            "\"\<INFN, Pisa\>\""}], "}"}]},
          {"1069727", 
-          RowBox[{
-          "{", "\<\"A.E.Carcamo.Hernandez.1\"\>", 
-           "}"}], "\<\"Carcamo Hernandez, A.E.\"\>", 
+          RowBox[{"{", "\"\<A.E.Carcamo.Hernandez.1\>\"", "}"}], 
+          "\"\<Carcamo Hernandez, A.E.\>\"", 
           RowBox[{"{", 
            RowBox[{"903128", ",", "902886"}], "}"}], 
           RowBox[{"{", 
-           
-           RowBox[{"\<\"Pisa, Scuola Normale Superiore\"\>", 
-            ",", "\<\"INFN, Pisa\"\>"}], "}"}]},
+           RowBox[{
+           "\"\<Pisa, Scuola Normale Superiore\>\"", ",", 
+            "\"\<INFN, Pisa\>\""}], "}"}]},
          {"1013050", 
-          RowBox[{
-          "{", "\<\"G.Corcella.1\"\>", "}"}], "\<\"Corcella, Gennaro\"\>", 
+          RowBox[{"{", "\"\<G.Corcella.1\>\"", "}"}], 
+          "\"\<Corcella, Gennaro\>\"", 
           RowBox[{"{", 
            RowBox[{"903128", ",", "902886", ",", "909421"}], "}"}], 
           RowBox[{"{", 
-           
-           RowBox[{"\<\"Pisa, Scuola Normale Superiore\"\>", 
-            ",", "\<\"INFN, Pisa\"\>", 
-            ",", "\<\"Enrico Fermi Ctr., Rome\"\>"}], "}"}]},
+           RowBox[{
+           "\"\<Pisa, Scuola Normale Superiore\>\"", ",", 
+            "\"\<INFN, Pisa\>\"", ",", "\"\<Enrico Fermi Ctr., Rome\>\""}], 
+           "}"}]},
          {"1064514", 
-          RowBox[{"{", "\<\"R.Torre.1\"\>", "}"}], "\<\"Torre, Riccardo\"\>", 
+          RowBox[{"{", "\"\<R.Torre.1\>\"", "}"}], "\"\<Torre, Riccardo\>\"", 
           
           RowBox[{"{", 
            RowBox[{"902886", ",", "903129"}], "}"}], 
           RowBox[{"{", 
-           RowBox[{"\<\"INFN, Pisa\"\>", ",", "\<\"Pisa U.\"\>"}], "}"}]},
+           RowBox[{"\"\<INFN, Pisa\>\"", ",", "\"\<Pisa U.\>\""}], "}"}]},
          {"1043569", 
-          RowBox[{
-          "{", "\<\"E.Trincherini.1\"\>", 
-           "}"}], "\<\"Trincherini, Enrico\"\>", 
+          RowBox[{"{", "\"\<E.Trincherini.1\>\"", "}"}], 
+          "\"\<Trincherini, Enrico\>\"", 
           RowBox[{"{", "903128", "}"}], 
-          RowBox[{"{", "\<\"Pisa, Scuola Normale Superiore\"\>", "}"}]}
+          RowBox[{"{", "\"\<Pisa, Scuola Normale Superiore\>\"", "}"}]}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12331,12 +12590,12 @@ LHC, is instead deferred to future work.\"\>", "}"}],
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "True", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"article\"\>", "}"}], 
-      RowBox[{"{", "\<\"10.1007/JHEP03(2010)068\"\>", "}"}], 
+      RowBox[{"{", "\"\<article\>\"", "}"}], 
+      RowBox[{"{", "\"\<10.1007/JHEP03(2010)068\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"CDS\"\>", "\<\"1221231\"\>"},
-         {"\<\"ADS\"\>", "\<\"2010JHEP...03..068B\"\>"},
-         {"\<\"SPIRES\"\>", "\<\"SPIRES-8459983\"\>"}
+         {"\"\<CDS\>\"", "\"\<1221231\>\""},
+         {"\"\<ADS\>\"", "\"\<2010JHEP...03..068B\>\""},
+         {"\"\<SPIRES\>\"", "\"\<SPIRES-8459983\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12351,31 +12610,30 @@ LHC, is instead deferred to future work.\"\>", "}"}],
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"{", "17", "}"}], 
       RowBox[{"{", "0", "}"}], 
-      RowBox[{"{", "\<\"Phenomenology-HEP\"\>", "}"}], 
+      RowBox[{"{", "\"\<Phenomenology-HEP\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"Beyond Standard Model\"\>", 
-        ",", "\<\"Phenomenological Models\"\>", 
-        ",", "\<\"Chiral Lagrangians\"\>", 
-        ",", "\<\"Technicolor and Composite Models\"\>", 
-        ",", "\<\"p p: inclusive reaction\"\>", 
-        ",", "\<\"gauge boson: fusion\"\>", ",", "\<\"W: longitudinal\"\>", 
-        ",", "\<\"W W: scattering amplitude\"\>", 
-        ",", "\<\"particle: pair production\"\>", 
-        ",", "\<\"particle: vector\"\>", ",", "\<\"particle: composite\"\>", 
-        ",", "\<\"gauge field theory: SU(2)\"\>", 
-        ",", "\<\"spontaneous symmetry breaking\"\>", 
-        ",", "\<\"electroweak interaction\"\>", 
-        ",", "\<\"effective Lagrangian\"\>", 
-        ",", "\<\"scattering amplitude: asymptotic behavior\"\>", 
-        ",", "\<\"Drell-Yan process\"\>", 
-        ",", "\<\"sigma model: nonlinear\"\>", 
-        ",", "\<\"total cross section\"\>", 
-        ",", "\<\"numerical calculations\"\>", ",", "\<\"CERN LHC Coll\"\>"}],
-        "}"}], 
-      RowBox[{"{", "\<\"2009-11\"\>", "}"}], 
+       RowBox[{
+       "\"\<Beyond Standard Model\>\"", ",", 
+        "\"\<Phenomenological Models\>\"", ",", "\"\<Chiral Lagrangians\>\"", 
+        ",", "\"\<Technicolor and Composite Models\>\"", ",", 
+        "\"\<p p: inclusive reaction\>\"", ",", "\"\<gauge boson: fusion\>\"",
+         ",", "\"\<W: longitudinal\>\"", ",", 
+        "\"\<W W: scattering amplitude\>\"", ",", 
+        "\"\<particle: pair production\>\"", ",", "\"\<particle: vector\>\"", 
+        ",", "\"\<particle: composite\>\"", ",", 
+        "\"\<gauge field theory: SU(2)\>\"", ",", 
+        "\"\<spontaneous symmetry breaking\>\"", ",", 
+        "\"\<electroweak interaction\>\"", ",", 
+        "\"\<effective Lagrangian\>\"", ",", 
+        "\"\<scattering amplitude: asymptotic behavior\>\"", ",", 
+        "\"\<Drell-Yan process\>\"", ",", "\"\<sigma model: nonlinear\>\"", 
+        ",", "\"\<total cross section\>\"", ",", 
+        "\"\<numerical calculations\>\"", ",", "\"\<CERN LHC Coll\>\""}], 
+       "}"}], 
+      RowBox[{"{", "\"\<2009-11\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"068\"\>"}
+         {"\"\<068\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12403,7 +12661,7 @@ LHC, is instead deferred to future work.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"JHEP\"\>"}
+         {"\"\<JHEP\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12417,7 +12675,7 @@ LHC, is instead deferred to future work.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"03\"\>"}
+         {"\"\<03\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12445,7 +12703,7 @@ LHC, is instead deferred to future work.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"068\"\>"}
+         {"\"\<068\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12497,11 +12755,10 @@ LHC, is instead deferred to future work.\"\>", "}"}],
         "655822", ",", "54959", ",", "54960", ",", "265431", ",", "25544", 
         ",", "333918", ",", "402289", ",", "613295", ",", "400964", ",", 
         "713086", ",", "723168"}], "}"}], 
-      RowBox[{"{", "\<\"IFUP-TH-2009-24\"\>", "}"}], 
+      RowBox[{"{", "\"\<IFUP-TH-2009-24\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/836568\"\>", "}"}], 
-      
-      RowBox[{"{", "\<\"Barbieri:2009tx\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/836568\>\"", "}"}], 
+      RowBox[{"{", "\"\<Barbieri:2009tx\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
@@ -12521,12 +12778,12 @@ LHC, is instead deferred to future work.\"\>", "}"}],
      {
       RowBox[{"{", "843274", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2019-03-18T14:26:34.253281+00:00\"\>", "}"}], 
+      RowBox[{"{", "\"\<2019-03-18T14:26:34.253281+00:00\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"Signals of composite electroweak-neutral Dark Matter: \
-LHC/Direct Detection interplay\"\>", "}"}], 
+      "{", "\"\<Signals of composite electroweak-neutral Dark Matter: \
+LHC/Direct Detection interplay\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"In a strong-coupling picture of ElectroWeak Symmetry \
+      "{", "\"\<In a strong-coupling picture of ElectroWeak Symmetry \
 Breaking, a composite electroweak-neutral state in the TeV mass range, \
 carrying a global (quasi-)conserved charge, makes a plausible Dark Matter \
 (DM) candidate, with the ongoing direct DM searches being precisely sensitive \
@@ -12536,39 +12793,38 @@ with the hypercharge gauge field, as the essential mediator of the \
 interaction between the DM particle and the nucleus. Based on a suitable \
 effective chiral Lagrangian, we give the expected properties and production \
 rates of V , showing its possible discovery at the maximal LHC energy with \
-about 100 fb \[Minus]1 of integrated luminosity.\"\>", "}"}], 
+about 100 fb \[Minus]1 of integrated luminosity.\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"1001.3149\"\>", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<1001.3149\>\"", "}"}], 
       RowBox[{"{", "3", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"1019956", 
-          RowBox[{
-          "{", "\<\"Riccardo.Barbieri.1\"\>", 
-           "}"}], "\<\"Barbieri, Riccardo\"\>", 
+          RowBox[{"{", "\"\<Riccardo.Barbieri.1\>\"", "}"}], 
+          "\"\<Barbieri, Riccardo\>\"", 
           RowBox[{"{", 
            RowBox[{"902886", ",", "903128"}], "}"}], 
           RowBox[{"{", 
-           
-           RowBox[{"\<\"INFN, Pisa\"\>", 
-            ",", "\<\"Pisa, Scuola Normale Superiore\"\>"}], "}"}]},
+           RowBox[{
+           "\"\<INFN, Pisa\>\"", ",", 
+            "\"\<Pisa, Scuola Normale Superiore\>\""}], "}"}]},
          {"990861", 
-          RowBox[{
-          "{", "\<\"V.S.Rychkov.1\"\>", "}"}], "\<\"Rychkov, Slava\"\>", 
+          RowBox[{"{", "\"\<V.S.Rychkov.1\>\"", "}"}], 
+          "\"\<Rychkov, Slava\>\"", 
           RowBox[{"{", 
            RowBox[{"1087157", ",", "902785"}], "}"}], 
           RowBox[{"{", 
-           
-           RowBox[{"\<\"UPMC, Paris (main)\"\>", 
-            ",", "\<\"Ecole Normale Superieure\"\>"}], "}"}]},
+           RowBox[{
+           "\"\<UPMC, Paris (main)\>\"", ",", 
+            "\"\<Ecole Normale Superieure\>\""}], "}"}]},
          {"1064514", 
-          RowBox[{"{", "\<\"R.Torre.1\"\>", "}"}], "\<\"Torre, Riccardo\"\>", 
+          RowBox[{"{", "\"\<R.Torre.1\>\"", "}"}], "\"\<Torre, Riccardo\>\"", 
           
           RowBox[{"{", 
            RowBox[{"903129", ",", "902886"}], "}"}], 
           RowBox[{"{", 
-           RowBox[{"\<\"Pisa U.\"\>", ",", "\<\"INFN, Pisa\"\>"}], "}"}]}
+           RowBox[{"\"\<Pisa U.\>\"", ",", "\"\<INFN, Pisa\>\""}], "}"}]}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12586,11 +12842,11 @@ about 100 fb \[Minus]1 of integrated luminosity.\"\>", "}"}],
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "True", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"article\"\>", "}"}], 
-      RowBox[{"{", "\<\"10.1016/j.physletb.2010.04.010\"\>", "}"}], 
+      RowBox[{"{", "\"\<article\>\"", "}"}], 
+      RowBox[{"{", "\"\<10.1016/j.physletb.2010.04.010\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"ADS\"\>", "\<\"2010PhLB..688..212B\"\>"},
-         {"\<\"SPIRES\"\>", "\<\"SPIRES-8527571\"\>"}
+         {"\"\<ADS\>\"", "\"\<2010PhLB..688..212B\>\""},
+         {"\"\<SPIRES\>\"", "\"\<SPIRES-8527571\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12605,25 +12861,25 @@ about 100 fb \[Minus]1 of integrated luminosity.\"\>", "}"}],
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"{", "9", "}"}], 
       RowBox[{"{", "0", "}"}], 
-      RowBox[{"{", "\<\"Phenomenology-HEP\"\>", "}"}], 
+      RowBox[{"{", "\"\<Phenomenology-HEP\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"Technicolor\"\>", 
-        ",", "\<\"Strong electroweak symmetry breaking\"\>", 
-        ",", "\<\"Dark matter\"\>", ",", "\<\"Techni-omega\"\>", 
-        ",", "\<\"LHC\"\>", ",", "\<\"Techni- \[Omega]\"\>", 
-        ",", "\<\"Techni-\[Omega]\"\>", 
-        ",", "\<\"charge: conservation law\"\>", 
-        ",", "\<\"effective Lagrangian: chiral\"\>", 
-        ",", "\<\"dark matter: interaction\"\>", ",", "\<\"CERN LHC Coll\"\>",
-         ",", "\<\"composite\"\>", ",", "\<\"form factor\"\>", 
-        ",", "\<\"electroweak interaction: symmetry breaking\"\>", 
-        ",", "\<\"gauge field theory\"\>", ",", "\<\"strong coupling\"\>", 
-        ",", "\<\"hypercharge\"\>", ",", "\<\"mediation\"\>", 
-        ",", "\<\"vector boson: postulated particle\"\>", 
-        ",", "\<\"vector boson: decay modes\"\>", 
-        ",", "\<\"technicolor\"\>"}], "}"}], 
-      RowBox[{"{", "\<\"2010-01\"\>", "}"}], 
+       RowBox[{
+       "\"\<Technicolor\>\"", ",", 
+        "\"\<Strong electroweak symmetry breaking\>\"", ",", 
+        "\"\<Dark matter\>\"", ",", "\"\<Techni-omega\>\"", ",", 
+        "\"\<LHC\>\"", ",", "\"\<Techni- \[Omega]\>\"", ",", 
+        "\"\<Techni-\[Omega]\>\"", ",", "\"\<charge: conservation law\>\"", 
+        ",", "\"\<effective Lagrangian: chiral\>\"", ",", 
+        "\"\<dark matter: interaction\>\"", ",", "\"\<CERN LHC Coll\>\"", 
+        ",", "\"\<composite\>\"", ",", "\"\<form factor\>\"", ",", 
+        "\"\<electroweak interaction: symmetry breaking\>\"", ",", 
+        "\"\<gauge field theory\>\"", ",", "\"\<strong coupling\>\"", ",", 
+        "\"\<hypercharge\>\"", ",", "\"\<mediation\>\"", ",", 
+        "\"\<vector boson: postulated particle\>\"", ",", 
+        "\"\<vector boson: decay modes\>\"", ",", "\"\<technicolor\>\""}], 
+       "}"}], 
+      RowBox[{"{", "\"\<2010-01\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null"}
         },
@@ -12653,7 +12909,7 @@ about 100 fb \[Minus]1 of integrated luminosity.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"Phys.Lett.B\"\>"}
+         {"\"\<Phys.Lett.B\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12667,7 +12923,7 @@ about 100 fb \[Minus]1 of integrated luminosity.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"688\"\>"}
+         {"\"\<688\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12695,7 +12951,7 @@ about 100 fb \[Minus]1 of integrated luminosity.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"212\"\>"}
+         {"\"\<212\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12709,7 +12965,7 @@ about 100 fb \[Minus]1 of integrated luminosity.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"215\"\>"}
+         {"\"\<215\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12744,11 +13000,10 @@ about 100 fb \[Minus]1 of integrated luminosity.\"\>", "}"}],
         ",", "803520", ",", "359129", ",", "840579", ",", "649700", ",", 
         "421201", ",", "787233", ",", "787754", ",", "819405", ",", "836568", 
         ",", "836418", ",", "555382", ",", "584838", ",", "283788"}], "}"}], 
-      RowBox[{"{", "\<\"LPTENS-10-01-AND-IFUP-TH-2010-03\"\>", "}"}], 
+      RowBox[{"{", "\"\<LPTENS-10-01-AND-IFUP-TH-2010-03\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/843274\"\>", "}"}], 
-      
-      RowBox[{"{", "\<\"Barbieri:2010mn\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/843274\>\"", "}"}], 
+      RowBox[{"{", "\"\<Barbieri:2010mn\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
@@ -12768,11 +13023,11 @@ about 100 fb \[Minus]1 of integrated luminosity.\"\>", "}"}],
      {
       RowBox[{"{", "856011", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2019-03-18T14:26:33.745380+00:00\"\>", "}"}], 
+      RowBox[{"{", "\"\<2019-03-18T14:26:33.745380+00:00\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"A 'Composite' scalar-vector system at the LHC\"\>", "}"}], 
+      "{", "\"\<A 'Composite' scalar-vector system at the LHC\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"In the framework of a strong dynamics for Electro-Weak \
+      "{", "\"\<In the framework of a strong dynamics for Electro-Weak \
 Symmetry Breaking (EWSB), both vector and scalar degrees of freedom have been \
 studied in the literature within an effective Lagrangian approach. Here we \
 consider the case in which both a scalar, h , and a vector, V \[Dash] \
@@ -12809,30 +13064,29 @@ t\\t\\t\\tj\\t\\t\\t\\t\\t\\t by Vector Boson Fusion (VBF) and \
 \\t\\t\\t\\t\\t\\t\\tV\\t\\t\\t\\t\\t\\t\\th\\t\\t\\t\\t\\t\\t by \
 Drell\[Dash]Yan (DY) annihilation as functions of these free parameters. The \
 expected rates of same-sign di-lepton and tri-lepton events from the decay of \
-the Vh final state are also given.\"\>", "}"}], 
+the Vh final state are also given.\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"1005.3809\"\>", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<1005.3809\>\"", "}"}], 
       RowBox[{"{", "2", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"1069727", 
-          RowBox[{
-          "{", "\<\"A.E.Carcamo.Hernandez.1\"\>", 
-           "}"}], "\<\"Carcamo Hernandez, A.E.\"\>", 
+          RowBox[{"{", "\"\<A.E.Carcamo.Hernandez.1\>\"", "}"}], 
+          "\"\<Carcamo Hernandez, A.E.\>\"", 
           RowBox[{"{", 
            RowBox[{"903128", ",", "902886"}], "}"}], 
           RowBox[{"{", 
-           
-           RowBox[{"\<\"Pisa, Scuola Normale Superiore\"\>", 
-            ",", "\<\"INFN, Pisa\"\>"}], "}"}]},
+           RowBox[{
+           "\"\<Pisa, Scuola Normale Superiore\>\"", ",", 
+            "\"\<INFN, Pisa\>\""}], "}"}]},
          {"1064514", 
-          RowBox[{"{", "\<\"R.Torre.1\"\>", "}"}], "\<\"Torre, Riccardo\"\>", 
+          RowBox[{"{", "\"\<R.Torre.1\>\"", "}"}], "\"\<Torre, Riccardo\>\"", 
           
           RowBox[{"{", 
            RowBox[{"902886", ",", "903129"}], "}"}], 
           RowBox[{"{", 
-           RowBox[{"\<\"INFN, Pisa\"\>", ",", "\<\"Pisa U.\"\>"}], "}"}]}
+           RowBox[{"\"\<INFN, Pisa\>\"", ",", "\"\<Pisa U.\>\""}], "}"}]}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12850,10 +13104,10 @@ the Vh final state are also given.\"\>", "}"}],
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "True", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"article\"\>", "}"}], 
-      RowBox[{"{", "\<\"10.1016/j.nuclphysb.2010.08.004\"\>", "}"}], 
+      RowBox[{"{", "\"\<article\>\"", "}"}], 
+      RowBox[{"{", "\"\<10.1016/j.nuclphysb.2010.08.004\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"SPIRES\"\>", "\<\"SPIRES-8659397\"\>"}
+         {"\"\<SPIRES\>\"", "\"\<SPIRES-8659397\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12868,27 +13122,25 @@ the Vh final state are also given.\"\>", "}"}],
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"{", "22", "}"}], 
       RowBox[{"{", "3", "}"}], 
-      RowBox[{"{", "\<\"Phenomenology-HEP\"\>", "}"}], 
+      RowBox[{"{", "\"\<Phenomenology-HEP\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"electroweak interaction: symmetry breaking\"\>", 
-        ",", "\<\"scalar particle: associated production\"\>", 
-        ",", "\<\"effective Lagrangian\"\>", 
-        ",", "\<\"total cross section\"\>", 
-        ",", "\<\"quark antiquark: annihilation\"\>", 
-        ",", "\<\"CERN LHC Coll\"\>", ",", "\<\"vector boson: fusion\"\>", 
-        ",", "\<\"unitarity\"\>", ",", "\<\"symmetry: custodial\"\>", 
-        ",", "\<\"symmetry: SU(2)\"\>", 
-        ",", "\<\"W W: elastic scattering\"\>", 
-        ",", "\<\"W: longitudinal\"\>", 
-        ",", "\<\"scattering amplitude: asymptotic behavior\"\>", 
-        ",", "\<\"p p: interaction\"\>", ",", "\<\"Drell-Yan process\"\>", 
-        ",", "\<\"particle: vector\"\>", ",", "\<\"parameter space\"\>", 
-        ",", "\<\"particle: decay modes\"\>", 
-        ",", "\<\"dilepton: final state\"\>", 
-        ",", "\<\"final state: (3lepton)\"\>", 
-        ",", "\<\"numerical calculations\"\>"}], "}"}], 
-      RowBox[{"{", "\<\"2010-05\"\>", "}"}], 
+       RowBox[{
+       "\"\<electroweak interaction: symmetry breaking\>\"", ",", 
+        "\"\<scalar particle: associated production\>\"", ",", 
+        "\"\<effective Lagrangian\>\"", ",", "\"\<total cross section\>\"", 
+        ",", "\"\<quark antiquark: annihilation\>\"", ",", 
+        "\"\<CERN LHC Coll\>\"", ",", "\"\<vector boson: fusion\>\"", ",", 
+        "\"\<unitarity\>\"", ",", "\"\<symmetry: custodial\>\"", ",", 
+        "\"\<symmetry: SU(2)\>\"", ",", "\"\<W W: elastic scattering\>\"", 
+        ",", "\"\<W: longitudinal\>\"", ",", 
+        "\"\<scattering amplitude: asymptotic behavior\>\"", ",", 
+        "\"\<p p: interaction\>\"", ",", "\"\<Drell-Yan process\>\"", ",", 
+        "\"\<particle: vector\>\"", ",", "\"\<parameter space\>\"", ",", 
+        "\"\<particle: decay modes\>\"", ",", "\"\<dilepton: final state\>\"",
+         ",", "\"\<final state: (3lepton)\>\"", ",", 
+        "\"\<numerical calculations\>\""}], "}"}], 
+      RowBox[{"{", "\"\<2010-05\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null"}
         },
@@ -12918,7 +13170,7 @@ the Vh final state are also given.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"Nucl.Phys.B\"\>"}
+         {"\"\<Nucl.Phys.B\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12932,7 +13184,7 @@ the Vh final state are also given.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"841\"\>"}
+         {"\"\<841\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12960,7 +13212,7 @@ the Vh final state are also given.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"188\"\>"}
+         {"\"\<188\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -12974,7 +13226,7 @@ the Vh final state are also given.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"204\"\>"}
+         {"\"\<204\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13011,11 +13263,10 @@ the Vh final state are also given.\"\>", "}"}],
         ",", "690151", ",", "758611", ",", "791905", ",", "791056", ",", 
         "795636", ",", "819405", ",", "700946", ",", "845195", ",", "836568", 
         ",", "803309", ",", "25544"}], "}"}], 
-      RowBox[{"{", "\<\"IFUP-TH-2020-17\"\>", "}"}], 
+      RowBox[{"{", "\"\<IFUP-TH-2020-17\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/856011\"\>", "}"}], 
-      
-      RowBox[{"{", "\<\"Hernandez:2010iu\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/856011\>\"", "}"}], 
+      RowBox[{"{", "\"\<Hernandez:2010iu\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
@@ -13035,31 +13286,31 @@ the Vh final state are also given.\"\>", "}"}],
      {
       RowBox[{"{", "856300", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2019-03-18T14:26:33.176335+00:00\"\>", "}"}], 
+      RowBox[{"{", "\"\<2019-03-18T14:26:33.176335+00:00\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"Associated scalar-vector production at the LHC within an \
-effective Lagrangian approach\"\>", "}"}], 
+      "{", "\"\<Associated scalar-vector production at the LHC within an \
+effective Lagrangian approach\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"We consider the case in which a strong dynamics is \
+      "{", "\"\<We consider the case in which a strong dynamics is \
 responsible for Electro-Weak Symmetry Breaking (EWSB) and both a scalar $h$ \
 and a vector $V$, respectively a singlet and a triplet under a custodial \
 $SU\\\\left(2\\\\right)$, are relevant and have a mass below the cut-off \
 $\\\\Lambda\\\\approx 4\\\\pi v$. In this framework we study the total cross \
 sections for the associated $Vh$ production at the LHC at 14 TeV as functions \
-of two independent free parameters.\"\>", "}"}], 
+of two independent free parameters.\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"1005.4801\"\>", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<1005.4801\>\"", "}"}], 
       RowBox[{"{", "1", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"1064514", 
-          RowBox[{"{", "\<\"R.Torre.1\"\>", "}"}], "\<\"Torre, Riccardo\"\>", 
+          RowBox[{"{", "\"\<R.Torre.1\>\"", "}"}], "\"\<Torre, Riccardo\>\"", 
           
           RowBox[{"{", 
            RowBox[{"903129", ",", "902886"}], "}"}], 
           RowBox[{"{", 
-           RowBox[{"\<\"Pisa U.\"\>", ",", "\<\"INFN, Pisa\"\>"}], "}"}]}
+           RowBox[{"\"\<Pisa U.\>\"", ",", "\"\<INFN, Pisa\>\""}], "}"}]}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13077,10 +13328,10 @@ of two independent free parameters.\"\>", "}"}],
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "True", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"conference paper\"\>", "}"}], 
-      RowBox[{"{", "\<\"10.1393/ncc/i2011-10787-y\"\>", "}"}], 
+      RowBox[{"{", "\"\<conference paper\>\"", "}"}], 
+      RowBox[{"{", "\"\<10.1393/ncc/i2011-10787-y\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"SPIRES\"\>", "\<\"SPIRES-8663386\"\>"}
+         {"\"\<SPIRES\>\"", "\"\<SPIRES-8663386\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13095,12 +13346,13 @@ of two independent free parameters.\"\>", "}"}],
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"{", "3", "}"}], 
       RowBox[{"{", "0", "}"}], 
-      RowBox[{"{", "\<\"Phenomenology-HEP\"\>", "}"}], 
+      RowBox[{"{", "\"\<Phenomenology-HEP\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"electroweak interaction: symmetry breaking\"\>", 
-        ",", "\<\"CERN LHC Coll\"\>"}], "}"}], 
-      RowBox[{"{", "\<\"2010-05\"\>", "}"}], 
+       RowBox[{
+       "\"\<electroweak interaction: symmetry breaking\>\"", ",", 
+        "\"\<CERN LHC Coll\>\""}], "}"}], 
+      RowBox[{"{", "\"\<2010-05\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null"}
         },
@@ -13130,7 +13382,7 @@ of two independent free parameters.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"Nuovo Cim.\"\>"}
+         {"\"\<Nuovo Cim.\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13144,7 +13396,7 @@ of two independent free parameters.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"33\"\>"}
+         {"\"\<33\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13172,7 +13424,7 @@ of two independent free parameters.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"153\"\>"}
+         {"\"\<153\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13186,7 +13438,7 @@ of two independent free parameters.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"155\"\>"}
+         {"\"\<155\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13217,11 +13469,10 @@ of two independent free parameters.\"\>", "}"}],
       RowBox[{"{", "False", "}"}], 
       RowBox[{"{", 
        RowBox[{"845195", ",", "856011", ",", "836568"}], "}"}], 
-      RowBox[{"{", "\<\"IFUP-TH-2020-18\"\>", "}"}], 
+      RowBox[{"{", "\"\<IFUP-TH-2020-18\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/856300\"\>", "}"}], 
-      
-      RowBox[{"{", "\<\"Torre:2010bj\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/856300\>\"", "}"}], 
+      RowBox[{"{", "\"\<Torre:2010bj\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
@@ -13241,39 +13492,38 @@ of two independent free parameters.\"\>", "}"}],
      {
       RowBox[{"{", "866732", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2019-03-18T14:26:32.718896+00:00\"\>", "}"}], 
+      RowBox[{"{", "\"\<2019-03-18T14:26:32.718896+00:00\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"Signals of single particle production at the earliest \
-LHC\"\>", "}"}], 
+      "{", "\"\<Signals of single particle production at the earliest \
+LHC\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"Based on simple phenomenological Lagrangians, fulfilling \
+      "{", "\"\<Based on simple phenomenological Lagrangians, fulfilling \
 reasonable consistency conditions, we consider under which circumstances the \
 production of a single particle might be an early signal of new physics at \
 the LHC. Effective final states are \[Gamma]\[Gamma] and \[Gamma]+jet already \
-with tens of inverse picobarns of integrated luminosity at 7 TeV.\"\>", "}"}], 
+with tens of inverse picobarns of integrated luminosity at 7 TeV.\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"1008.5302\"\>", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<1008.5302\>\"", "}"}], 
       RowBox[{"{", "2", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"1019956", 
-          RowBox[{
-          "{", "\<\"Riccardo.Barbieri.1\"\>", 
-           "}"}], "\<\"Barbieri, Riccardo\"\>", 
+          RowBox[{"{", "\"\<Riccardo.Barbieri.1\>\"", "}"}], 
+          "\"\<Barbieri, Riccardo\>\"", 
           RowBox[{"{", 
            RowBox[{"903128", ",", "902886"}], "}"}], 
           RowBox[{"{", 
-           
-           RowBox[{"\<\"Pisa, Scuola Normale Superiore\"\>", 
-            ",", "\<\"INFN, Pisa\"\>"}], "}"}]},
+           RowBox[{
+           "\"\<Pisa, Scuola Normale Superiore\>\"", ",", 
+            "\"\<INFN, Pisa\>\""}], "}"}]},
          {"1064514", 
-          RowBox[{"{", "\<\"R.Torre.1\"\>", "}"}], "\<\"Torre, Riccardo\"\>", 
+          RowBox[{"{", "\"\<R.Torre.1\>\"", "}"}], "\"\<Torre, Riccardo\>\"", 
           
           RowBox[{"{", 
            RowBox[{"902886", ",", "903129"}], "}"}], 
           RowBox[{"{", 
-           RowBox[{"\<\"INFN, Pisa\"\>", ",", "\<\"Pisa U.\"\>"}], "}"}]}
+           RowBox[{"\"\<INFN, Pisa\>\"", ",", "\"\<Pisa U.\>\""}], "}"}]}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13291,12 +13541,12 @@ with tens of inverse picobarns of integrated luminosity at 7 TeV.\"\>", "}"}],
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "True", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"article\"\>", "}"}], 
-      RowBox[{"{", "\<\"10.1016/j.physletb.2010.11.037\"\>", "}"}], 
+      RowBox[{"{", "\"\<article\>\"", "}"}], 
+      RowBox[{"{", "\"\<10.1016/j.physletb.2010.11.037\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"CDS\"\>", "\<\"1288422\"\>"},
-         {"\<\"ADS\"\>", "\<\"2011PhLB..695..259B\"\>"},
-         {"\<\"SPIRES\"\>", "\<\"SPIRES-8769630\"\>"}
+         {"\"\<CDS\>\"", "\"\<1288422\>\""},
+         {"\"\<ADS\>\"", "\"\<2011PhLB..695..259B\>\""},
+         {"\"\<SPIRES\>\"", "\"\<SPIRES-8769630\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13312,30 +13562,29 @@ with tens of inverse picobarns of integrated luminosity at 7 TeV.\"\>", "}"}],
       RowBox[{"{", "8", "}"}], 
       RowBox[{"{", "0", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"Experiment-HEP\"\>", ",", "\<\"Phenomenology-HEP\"\>"}], 
+       RowBox[{"\"\<Experiment-HEP\>\"", ",", "\"\<Phenomenology-HEP\>\""}], 
        "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"Early LHC phenomenology\"\>", 
-        ",", "\<\"Phenomenological Lagrangians\"\>", 
-        ",", "\<\"Resonant production\"\>", ",", "\<\"Scalar resonance\"\>", 
-        ",", "\<\"Heavy fermion\"\>", ",", "\<\"p p: interaction\"\>", 
-        ",", "\<\"single production\"\>", ",", "\<\"new physics\"\>", 
-        ",", "\<\"effective Lagrangian\"\>", 
-        ",", "\<\"scalar particle: singlet\"\>", 
-        ",", "\<\"neutral particle\"\>", 
-        ",", "\<\"scalar particle: decay modes\"\>", 
-        ",", "\<\"scalar particle: width\"\>", 
-        ",", "\<\"scalar particle: branching ratio\"\>", 
-        ",", "\<\"resonance: mass\"\>", ",", "\<\"background\"\>", 
-        ",", "\<\"heavy quark: decay modes\"\>", 
-        ",", "\<\"heavy quark: width\"\>", 
-        ",", "\<\"photon: hadroproduction\"\>", 
-        ",", "\<\"jet: associated production\"\>", 
-        ",", "\<\"photon: pair production\"\>", ",", "\<\"sensitivity\"\>", 
-        ",", "\<\"CERN LHC Coll\"\>", ",", "\<\"numerical calculations\"\>", 
-        ",", "\<\"7000 GeV-cms\"\>"}], "}"}], 
-      RowBox[{"{", "\<\"2010-08\"\>", "}"}], 
+       RowBox[{
+       "\"\<Early LHC phenomenology\>\"", ",", 
+        "\"\<Phenomenological Lagrangians\>\"", ",", 
+        "\"\<Resonant production\>\"", ",", "\"\<Scalar resonance\>\"", ",", 
+        "\"\<Heavy fermion\>\"", ",", "\"\<p p: interaction\>\"", ",", 
+        "\"\<single production\>\"", ",", "\"\<new physics\>\"", ",", 
+        "\"\<effective Lagrangian\>\"", ",", 
+        "\"\<scalar particle: singlet\>\"", ",", "\"\<neutral particle\>\"", 
+        ",", "\"\<scalar particle: decay modes\>\"", ",", 
+        "\"\<scalar particle: width\>\"", ",", 
+        "\"\<scalar particle: branching ratio\>\"", ",", 
+        "\"\<resonance: mass\>\"", ",", "\"\<background\>\"", ",", 
+        "\"\<heavy quark: decay modes\>\"", ",", "\"\<heavy quark: width\>\"",
+         ",", "\"\<photon: hadroproduction\>\"", ",", 
+        "\"\<jet: associated production\>\"", ",", 
+        "\"\<photon: pair production\>\"", ",", "\"\<sensitivity\>\"", ",", 
+        "\"\<CERN LHC Coll\>\"", ",", "\"\<numerical calculations\>\"", ",", 
+        "\"\<7000 GeV-cms\>\""}], "}"}], 
+      RowBox[{"{", "\"\<2010-08\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null"}
         },
@@ -13365,7 +13614,7 @@ with tens of inverse picobarns of integrated luminosity at 7 TeV.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"Phys.Lett.B\"\>"}
+         {"\"\<Phys.Lett.B\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13379,7 +13628,7 @@ with tens of inverse picobarns of integrated luminosity at 7 TeV.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"695\"\>"}
+         {"\"\<695\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13407,7 +13656,7 @@ with tens of inverse picobarns of integrated luminosity at 7 TeV.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"259\"\>"}
+         {"\"\<259\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13421,7 +13670,7 @@ with tens of inverse picobarns of integrated luminosity at 7 TeV.\"\>", "}"}],
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"263\"\>"}
+         {"\"\<263\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13454,11 +13703,10 @@ with tens of inverse picobarns of integrated luminosity at 7 TeV.\"\>", "}"}],
        RowBox[{
        "792295", ",", "836375", ",", "832461", ",", "190331", ",", "444053"}],
         "}"}], 
-      RowBox[{"{", "\<\"IFUP-TH-2010-26\"\>", "}"}], 
+      RowBox[{"{", "\"\<IFUP-TH-2010-26\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/866732\"\>", "}"}], 
-      
-      RowBox[{"{", "\<\"Barbieri:2010nc\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/866732\>\"", "}"}], 
+      RowBox[{"{", "\"\<Barbieri:2010nc\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
@@ -13478,33 +13726,33 @@ with tens of inverse picobarns of integrated luminosity at 7 TeV.\"\>", "}"}],
      {
       RowBox[{"{", "892720", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2019-03-18T14:26:32.156145+00:00\"\>", "}"}], 
-      RowBox[{"{", "\<\"Narrow Resonances at the Early LHC\"\>", "}"}], 
+      RowBox[{"{", "\"\<2019-03-18T14:26:32.156145+00:00\>\"", "}"}], 
+      RowBox[{"{", "\"\<Narrow Resonances at the Early LHC\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"We discuss the possibility to observe new resonances at the \
+      "{", "\"\<We discuss the possibility to observe new resonances at the \
 early LHC using a phenomenological approach. We show predictions for the \
 production of a scalar in the gg-channel and an heavy quark in the qg-channel \
 and we compare them with the recent results of the ATLAS and CMS experiments \
 in the di-jet channel, setting upper limits on the relevant couplings. We \
 finally discuss the importance of the final states containing at least one \
-photon making sensitivity predictions for the corresponding couplings.\"\>", 
+photon making sensitivity predictions for the corresponding couplings.\>\"", 
        "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"1103.2883\"\>", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<1103.2883\>\"", "}"}], 
       RowBox[{"{", "1", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"1064514", 
-          RowBox[{"{", "\<\"R.Torre.1\"\>", "}"}], "\<\"Torre, Riccardo\"\>", 
+          RowBox[{"{", "\"\<R.Torre.1\>\"", "}"}], "\"\<Torre, Riccardo\>\"", 
           
           RowBox[{"{", 
            RowBox[{"902725", ",", "902886", ",", "903129", ",", "903370"}], 
            "}"}], 
           RowBox[{"{", 
-           
-           RowBox[{"\<\"CERN\"\>", ",", "\<\"INFN, Pisa\"\>", 
-            ",", "\<\"Pisa U.\"\>", ",", "\<\"Zurich U.\"\>"}], "}"}]}
+           RowBox[{
+           "\"\<CERN\>\"", ",", "\"\<INFN, Pisa\>\"", ",", "\"\<Pisa U.\>\"", 
+            ",", "\"\<Zurich U.\>\""}], "}"}]}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13522,12 +13770,12 @@ photon making sensitivity predictions for the corresponding couplings.\"\>",
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "True", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"conference paper\"\>", "}"}], 
-      RowBox[{"{", "\<\"10.1002/prop.201100049\"\>", "}"}], 
+      RowBox[{"{", "\"\<conference paper\>\"", "}"}], 
+      RowBox[{"{", "\"\<10.1002/prop.201100049\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"ADS\"\>", "\<\"2011ForPh..59.1031T\"\>"},
-         {"\<\"CDS\"\>", "\<\"1336363\"\>"},
-         {"\<\"SPIRES\"\>", "\<\"SPIRES-9002375\"\>"}
+         {"\"\<ADS\>\"", "\"\<2011ForPh..59.1031T\>\""},
+         {"\"\<CDS\>\"", "\"\<1336363\>\""},
+         {"\"\<SPIRES\>\"", "\"\<SPIRES-9002375\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13542,16 +13790,16 @@ photon making sensitivity predictions for the corresponding couplings.\"\>",
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"{", "5", "}"}], 
       RowBox[{"{", "6", "}"}], 
-      RowBox[{"{", "\<\"Phenomenology-HEP\"\>", "}"}], 
+      RowBox[{"{", "\"\<Phenomenology-HEP\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"Early LHC phenomenology\"\>", 
-        ",", "\<\"phenomenological Lagrangians\"\>", 
-        ",", "\<\"resonant production\"\>", ",", "\<\"scalar resonance\"\>", 
-        ",", "\<\"heavy fermion\"\>", ",", "\<\"CERN LHC Coll\"\>", 
-        ",", "\<\"narrow resonance\"\>", ",", "\<\"heavy quark\"\>"}], "}"}], 
-      
-      RowBox[{"{", "\<\"2011-03\"\>", "}"}], 
+       RowBox[{
+       "\"\<Early LHC phenomenology\>\"", ",", 
+        "\"\<phenomenological Lagrangians\>\"", ",", 
+        "\"\<resonant production\>\"", ",", "\"\<scalar resonance\>\"", ",", 
+        "\"\<heavy fermion\>\"", ",", "\"\<CERN LHC Coll\>\"", ",", 
+        "\"\<narrow resonance\>\"", ",", "\"\<heavy quark\>\""}], "}"}], 
+      RowBox[{"{", "\"\<2011-03\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
         },
@@ -13581,7 +13829,7 @@ photon making sensitivity predictions for the corresponding couplings.\"\>",
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"Fortsch.Phys.\"\>", "Null"}
+         {"\"\<Fortsch.Phys.\>\"", "Null"}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13595,7 +13843,7 @@ photon making sensitivity predictions for the corresponding couplings.\"\>",
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"59\"\>", "Null"}
+         {"\"\<59\>\"", "Null"}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13623,7 +13871,7 @@ photon making sensitivity predictions for the corresponding couplings.\"\>",
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"1031\"\>", "\<\"1031\"\>"}
+         {"\"\<1031\>\"", "\"\<1031\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13637,7 +13885,7 @@ photon making sensitivity predictions for the corresponding couplings.\"\>",
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"1035\"\>", "\<\"1035\"\>"}
+         {"\"\<1035\>\"", "\"\<1035\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13671,12 +13919,12 @@ photon making sensitivity predictions for the corresponding couplings.\"\>",
        "777086", ",", "836375", ",", "892770", ",", "866732", ",", "832461", 
         ",", "873674", ",", "190331", ",", "865423", ",", "871540"}], "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"CERN-PH-TH-2011-048\"\>", ",", "\<\"IFUP-TH-2011-6\"\>", 
-        ",", "\<\"LPN11-12\"\>"}], "}"}], 
+       RowBox[{
+       "\"\<CERN-PH-TH-2011-048\>\"", ",", "\"\<IFUP-TH-2011-6\>\"", ",", 
+        "\"\<LPN11-12\>\""}], "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/892720\"\>", "}"}], 
-      
-      RowBox[{"{", "\<\"Torre:2011xw\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/892720\>\"", "}"}], 
+      RowBox[{"{", "\"\<Torre:2011xw\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
@@ -13696,11 +13944,11 @@ photon making sensitivity predictions for the corresponding couplings.\"\>",
      {
       RowBox[{"{", "892770", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2019-03-18T14:26:31.478000+00:00\"\>", "}"}], 
-      RowBox[{"{", "\<\"A weakly constrained W' at the early LHC\"\>", "}"}], 
+      RowBox[{"{", "\"\<2019-03-18T14:26:31.478000+00:00\>\"", "}"}], 
+      RowBox[{"{", "\"\<A weakly constrained W' at the early LHC\>\"", "}"}], 
       
       RowBox[{
-      "{", "\<\"We study, within an effective approach, the phenomenology of \
+      "{", "\"\<We study, within an effective approach, the phenomenology of \
 a charged W' vector which transforms as an isosinglet under the Standard \
 Model gauge group. We discuss bounds from present data, finding that these \
 are quite weak for suitable choices of the right-handed quark mixing matrix. \
@@ -13709,40 +13957,40 @@ constrained W'. We start discussing the reach in the dijet final state, which \
 is one of the channels where the first W' signal would most likely appear, \
 and then we analyse prospects for the more challenging discovery of W' decays \
 into W{\\\\gamma} and WZ. We show in particular that the former can be used \
-to gain insight on the possibly composite nature of the resonance.\"\>", 
+to gain insight on the possibly composite nature of the resonance.\>\"", 
        "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"1103.2761\"\>", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<1103.2761\>\"", "}"}], 
       RowBox[{"{", "3", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"1007486", 
-          RowBox[{
-          "{", "\<\"C.Grojean.1\"\>", "}"}], "\<\"Grojean, Christophe\"\>", 
+          RowBox[{"{", "\"\<C.Grojean.1\>\"", "}"}], 
+          "\"\<Grojean, Christophe\>\"", 
           RowBox[{"{", 
            RowBox[{"902725", ",", "910389"}], "}"}], 
           RowBox[{"{", 
-           RowBox[{"\<\"CERN\"\>", ",", "\<\"Saclay, SPhT\"\>"}], "}"}]},
+           RowBox[{"\"\<CERN\>\"", ",", "\"\<Saclay, SPhT\>\""}], "}"}]},
          {"1077871", 
-          RowBox[{
-          "{", "\<\"Ennio.Salvioni.1\"\>", "}"}], "\<\"Salvioni, Ennio\"\>", 
+          RowBox[{"{", "\"\<Ennio.Salvioni.1\>\"", "}"}], 
+          "\"\<Salvioni, Ennio\>\"", 
           RowBox[{"{", 
            RowBox[{"902725", ",", "903113", ",", "902884"}], "}"}], 
           RowBox[{"{", 
-           
-           RowBox[{"\<\"CERN\"\>", ",", "\<\"Padua U.\"\>", 
-            ",", "\<\"INFN, Padua\"\>"}], "}"}]},
+           RowBox[{
+           "\"\<CERN\>\"", ",", "\"\<Padua U.\>\"", ",", 
+            "\"\<INFN, Padua\>\""}], "}"}]},
          {"1064514", 
-          RowBox[{"{", "\<\"R.Torre.1\"\>", "}"}], "\<\"Torre, Riccardo\"\>", 
+          RowBox[{"{", "\"\<R.Torre.1\>\"", "}"}], "\"\<Torre, Riccardo\>\"", 
           
           RowBox[{"{", 
            RowBox[{"902725", ",", "902886", ",", "903129", ",", "903370"}], 
            "}"}], 
           RowBox[{"{", 
-           
-           RowBox[{"\<\"CERN\"\>", ",", "\<\"INFN, Pisa\"\>", 
-            ",", "\<\"Pisa U.\"\>", ",", "\<\"Zurich U.\"\>"}], "}"}]}
+           RowBox[{
+           "\"\<CERN\>\"", ",", "\"\<INFN, Pisa\>\"", ",", "\"\<Pisa U.\>\"", 
+            ",", "\"\<Zurich U.\>\""}], "}"}]}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13760,12 +14008,12 @@ to gain insight on the possibly composite nature of the resonance.\"\>",
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "True", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"article\"\>", "}"}], 
-      RowBox[{"{", "\<\"10.1007/JHEP07(2011)002\"\>", "}"}], 
+      RowBox[{"{", "\"\<article\>\"", "}"}], 
+      RowBox[{"{", "\"\<10.1007/JHEP07(2011)002\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"ADS\"\>", "\<\"2011JHEP...07..002G\"\>"},
-         {"\<\"CDS\"\>", "\<\"1336088\"\>"},
-         {"\<\"SPIRES\"\>", "\<\"SPIRES-9001875\"\>"}
+         {"\"\<ADS\>\"", "\"\<2011JHEP...07..002G\>\""},
+         {"\"\<CDS\>\"", "\"\<1336088\>\""},
+         {"\"\<SPIRES\>\"", "\"\<SPIRES-9001875\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13781,32 +14029,30 @@ to gain insight on the possibly composite nature of the resonance.\"\>",
       RowBox[{"{", "28", "}"}], 
       RowBox[{"{", "18", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"Experiment-HEP\"\>", ",", "\<\"Phenomenology-HEP\"\>"}], 
+       RowBox[{"\"\<Experiment-HEP\>\"", ",", "\"\<Phenomenology-HEP\>\""}], 
        "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"Beyond Standard Model\"\>", 
-        ",", "\<\"Phenomenological Models\"\>", 
-        ",", "\<\"quark: right-handed\"\>", ",", "\<\"quark: mixing\"\>", 
-        ",", "\<\"jet: pair production\"\>", 
-        ",", "\<\"W': hadroproduction\"\>", ",", "\<\"CERN LHC Coll\"\>", 
-        ",", "\<\"Brookhaven RHIC Coll\"\>", 
-        ",", "\<\"p p: inclusive reaction\"\>", 
-        ",", "\<\"anti-p p: annihilation\"\>", 
-        ",", "\<\"W': hadronic decay\"\>", ",", "\<\"W': radiative decay\"\>",
-         ",", "\<\"gauge boson: pair production\"\>", 
-        ",", "\<\"effective Lagrangian\"\>", 
-        ",", "\<\"coupling: constraint\"\>", ",", "\<\"flavor: violation\"\>",
-         ",", "\<\"W': width\"\>", ",", "\<\"W': mass\"\>", 
-        ",", "\<\"mass spectrum: (2jet)\"\>", 
-        ",", "\<\"differential cross section\"\>", 
-        ",", "\<\"photon: transverse momentum\"\>", 
-        ",", "\<\"SU(2) x SU(2) x U(1)\"\>", 
-        ",", "\<\"numerical calculations\"\>", 
-        ",", "\<\"1960: 7000: 8000: 14000 GeV-cms\"\>"}], "}"}], 
-      RowBox[{"{", "\<\"2011-03\"\>", "}"}], 
+       RowBox[{
+       "\"\<Beyond Standard Model\>\"", ",", 
+        "\"\<Phenomenological Models\>\"", ",", "\"\<quark: right-handed\>\"",
+         ",", "\"\<quark: mixing\>\"", ",", "\"\<jet: pair production\>\"", 
+        ",", "\"\<W': hadroproduction\>\"", ",", "\"\<CERN LHC Coll\>\"", 
+        ",", "\"\<Brookhaven RHIC Coll\>\"", ",", 
+        "\"\<p p: inclusive reaction\>\"", ",", 
+        "\"\<anti-p p: annihilation\>\"", ",", "\"\<W': hadronic decay\>\"", 
+        ",", "\"\<W': radiative decay\>\"", ",", 
+        "\"\<gauge boson: pair production\>\"", ",", 
+        "\"\<effective Lagrangian\>\"", ",", "\"\<coupling: constraint\>\"", 
+        ",", "\"\<flavor: violation\>\"", ",", "\"\<W': width\>\"", ",", 
+        "\"\<W': mass\>\"", ",", "\"\<mass spectrum: (2jet)\>\"", ",", 
+        "\"\<differential cross section\>\"", ",", 
+        "\"\<photon: transverse momentum\>\"", ",", 
+        "\"\<SU(2) x SU(2) x U(1)\>\"", ",", "\"\<numerical calculations\>\"",
+         ",", "\"\<1960: 7000: 8000: 14000 GeV-cms\>\""}], "}"}], 
+      RowBox[{"{", "\"\<2011-03\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"002\"\>"}
+         {"\"\<002\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13834,7 +14080,7 @@ to gain insight on the possibly composite nature of the resonance.\"\>",
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"JHEP\"\>"}
+         {"\"\<JHEP\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13848,7 +14094,7 @@ to gain insight on the possibly composite nature of the resonance.\"\>",
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"07\"\>"}
+         {"\"\<07\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13876,7 +14122,7 @@ to gain insight on the possibly composite nature of the resonance.\"\>",
              Offset[0.4]}, 
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"002\"\>"}
+         {"\"\<002\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -13936,13 +14182,13 @@ to gain insight on the possibly composite nature of the resonance.\"\>",
         "878694", ",", "744897", ",", "810300", ",", "333701", ",", "825938", 
         ",", "643914", ",", "891879", ",", "152417"}], "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"CERN-PH-TH-2011-041\"\>", ",", "\<\"DFPD-2011-TH-3\"\>", 
-        ",", "\<\"IFUP-TH-2011-05\"\>", ",", "\<\"LPN11-10\"\>", 
-        ",", "\<\"ZU-TH-04-11\"\>"}], "}"}], 
+       RowBox[{
+       "\"\<CERN-PH-TH-2011-041\>\"", ",", "\"\<DFPD-2011-TH-3\>\"", ",", 
+        "\"\<IFUP-TH-2011-05\>\"", ",", "\"\<LPN11-10\>\"", ",", 
+        "\"\<ZU-TH-04-11\>\""}], "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/892770\"\>", "}"}], 
-      
-      RowBox[{"{", "\<\"Grojean:2011vu\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/892770\>\"", "}"}], 
+      RowBox[{"{", "\"\<Grojean:2011vu\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
@@ -13962,29 +14208,29 @@ to gain insight on the possibly composite nature of the resonance.\"\>",
      {
       RowBox[{"{", "926294", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2019-03-18T14:26:30.836300+00:00\"\>", "}"}], 
+      RowBox[{"{", "\"\<2019-03-18T14:26:30.836300+00:00\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"Limits on Leptophobic $W^\\\\prime$ after 1 fb$^{-1}$ of \
-{LHC} Data: A Lesson on parton Level Simulations\"\>", "}"}], 
+      "{", "\"\<Limits on Leptophobic $W^\\\\prime$ after 1 fb$^{-1}$ of \
+{LHC} Data: A Lesson on parton Level Simulations\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"An iso-singlet W' carrying hypercharge one is considered \
+      "{", "\"\<An iso-singlet W' carrying hypercharge one is considered \
 within an effective Lagrangian approach. The predictions for the exclusion in \
 the (M_{W'},g_q/g) parameter space presented in Ref. [1] for the search in \
 the di-jet invariant mass spectrum are shown to be in reasonable agreement \
-with the LHC results based on 1 fb^{-1} of integrated luminosity.\"\>", "}"}], 
+with the LHC results based on 1 fb^{-1} of integrated luminosity.\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"1109.0890\"\>", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<1109.0890\>\"", "}"}], 
       RowBox[{"{", "1", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"1064514", 
-          RowBox[{"{", "\<\"R.Torre.1\"\>", "}"}], "\<\"Torre, Riccardo\"\>", 
+          RowBox[{"{", "\"\<R.Torre.1\>\"", "}"}], "\"\<Torre, Riccardo\>\"", 
           
           RowBox[{"{", 
            RowBox[{"903129", ",", "903370"}], "}"}], 
           RowBox[{"{", 
-           RowBox[{"\<\"Pisa U.\"\>", ",", "\<\"Zurich U.\"\>"}], "}"}]}
+           RowBox[{"\"\<Pisa U.\>\"", ",", "\"\<Zurich U.\>\""}], "}"}]}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -14002,10 +14248,10 @@ with the LHC results based on 1 fb^{-1} of integrated luminosity.\"\>", "}"}],
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "True", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"article\"\>", "}"}], 
+      RowBox[{"{", "\"\<article\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"SPIRES\"\>", "\<\"SPIRES-9186476\"\>"}
+         {"\"\<SPIRES\>\"", "\"\<SPIRES-9186476\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -14020,12 +14266,13 @@ with the LHC results based on 1 fb^{-1} of integrated luminosity.\"\>", "}"}],
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "3", "}"}], 
-      RowBox[{"{", "\<\"Phenomenology-HEP\"\>", "}"}], 
+      RowBox[{"{", "\"\<Phenomenology-HEP\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"CERN LHC Coll\"\>", ",", "\<\"effective Lagrangian\"\>", 
-        ",", "\<\"mass spectrum\"\>", ",", "\<\"hypercharge\"\>"}], "}"}], 
-      RowBox[{"{", "\<\"2011-09\"\>", "}"}], 
+       RowBox[{
+       "\"\<CERN LHC Coll\>\"", ",", "\"\<effective Lagrangian\>\"", ",", 
+        "\"\<mass spectrum\>\"", ",", "\"\<hypercharge\>\""}], "}"}], 
+      RowBox[{"{", "\"\<2011-09\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null"}
         },
@@ -14144,11 +14391,10 @@ with the LHC results based on 1 fb^{-1} of integrated luminosity.\"\>", "}"}],
        RowBox[{
        "892770", ",", "277249", ",", "805902", ",", "883072", ",", "925933", 
         ",", "919742"}], "}"}], 
-      RowBox[{"{", "\<\"IFUP-TH-2011-18\"\>", "}"}], 
+      RowBox[{"{", "\"\<IFUP-TH-2011-18\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/926294\"\>", "}"}], 
-      
-      RowBox[{"{", "\<\"Torre:2011wy\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/926294\>\"", "}"}], 
+      RowBox[{"{", "\"\<Torre:2011wy\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null", "Null"}
@@ -14168,10 +14414,10 @@ with the LHC results based on 1 fb^{-1} of integrated luminosity.\"\>", "}"}],
      {
       RowBox[{"{", "940384", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"2019-03-18T14:26:30.388040+00:00\"\>", "}"}], 
-      RowBox[{"{", "\<\"Signals of composite particles at the LHC\"\>", "}"}], 
+      RowBox[{"{", "\"\<2019-03-18T14:26:30.388040+00:00\>\"", "}"}], 
+      RowBox[{"{", "\"\<Signals of composite particles at the LHC\>\"", "}"}], 
       RowBox[{
-      "{", "\<\"Composite particles generated by an unknown strong dynamics \
+      "{", "\"\<Composite particles generated by an unknown strong dynamics \
 can be responsible for the ElectroWeak Symmetry Breaking (EWSB) and can \
 substitute the Standard Model (SM) Higgs boson in keeping perturbative \
 unitarity in the longitudinal WW scattering up to a cut-off \
@@ -14195,19 +14441,19 @@ as the most promising channels for an early discovery already with tens of \
 inverse picobarns of integrated luminosity. Finally, in the last part of this \
 work, the role of a composite iso-singlet vector in Dark Matter models is \
 discussed and the related LHC phenomenology is studied, giving particular \
-attention to the Z\\\\gamma final state.\"\>", "}"}], 
+attention to the Z\\\\gamma final state.\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"hep-ph\"\>", "}"}], 
-      RowBox[{"{", "\<\"1110.3906\"\>", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<hep-ph\>\"", "}"}], 
+      RowBox[{"{", "\"\<1110.3906\>\"", "}"}], 
       RowBox[{"{", "2", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"1064514", 
-          RowBox[{"{", "\<\"R.Torre.1\"\>", "}"}], "\<\"Torre, Riccardo\"\>", 
+          RowBox[{"{", "\"\<R.Torre.1\>\"", "}"}], "\"\<Torre, Riccardo\>\"", 
           
           RowBox[{"{", "903129", "}"}], 
-          RowBox[{"{", "\<\"Pisa U.\"\>", "}"}]},
-         {"Null", "Null", "\<\"Barbieri, Riccardo\"\>", "Null", "Null"}
+          RowBox[{"{", "\"\<Pisa U.\>\"", "}"}]},
+         {"Null", "Null", "\"\<Barbieri, Riccardo\>\"", "Null", "Null"}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -14225,10 +14471,10 @@ attention to the Z\\\\gamma final state.\"\>", "}"}],
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", "True", "}"}], 
       RowBox[{"{", "True", "}"}], 
-      RowBox[{"{", "\<\"thesis\"\>", "}"}], 
+      RowBox[{"{", "\"\<thesis\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
-         {"\<\"SPIRES\"\>", "\<\"SPIRES-9233725\"\>"}
+         {"\"\<SPIRES\>\"", "\"\<SPIRES-9233725\>\""}
         },
         GridBoxAlignment->{
          "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, 
@@ -14243,19 +14489,20 @@ attention to the Z\\\\gamma final state.\"\>", "}"}],
             Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
       RowBox[{"{", "124", "}"}], 
       RowBox[{"{", "2", "}"}], 
-      RowBox[{"{", "\<\"Phenomenology-HEP\"\>", "}"}], 
+      RowBox[{"{", "\"\<Phenomenology-HEP\>\"", "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"thesis\"\>", ",", "\<\"particle: composite\"\>", 
-        ",", "\<\"electroweak interaction: symmetry breaking\"\>", 
-        ",", "\<\"effective Lagrangian: chiral\"\>", 
-        ",", "\<\"symmetry: custodial\"\>", ",", "\<\"CERN LHC Coll\"\>", 
-        ",", "\<\"W W: scattering\"\>", ",", "\<\"Higgsless model\"\>", 
-        ",", "\<\"perturbation theory\"\>", ",", "\<\"dark matter\"\>", 
-        ",", "\<\"final state: (photon Z0)\"\>", 
-        ",", "\<\"vector boson: pair production\"\>", 
-        ",", "\<\"S-matrix: unitarity\"\>"}], "}"}], 
-      RowBox[{"{", "\<\"2011-10\"\>", "}"}], 
+       RowBox[{
+       "\"\<thesis\>\"", ",", "\"\<particle: composite\>\"", ",", 
+        "\"\<electroweak interaction: symmetry breaking\>\"", ",", 
+        "\"\<effective Lagrangian: chiral\>\"", ",", 
+        "\"\<symmetry: custodial\>\"", ",", "\"\<CERN LHC Coll\>\"", ",", 
+        "\"\<W W: scattering\>\"", ",", "\"\<Higgsless model\>\"", ",", 
+        "\"\<perturbation theory\>\"", ",", "\"\<dark matter\>\"", ",", 
+        "\"\<final state: (photon Z0)\>\"", ",", 
+        "\"\<vector boson: pair production\>\"", ",", 
+        "\"\<S-matrix: unitarity\>\""}], "}"}], 
+      RowBox[{"{", "\"\<2011-10\>\"", "}"}], 
       RowBox[{"(", "\[NoBreak]", GridBox[{
          {"Null"}
         },
@@ -14405,16 +14652,14 @@ attention to the Z\\\\gamma final state.\"\>", "}"}],
         "283788", ",", "884116"}], "}"}], 
       RowBox[{"{", "Null", "}"}], 
       RowBox[{
-      "{", "\<\"http://labs.inspirehep.net/api/literature/940384\"\>", "}"}], 
-      
-      RowBox[{"{", "\<\"Torre:2011bv\"\>", "}"}], 
+      "{", "\"\<https://inspirehep.net/api/literature/940384\>\"", "}"}], 
+      RowBox[{"{", "\"\<Torre:2011bv\>\"", "}"}], 
       RowBox[{"{", 
-       RowBox[{"\<\"2011\"\>", ",", "\<\"2011-09-27\"\>", ",", "\<\"phd\"\>", 
-        ",", 
+       RowBox[{
+       "\"\<2011\>\"", ",", "\"\<2011-09-27\>\"", ",", "\"\<phd\>\"", ",", 
         RowBox[{"(", "\[NoBreak]", GridBox[{
-           {
-            "True", "\<\"Pisa U.\"\>", \
-"\<\"http://labs.inspirehep.net/api/institutions/903129\"\>"}
+           {"True", "\"\<Pisa U.\>\"", 
+            "\"\<https://inspirehep.net/api/institutions/903129\>\""}
           },
           
           GridBoxAlignment->{
@@ -14454,17 +14699,15 @@ attention to the Z\\\\gamma final state.\"\>", "}"}],
         Offset[0.2], {
          Offset[0.4]}, 
         Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}], 
-  TraditionalForm]], "Output",
- CellChangeTimes->{{3.764055876906644*^9, 3.764055882999818*^9}, 
-   3.764056154333652*^9, {3.7640561889774323`*^9, 3.7640561925197983`*^9}, 
-   3.764587883264499*^9, 3.7645879422020016`*^9},
- CellLabel->
-  "Out[750]=",ExpressionUUID->"697cef2c-1004-4a08-9ead-75c07f4024da"]
+  TraditionalForm]], "Input",
+ CellChangeTimes->{{3.816774573629957*^9, 3.8167745737244577`*^9}, {
+  3.8167746090798798`*^9, 
+  3.816774618732443*^9}},ExpressionUUID->"697cef2c-1004-4a08-9ead-\
+75c07f4024da"]
 }, Open  ]]
-}, Closed]]
 },
-WindowSize->{1533, 1395},
-WindowMargins->{{Automatic, 21}, {Automatic, 0}},
+WindowSize->{1280, 686},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
 FrontEndVersion->"12.1 for Mac OS X x86 (64-bit) (March 18, 2020)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"597f056c-6aa6-4b35-8f18-c9562e86ac0d"
@@ -14475,15 +14718,15 @@ ExpressionUUID->"597f056c-6aa6-4b35-8f18-c9562e86ac0d"
 (*CellTagsOutline
 CellTagsIndex->{
  "Info7393764595060-7216313"->{
-  Cell[452902, 11559, 191, 4, 45, "Print",ExpressionUUID->"fcf37810-c87d-4920-b620-70309ef8ac70",
+  Cell[463439, 11829, 191, 4, 45, "Print",ExpressionUUID->"fcf37810-c87d-4920-b620-70309ef8ac70",
    CellTags->"Info7393764595060-7216313"],
-  Cell[453096, 11565, 947, 26, 24, "Print",ExpressionUUID->"2a34dc6c-5d3f-4163-89c7-f4dd2c75b5a0",
+  Cell[463633, 11835, 947, 26, 21, "Print",ExpressionUUID->"2a34dc6c-5d3f-4163-89c7-f4dd2c75b5a0",
    CellTags->"Info7393764595060-7216313"]}
  }
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"Info7393764595060-7216313", 576875, 14476}
+ {"Info7393764595060-7216313", 587067, 14719}
  }
 *)
 (*NotebookFileOutline
@@ -14493,143 +14736,141 @@ Cell[CellGroupData[{
 Cell[789, 28, 584, 8, 67, "Section",ExpressionUUID->"e23c84cf-e217-4f81-9612-882ef9db84e2"],
 Cell[CellGroupData[{
 Cell[1398, 40, 167, 3, 54, "Subsection",ExpressionUUID->"bc44c015-a382-42c8-92bd-b16804667d58"],
-Cell[1568, 45, 1395, 38, 71, "Input",ExpressionUUID->"152877a5-1e4a-47cf-afb1-8c2d1a5a99ed"]
+Cell[1568, 45, 11033, 272, 621, "Input",ExpressionUUID->"152877a5-1e4a-47cf-afb1-8c2d1a5a99ed"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[3000, 88, 702, 11, 54, "Subsection",ExpressionUUID->"f761e76c-ea16-40bb-8d69-4a7a55fb0ac5"],
-Cell[3705, 101, 388, 8, 35, "Text",ExpressionUUID->"a075a7c2-58bb-4bb8-81c7-b3ba7f50ed9f"],
-Cell[4096, 111, 342, 8, 30, "Input",ExpressionUUID->"ba0b4c12-28d5-4db1-beb6-37b85ca8a906"],
-Cell[4441, 121, 1859, 43, 115, "Input",ExpressionUUID->"c6de022c-f101-4acd-9e2d-8fd3eec8bbda"],
+Cell[12638, 322, 702, 11, 54, "Subsection",ExpressionUUID->"f761e76c-ea16-40bb-8d69-4a7a55fb0ac5"],
+Cell[13343, 335, 388, 8, 35, "Text",ExpressionUUID->"a075a7c2-58bb-4bb8-81c7-b3ba7f50ed9f"],
+Cell[13734, 345, 342, 8, 28, "Input",ExpressionUUID->"ba0b4c12-28d5-4db1-beb6-37b85ca8a906"],
+Cell[14079, 355, 1859, 43, 127, "Input",ExpressionUUID->"c6de022c-f101-4acd-9e2d-8fd3eec8bbda"],
 Cell[CellGroupData[{
-Cell[6325, 168, 374, 6, 73, "Input",ExpressionUUID->"03d7801c-6b22-44b1-b117-d750498923ba"],
-Cell[6702, 176, 2891, 43, 70, "Output",ExpressionUUID->"f06cc747-1d3e-4846-969f-a40d911d664a"],
-Cell[9596, 221, 4506, 68, 70, "Output",ExpressionUUID->"c6b20fd4-19b2-4696-ae8d-65e9a2c52b86"],
-Cell[14105, 291, 3319, 49, 70, "Output",ExpressionUUID->"5a588876-9190-47d9-ab38-1cfc3aae43e7"]
+Cell[15963, 402, 374, 6, 68, "Input",ExpressionUUID->"03d7801c-6b22-44b1-b117-d750498923ba"],
+Cell[16340, 410, 2891, 43, 32, "Output",ExpressionUUID->"f06cc747-1d3e-4846-969f-a40d911d664a"],
+Cell[19234, 455, 4506, 68, 108, "Output",ExpressionUUID->"c6b20fd4-19b2-4696-ae8d-65e9a2c52b86"],
+Cell[23743, 525, 3319, 49, 51, "Output",ExpressionUUID->"5a588876-9190-47d9-ab38-1cfc3aae43e7"]
 }, Open  ]]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[17473, 346, 641, 9, 38, "Subsection",ExpressionUUID->"f5ab44ff-f914-46e5-98f6-dd6cb47d5835"],
-Cell[18117, 357, 563, 10, 35, "Text",ExpressionUUID->"97373b8d-dfb9-4405-9708-20ba4682b0d1"],
-Cell[18683, 369, 1732, 48, 94, "Input",ExpressionUUID->"d708fcf9-4a7f-4f91-8280-d03ae930fd2a"],
-Cell[20418, 419, 27412, 588, 1312, "Input",ExpressionUUID->"83b2b0ed-831e-498b-b4c5-f2c88b8c27bb"]
+Cell[27111, 580, 641, 9, 38, "Subsection",ExpressionUUID->"f5ab44ff-f914-46e5-98f6-dd6cb47d5835"],
+Cell[27755, 591, 477, 7, 35, "Text",ExpressionUUID->"56b06a5b-3ee2-4dbd-b17b-4fd8c3a79943"],
+Cell[28235, 600, 1134, 32, 88, "Input",ExpressionUUID->"5c4516e9-bbbb-49ea-bcbe-b9e48312e02d"],
+Cell[29372, 634, 563, 10, 35, "Text",ExpressionUUID->"97373b8d-dfb9-4405-9708-20ba4682b0d1"],
+Cell[29938, 646, 1862, 51, 88, "Input",ExpressionUUID->"d708fcf9-4a7f-4f91-8280-d03ae930fd2a"],
+Cell[31803, 699, 27412, 588, 1375, "Input",ExpressionUUID->"83b2b0ed-831e-498b-b4c5-f2c88b8c27bb"]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[47867, 1012, 533, 8, 38, "Subsection",ExpressionUUID->"3b22940e-dab7-485a-95a0-360d945f6571"],
+Cell[59252, 1292, 533, 8, 38, "Subsection",ExpressionUUID->"3b22940e-dab7-485a-95a0-360d945f6571"],
 Cell[CellGroupData[{
-Cell[48425, 1024, 516, 8, 45, "Subsubsection",ExpressionUUID->"da29d0de-11e8-44a1-8d7d-dcbfdaf10bd1"],
-Cell[48944, 1034, 511, 9, 35, "Text",ExpressionUUID->"1d5bd083-5034-413a-a755-6c1f900ee6bb"],
-Cell[49458, 1045, 184781, 5096, 8389, "Input",ExpressionUUID->"ad46297d-9a40-4f78-93ad-3d5bf4220820"],
-Cell[234242, 6143, 609, 11, 35, "Text",ExpressionUUID->"4d6a2413-a260-4daf-a8d0-5f343212f996"],
-Cell[234854, 6156, 1430, 37, 73, "Input",ExpressionUUID->"3fb009a8-6c40-4b16-9e0a-3e0f10b115af"]
+Cell[59810, 1304, 516, 8, 45, "Subsubsection",ExpressionUUID->"da29d0de-11e8-44a1-8d7d-dcbfdaf10bd1"],
+Cell[60329, 1314, 511, 9, 35, "Text",ExpressionUUID->"1d5bd083-5034-413a-a755-6c1f900ee6bb"],
+Cell[60843, 1325, 185847, 5124, 9526, "Input",ExpressionUUID->"ad46297d-9a40-4f78-93ad-3d5bf4220820"],
+Cell[246693, 6451, 609, 11, 35, "Text",ExpressionUUID->"4d6a2413-a260-4daf-a8d0-5f343212f996"],
+Cell[247305, 6464, 1430, 37, 68, "Input",ExpressionUUID->"3fb009a8-6c40-4b16-9e0a-3e0f10b115af"]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[236321, 6198, 220, 4, 37, "Subsubsection",ExpressionUUID->"fa8feff1-2b0b-40c1-9429-7a552757682f"],
-Cell[236544, 6204, 19887, 491, 1144, "Input",ExpressionUUID->"ce542201-9ab8-4a2b-9495-8404c0675bf3"]
-}, Closed]]
-}, Closed]],
-Cell[CellGroupData[{
-Cell[256480, 6701, 555, 8, 38, "Subsection",ExpressionUUID->"8822d06c-951e-46ad-b0e8-667d3bbca954"],
-Cell[CellGroupData[{
-Cell[257060, 6713, 644, 9, 45, "Subsubsection",ExpressionUUID->"ba17450a-5388-4d26-b64b-cb7b59b3f3b9"],
-Cell[257707, 6724, 510, 9, 35, "Text",ExpressionUUID->"77cb4a55-8f85-49ab-af90-056e11aa0836"],
-Cell[258220, 6735, 51253, 1384, 2362, "Input",ExpressionUUID->"6e9e6a7d-4397-4c2d-8a75-d2486bb4542d"]
-}, Closed]],
-Cell[CellGroupData[{
-Cell[309510, 8124, 617, 9, 37, "Subsubsection",ExpressionUUID->"76bd47d6-b123-4755-b053-9d6c3a10f8da"],
-Cell[310130, 8135, 9415, 218, 430, "Input",ExpressionUUID->"4776d257-d65d-41b8-adf6-b8fac2da3a18"]
-}, Closed]]
-}, Closed]],
-Cell[CellGroupData[{
-Cell[319594, 8359, 708, 10, 38, "Subsection",ExpressionUUID->"6bdd6edc-1991-4cfd-942c-84f9f899ae5c"],
-Cell[CellGroupData[{
-Cell[320327, 8373, 697, 10, 45, "Subsubsection",ExpressionUUID->"3a31c069-5648-4278-9497-d1cac50e8aae"],
-Cell[321027, 8385, 560, 10, 35, "Text",ExpressionUUID->"49e324d6-7232-4df6-bd44-10b6ee28ea4f"],
-Cell[321590, 8397, 31042, 811, 1375, "Input",ExpressionUUID->"b124a828-e804-43d6-87c2-3f4027831b72"]
-}, Closed]],
-Cell[CellGroupData[{
-Cell[352669, 9213, 669, 10, 37, "Subsubsection",ExpressionUUID->"d064bdfc-f03a-46b0-af28-a76428a1d61b"],
-Cell[353341, 9225, 2451, 53, 115, "Input",ExpressionUUID->"4c36ebd6-8ee8-44fb-942a-3c65dd57e365"]
-}, Closed]]
-}, Closed]],
-Cell[CellGroupData[{
-Cell[355841, 9284, 637, 9, 38, "Subsection",ExpressionUUID->"414c0e3a-a9d1-4343-8688-c26f85eed96b"],
-Cell[CellGroupData[{
-Cell[356503, 9297, 699, 10, 45, "Subsubsection",ExpressionUUID->"97193ce4-a386-4ab3-b5c4-e78ba01603fb"],
-Cell[357205, 9309, 567, 10, 35, "Text",ExpressionUUID->"2f40d335-6b03-4efd-ae23-bda1eec8b2a0"],
-Cell[357775, 9321, 34614, 917, 1417, "Input",ExpressionUUID->"b3ea15ee-5cd2-46d6-99bb-9068ffc2b6cc"]
-}, Closed]],
-Cell[CellGroupData[{
-Cell[392426, 10243, 679, 10, 37, "Subsubsection",ExpressionUUID->"75d92c53-8ed9-4f82-855b-e9803283e33c"],
-Cell[393108, 10255, 5787, 137, 388, "Input",ExpressionUUID->"c5a4b030-bac3-4df6-9f3a-34ff300883f2"]
-}, Closed]]
-}, Closed]],
-Cell[CellGroupData[{
-Cell[398944, 10398, 820, 11, 38, "Subsection",ExpressionUUID->"17767ce9-95e7-41c6-9be2-df9ef3fceeff"],
-Cell[399767, 10411, 435, 9, 34, "Text",ExpressionUUID->"8ecfc34c-d43b-46f5-a966-938e618832a4"],
-Cell[CellGroupData[{
-Cell[400227, 10424, 9895, 183, 447, "Input",ExpressionUUID->"8f620843-b2f2-4d5d-bf05-8598548604ea"],
-Cell[410125, 10609, 4744, 71, 71, "Output",ExpressionUUID->"e0cc0934-8990-400c-8270-f6bf022cb2db"]
+Cell[248772, 6506, 220, 4, 37, "Subsubsection",ExpressionUUID->"fa8feff1-2b0b-40c1-9429-7a552757682f"],
+Cell[248995, 6512, 21324, 516, 1249, "Input",ExpressionUUID->"ce542201-9ab8-4a2b-9495-8404c0675bf3"]
+}, Open  ]]
 }, Open  ]],
-Cell[414884, 10683, 1392, 39, 67, "Input",ExpressionUUID->"ab9a5252-03de-4fbc-ba88-efb683136cec"],
 Cell[CellGroupData[{
-Cell[416301, 10726, 434, 9, 28, "Input",ExpressionUUID->"d9d29f35-d293-4058-b0ca-20c80676288a"],
-Cell[416738, 10737, 15813, 333, 168, "Output",ExpressionUUID->"592afffe-e7f6-484c-82ae-8b136fe64d63"]
+Cell[270368, 7034, 555, 8, 54, "Subsection",ExpressionUUID->"8822d06c-951e-46ad-b0e8-667d3bbca954"],
+Cell[CellGroupData[{
+Cell[270948, 7046, 644, 9, 45, "Subsubsection",ExpressionUUID->"ba17450a-5388-4d26-b64b-cb7b59b3f3b9"],
+Cell[271595, 7057, 510, 9, 35, "Text",ExpressionUUID->"77cb4a55-8f85-49ab-af90-056e11aa0836"],
+Cell[272108, 7068, 51300, 1385, 2311, "Input",ExpressionUUID->"6e9e6a7d-4397-4c2d-8a75-d2486bb4542d"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[323445, 8458, 617, 9, 37, "Subsubsection",ExpressionUUID->"76bd47d6-b123-4755-b053-9d6c3a10f8da"],
+Cell[324065, 8469, 9902, 226, 497, "Input",ExpressionUUID->"4776d257-d65d-41b8-adf6-b8fac2da3a18"]
+}, Closed]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[334016, 8701, 708, 10, 38, "Subsection",ExpressionUUID->"6bdd6edc-1991-4cfd-942c-84f9f899ae5c"],
+Cell[CellGroupData[{
+Cell[334749, 8715, 697, 10, 45, "Subsubsection",ExpressionUUID->"3a31c069-5648-4278-9497-d1cac50e8aae"],
+Cell[335449, 8727, 560, 10, 35, "Text",ExpressionUUID->"49e324d6-7232-4df6-bd44-10b6ee28ea4f"],
+Cell[336012, 8739, 31042, 811, 1375, "Input",ExpressionUUID->"b124a828-e804-43d6-87c2-3f4027831b72"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[367091, 9555, 669, 10, 37, "Subsubsection",ExpressionUUID->"d064bdfc-f03a-46b0-af28-a76428a1d61b"],
+Cell[367763, 9567, 2415, 52, 107, "Input",ExpressionUUID->"4c36ebd6-8ee8-44fb-942a-3c65dd57e365"]
+}, Closed]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[370227, 9625, 637, 9, 38, "Subsection",ExpressionUUID->"414c0e3a-a9d1-4343-8688-c26f85eed96b"],
+Cell[CellGroupData[{
+Cell[370889, 9638, 699, 10, 45, "Subsubsection",ExpressionUUID->"97193ce4-a386-4ab3-b5c4-e78ba01603fb"],
+Cell[371591, 9650, 567, 10, 35, "Text",ExpressionUUID->"2f40d335-6b03-4efd-ae23-bda1eec8b2a0"],
+Cell[372161, 9662, 34614, 917, 1417, "Input",ExpressionUUID->"b3ea15ee-5cd2-46d6-99bb-9068ffc2b6cc"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[406812, 10584, 679, 10, 37, "Subsubsection",ExpressionUUID->"75d92c53-8ed9-4f82-855b-e9803283e33c"],
+Cell[407494, 10596, 5744, 135, 380, "Input",ExpressionUUID->"c5a4b030-bac3-4df6-9f3a-34ff300883f2"]
+}, Closed]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[413287, 10737, 820, 11, 38, "Subsection",ExpressionUUID->"17767ce9-95e7-41c6-9be2-df9ef3fceeff"],
+Cell[414110, 10750, 435, 9, 35, "Text",ExpressionUUID->"8ecfc34c-d43b-46f5-a966-938e618832a4"],
+Cell[CellGroupData[{
+Cell[414570, 10763, 9883, 173, 614, "Input",ExpressionUUID->"8f620843-b2f2-4d5d-bf05-8598548604ea"],
+Cell[424456, 10938, 1847, 30, 108, "Output",ExpressionUUID->"e84fe3a6-0a42-4e00-8d38-4c3577b2e49e"]
+}, Closed]],
+Cell[426318, 10971, 1398, 38, 146, "Input",ExpressionUUID->"ab9a5252-03de-4fbc-ba88-efb683136cec"],
+Cell[427719, 11011, 434, 9, 28, "Input",ExpressionUUID->"d9d29f35-d293-4058-b0ca-20c80676288a"],
+Cell[428156, 11022, 14896, 322, 182, "Input",ExpressionUUID->"592afffe-e7f6-484c-82ae-8b136fe64d63"],
+Cell[443055, 11346, 434, 9, 35, "Text",ExpressionUUID->"8a2a8e28-09db-4e50-b5ed-4a04552d2570"],
+Cell[CellGroupData[{
+Cell[443514, 11359, 3667, 79, 263, "Input",ExpressionUUID->"35eff4ec-37e2-4bf5-b5a1-8f8a27827f07"],
+Cell[447184, 11440, 2099, 34, 32, "Output",ExpressionUUID->"f6fe22c5-6ec7-4f09-ba1c-305eb19bc361"]
 }, Open  ]],
-Cell[432566, 11073, 434, 9, 34, "Text",ExpressionUUID->"8a2a8e28-09db-4e50-b5ed-4a04552d2570"],
+Cell[449298, 11477, 1365, 36, 146, "Input",ExpressionUUID->"0c7b82b7-ff68-46bf-be4c-2357899a90fe"],
 Cell[CellGroupData[{
-Cell[433025, 11086, 3623, 80, 162, "Input",ExpressionUUID->"35eff4ec-37e2-4bf5-b5a1-8f8a27827f07"],
-Cell[436651, 11168, 2099, 34, 32, "Output",ExpressionUUID->"f6fe22c5-6ec7-4f09-ba1c-305eb19bc361"]
-}, Open  ]],
-Cell[438765, 11205, 1366, 38, 67, "Input",ExpressionUUID->"0c7b82b7-ff68-46bf-be4c-2357899a90fe"],
-Cell[CellGroupData[{
-Cell[440156, 11247, 362, 7, 28, "Input",ExpressionUUID->"588cbb87-e92d-436c-9432-60211fde0510"],
-Cell[440521, 11256, 4488, 95, 168, "Output",ExpressionUUID->"f3a0635c-34bc-4fde-a076-2709fed311f3"]
+Cell[450688, 11517, 362, 7, 28, "Input",ExpressionUUID->"588cbb87-e92d-436c-9432-60211fde0510"],
+Cell[451053, 11526, 4488, 95, 178, "Output",ExpressionUUID->"f3a0635c-34bc-4fde-a076-2709fed311f3"]
 }, Open  ]]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[445058, 11357, 262, 4, 38, "Subsection",ExpressionUUID->"971bc6ef-f1ec-4686-a43a-4acb6594d82f"],
-Cell[445323, 11363, 6275, 152, 409, "Input",ExpressionUUID->"1ae1886d-ceae-4e5c-b359-adc52d393234"],
+Cell[455590, 11627, 262, 4, 38, "Subsection",ExpressionUUID->"971bc6ef-f1ec-4686-a43a-4acb6594d82f"],
+Cell[455855, 11633, 6284, 152, 419, "Input",ExpressionUUID->"1ae1886d-ceae-4e5c-b359-adc52d393234"],
 Cell[CellGroupData[{
-Cell[451623, 11519, 679, 17, 30, "Input",ExpressionUUID->"c4cb2901-5024-4a5d-a70f-9182a1a0a2a4"],
-Cell[452305, 11538, 353, 8, 30, "Output",ExpressionUUID->"513db261-be00-4b23-a7b0-25f007112a2e"]
+Cell[462164, 11789, 675, 17, 49, "Input",ExpressionUUID->"c4cb2901-5024-4a5d-a70f-9182a1a0a2a4"],
+Cell[462842, 11808, 353, 8, 32, "Output",ExpressionUUID->"513db261-be00-4b23-a7b0-25f007112a2e"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[452695, 11551, 182, 4, 30, "Input",ExpressionUUID->"f7ce67f2-83ee-42be-9aaf-db97337c810b"],
+Cell[463232, 11821, 182, 4, 28, "Input",ExpressionUUID->"f7ce67f2-83ee-42be-9aaf-db97337c810b"],
 Cell[CellGroupData[{
-Cell[452902, 11559, 191, 4, 45, "Print",ExpressionUUID->"fcf37810-c87d-4920-b620-70309ef8ac70",
+Cell[463439, 11829, 191, 4, 45, "Print",ExpressionUUID->"fcf37810-c87d-4920-b620-70309ef8ac70",
  CellTags->"Info7393764595060-7216313"],
-Cell[453096, 11565, 947, 26, 24, "Print",ExpressionUUID->"2a34dc6c-5d3f-4163-89c7-f4dd2c75b5a0",
+Cell[463633, 11835, 947, 26, 21, "Print",ExpressionUUID->"2a34dc6c-5d3f-4163-89c7-f4dd2c75b5a0",
  CellTags->"Info7393764595060-7216313"]
 }, Open  ]]
 }, Open  ]]
-}, Open  ]]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[454116, 11599, 257, 4, 67, "Section",ExpressionUUID->"0facc155-af89-4723-b8e9-a5a9479d8536"],
-Cell[454376, 11605, 495, 9, 58, "Text",ExpressionUUID->"ebc395c2-7fa1-4e18-bee8-26e92e683ee4"],
-Cell[CellGroupData[{
-Cell[454896, 11618, 696, 14, 30, "Input",ExpressionUUID->"e6b4a867-202b-4b6f-a026-6293100d93ab"],
-Cell[455595, 11634, 808, 17, 20, "Print",ExpressionUUID->"364e5588-3f8f-4bf5-aa70-4e9aed35c295"],
-Cell[456406, 11653, 513, 10, 30, "Output",ExpressionUUID->"d9f80a8f-1f04-4c5f-8297-c1561aeb0416"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[456956, 11668, 181, 3, 30, "Input",ExpressionUUID->"f45e96b5-5e1a-4fc2-a1c1-df4d46fae14e"],
-Cell[457140, 11673, 1049, 18, 48, "Output",ExpressionUUID->"02a44f3e-d96e-43dd-a8f1-ed182e41600f"]
-}, Open  ]],
-Cell[458204, 11694, 655, 11, 58, "Text",ExpressionUUID->"9b83e3ce-9278-468e-b8a1-7dc1a08be68a"],
-Cell[CellGroupData[{
-Cell[458884, 11709, 189, 3, 30, "Input",ExpressionUUID->"8dc5c0ce-d4ea-40ba-9717-91ee2344ad50"],
-Cell[459076, 11714, 1691, 28, 65, "Output",ExpressionUUID->"8e8d4b3f-41d7-472d-86b3-f711043ab133"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[460804, 11747, 462, 10, 30, "Input",ExpressionUUID->"9b7c262c-80b9-43ae-8944-3ee3813f3ff5"],
-Cell[461269, 11759, 313, 7, 30, "Output",ExpressionUUID->"f2b90d79-907e-4cfb-9c78-794c94328aa6"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[461619, 11771, 303, 6, 30, "Input",ExpressionUUID->"19971e07-a0de-484c-8d20-e0ca3562dbfc"],
-Cell[461925, 11779, 114560, 2682, 638, "Output",ExpressionUUID->"697cef2c-1004-4a08-9ead-75c07f4024da"]
-}, Open  ]]
 }, Closed]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[464653, 11869, 257, 4, 67, "Section",ExpressionUUID->"0facc155-af89-4723-b8e9-a5a9479d8536"],
+Cell[464913, 11875, 495, 9, 58, "Text",ExpressionUUID->"ebc395c2-7fa1-4e18-bee8-26e92e683ee4"],
+Cell[CellGroupData[{
+Cell[465433, 11888, 696, 14, 30, "Input",ExpressionUUID->"e6b4a867-202b-4b6f-a026-6293100d93ab"],
+Cell[466132, 11904, 808, 17, 20, "Print",ExpressionUUID->"364e5588-3f8f-4bf5-aa70-4e9aed35c295"],
+Cell[466943, 11923, 513, 10, 30, "Output",ExpressionUUID->"d9f80a8f-1f04-4c5f-8297-c1561aeb0416"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[467493, 11938, 181, 3, 30, "Input",ExpressionUUID->"f45e96b5-5e1a-4fc2-a1c1-df4d46fae14e"],
+Cell[467677, 11943, 1049, 18, 65, "Output",ExpressionUUID->"02a44f3e-d96e-43dd-a8f1-ed182e41600f"]
+}, Open  ]],
+Cell[468741, 11964, 655, 11, 58, "Text",ExpressionUUID->"9b83e3ce-9278-468e-b8a1-7dc1a08be68a"],
+Cell[CellGroupData[{
+Cell[469421, 11979, 189, 3, 30, "Input",ExpressionUUID->"8dc5c0ce-d4ea-40ba-9717-91ee2344ad50"],
+Cell[469613, 11984, 1691, 28, 82, "Output",ExpressionUUID->"8e8d4b3f-41d7-472d-86b3-f711043ab133"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[471341, 12017, 462, 10, 30, "Input",ExpressionUUID->"9b7c262c-80b9-43ae-8944-3ee3813f3ff5"],
+Cell[471806, 12029, 313, 7, 30, "Output",ExpressionUUID->"f2b90d79-907e-4cfb-9c78-794c94328aa6"]
+}, Open  ]],
+Cell[472134, 12039, 303, 6, 30, "Input",ExpressionUUID->"19971e07-a0de-484c-8d20-e0ca3562dbfc"],
+Cell[472440, 12047, 114251, 2658, 634, "Input",ExpressionUUID->"697cef2c-1004-4a08-9ead-75c07f4024da"]
+}, Open  ]]
 }
 ]
 *)
