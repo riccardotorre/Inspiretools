@@ -4,7 +4,7 @@
 (*Inspire Mathematica Interface (just execute all)*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*General functions*)
 
 
@@ -18,18 +18,18 @@ SelectSmallestDate[list_]:=Quiet[Check[Module[{tmp},tmp=N[#]&/@DeleteDuplicates[
 ArXivCat[string_]:=StringReplace[string,RegularExpression["\\.(.*)"]:>""];
 
 
-(* ::Subsection:: *)
-(*Check schema and import sample records to test the interface*)
-
-
 (* ::Text:: *)
-(*Possible URLS appearing in records*)
+(*Possible URLS appearing in records (not needed anymore)*)
 
 
-authorsurls={"https://labs.inspirehep.net/api/authors/","https://inspirehep.net/api/authors/"};
+authorsurls={"https://inspirehep.net/api/authors/"};
 institutionsurls={"https://labs.inspirehep.net/api/institutions/","https://inspirehep.net/api/institutions/"};
 journalsurls={"https://labs.inspirehep.net/api/journals/","https://inspirehep.net/api/journals/"};
 literatureurls ={"https://labs.inspirehep.net/api/literature/","https://inspirehep.net/api/literature/"};
+
+
+(* ::Subsection:: *)
+(*Check schema and import sample records to test the interface*)
 
 
 (* ::Text:: *)
@@ -458,12 +458,14 @@ ExtractHEPAbstract[entry_]:={HEPAbstractsValue[entry][[1]]}/.""->Null;
 ExtractHEPArXivCategories[entry_]:=Flatten@HEPArXivEprintsCategories[entry]/.""->Null;
 ExtractHEPArXivFirstCategory[entry_]:={ExtractHEPArXivCategories[entry][[1]]}/.""->Null;
 ExtractHEPArXivIDs[entry_]:=HEPArXivEprintsValue[entry]/.""->Null;
-ExtractHEPAuthorsAffiliationsIDs[entry_]:=ToExpression/@StringDelete[#,Alternatives@@institutionsurls]&/@HEPAuthorsAffiliationsRecordRef[entry];
+ExtractHEPAuthorsAffiliationsIDs[entry_]:=ToExpression/@Flatten[StringCases[#,DigitCharacter..]/.{}->Null]&/@HEPAuthorsAffiliationsRecordRef[entry];
+(*ExtractHEPAuthorsAffiliationsIDs[entry_]:=ToExpression/@StringDelete[#,Alternatives@@institutionsurls]]&/@HEPAuthorsAffiliationsRecordRef[entry];*)
 ExtractHEPAuthorsAffiliationsNames[entry_]:=HEPAuthorsAffiliationsValue[entry]/.""->Null;
 ExtractHEPAuthorsAll[entry_]:=Transpose@{ExtractHEPAuthorsIDs[entry],(*ExtractHEPAuthorsInspireNames[entry]*)(*(Cases[#,x_\[RuleDelayed]x\[LeftDoubleBracket]2\[RightDoubleBracket]]&/@HEPAuthorsIDsArray[entry])/.{{""}}\[Rule]Null*)HEPAuthorsIDsValue[entry]/.{""}->Null,ExtractHEPAuthorsFullNames[entry],ExtractHEPAuthorsAffiliationsIDs[entry]/.{Null}->Null,ExtractHEPAuthorsAffiliationsNames[entry]/.{Null}->Null};
 ExtractHEPAuthorsCount[entry_]:={HEPNumberOfAuthors[entry]}/. 0->Null;(*to be used with brief JSON*)
 ExtractHEPAuthorsFullNames[entry_]:=HEPAuthorsFullName[entry]/.""->Null;
-ExtractHEPAuthorsIDs[entry_]:=ToExpression[StringDelete[HEPAuthorsRecordRef[entry],Alternatives@@authorsurls]];
+ExtractHEPAuthorsIDs[entry_]:=ToExpression[Flatten[StringCases[HEPAuthorsRecordRef[entry],DigitCharacter..]/.{}->Null]];
+(*ExtractHEPAuthorsIDs[entry_]:=ToExpression[StringDelete[HEPAuthorsRecordRef[entry],Alternatives@@authorsurls]];*)
 ExtractHEPAuthorsInspireNames[entry_]:=(Cases[#,x_/;x[[1]]=="INSPIRE BAI":>x[[2]]]&/@HEPAuthorsIDsArray[entry])/.{}->{Null};
 ExtractHEPCitations[entry_]:={HEPCitations[entry]};
 ExtractHEPCitationsNoSelf[entry_]:={HEPCitationsNoSelf[entry]};
@@ -485,7 +487,8 @@ ExtractHEPInspireCategories[entry_]:=HEPInspireCategoriesTerm[entry]/.""->Null;
 ExtractHEPISBNs[entry_]:=HEPISBNsValue[entry]/.""->Null;
 ExtractHEPJournalArtID[entry_]:={HEPPublicationInfoArtID[entry]}/. ""->Null;
 ExtractHEPJournalDate[entry_]:={HEPPublicationInfoYear[entry]/. ""->{Null}};
-ExtractHEPJournalID[entry_]:={ToExpression[StringDelete[HEPPublicationInfoJournalRecordRef[entry],Alternatives@@journalsurls]]};
+ExtractHEPJournalID[entry_]:={ToExpression[Flatten[StringCases[HEPPublicationInfoJournalRecordRef[entry],DigitCharacter..]/.{}->Null]]};
+(*ExtractHEPJournalID[entry_]:={ToExpression[StringDelete[HEPPublicationInfoJournalRecordRef[entry],Alternatives@@journalsurls]]};*)
 ExtractHEPJournalIssue[entry_]:={HEPPublicationInfoJournalIssue[entry]}/.""->Null;
 ExtractHEPJournalName[entry_]:={HEPPublicationInfoJournalTitle[entry]}/.""->Null;
 ExtractHEPJournalPageEnd[entry_]:={HEPPublicationInfoPageEnd[entry]}/.""->Null;
@@ -496,7 +499,8 @@ ExtractHEPPreprintDate[entry_]:=HEPPreprintDate[entry]/.""->{Null};
 ExtractHEPNumberofPages[entry_]:={HEPNumberOfPages[entry]}/. 0->Null;(*to be used with brief JSON*)
 ExtractHEPNumberofFigures[entry_]:={Length[HEPFiguresArray[entry]/.{{"","","","","",""}}->Null]};
 ExtractHEPPublicationType[entry_]:=HEPPublicationType[entry]/.""->Null;
-ExtractHEPReferences[entry_]:=DeleteCases[ToExpression[StringDelete[DeleteCases[HEPReferencesRecordRef[entry],x_/;StringContainsQ[x,"data"]],Alternatives@@literatureurls]],Null];
+ExtractHEPReferences[entry_]:=DeleteCases[ToExpression[Flatten[StringCases[DeleteCases[HEPReferencesRecordRef[entry],x_/;StringContainsQ[x,"data"]],DigitCharacter..]/.{}->Null]],Null];
+(*ExtractHEPReferences[entry_]:=DeleteCases[ToExpression[StringDelete[DeleteCases[HEPReferencesRecordRef[entry],x_/;StringContainsQ[x,"data"]],Alternatives@@literatureurls]],Null];*)
 ExtractHEPReferencesCount[entry_]:={HEPNumberOfReferences[entry]}; (*to be used with brief JSON*)
 ExtractHEPReferencesCount2[entry_]:={ExtractHEPReferences[entry]//Length};
 ExtractHEPRefereedFlag[entry_]:={HEPRefereed[entry]};
