@@ -63,22 +63,25 @@ ObjectAcquisitionSource=Association[{"datetime"->"","email"->"","internal_uid"->
 ObjectAddress=Association[{"cities"->{""},"country_code"->"","latitude"->0.,"longitude"->0.,"place_name"->"","postal_address"->{""},"postal_code"->"","state"->""}];
 ObjectAdvisors=Association[{"curated_relation"->False,"degree_type"->"","ids"->{ObjectID},"name"->"","record"->ObjectJSONReference}];
 ObjectAffiliations=Association[{"curated_relation"->False,"record"->ObjectJSONReference,"value"->""}];
+ObjectAffiliationsIdentifiers=Association[{"schema"->"","value"->""}];
 ObjectArXivEprint=Association[{"categories"->{""},"value"->""}];
-ObjectAuthors=Association[{"affiliations"->{ObjectAffiliations},"alternative_names"->{""},"credit_roles"->{""},"curated_relation"->False,"emails"->{""},"full_name"->"","ids"->{ObjectID},"inspire_roles"->"","raw_affiliations"->{ObjectSourcedValue},"record"->ObjectJSONReference,"signature_block"->"","uuid"->""}];
+ObjectAuthors=Association[{"affiliations"->{ObjectAffiliations},"affiliations_identifiers"->{ObjectAffiliationsIdentifiers},"alternative_names"->{""},
+											"credit_roles"->{""},"curated_relation"->False,"emails"->{""},"full_name"->"","ids"->{ObjectID},"inspire_roles"->{""},
+											"raw_affiliations"->{ObjectSourcedValue},"record"->ObjectJSONReference,"signature_block"->"","uuid"->""}];
 ObjectAwards=Association[{"name"->"","url"->ObjectURL,"year"->0}];
 ObjectBookSeries=Association[{"title"->"","volume"->""}];
 ObjectCollaborations=Association[{"record"->ObjectJSONReference,"value"->""}];
 ObjectCopyright=Association[{"holder"->"","material"->"","statement"->"","url"->"","year"->0}];
 ObjectDESYBookkeeping=Association[{"date"->"","expert"->"","identifier"->"","status"->""}];
-ObjectDocument=Association[{"description"->"","fulltext"->False,"hidden"->False,"key"->"","material"->"","original_url"->"","source"->"","url"->""}];
+ObjectDocument=Association[{"description"->"","filename"->False,"fulltext"->False,"hidden"->False,"key"->"","material"->"","original_url"->"","source"->"","url"->""}];
 ObjectDOI=Association[{"material"->"","source"->"","value"->""}];
 ObjectEmailAddress=Association[{"current"->False,"hidden"->False,"value"->""}];
 ObjectExportTo=Association[{"CDS"->False,"HAL"->False}];
-ObjectFigure=Association[{"caption"->"","key"->"","label"->"","material"->"","source"->"","url"->""}];
+ObjectFigure=Association[{"caption"->"","filename"->"","key"->"","label"->"","material"->"","original_url"->"","source"->"","url"->""}];
 ObjectFundingInfo=Association[{"agency"->"","grant_number"->"","project_number"->""}];
 ObjectHarvestingInfo=Association[{"coverage"->"","date_last_harvest"->"","last_seen_item"->"","method"->""}];
 ObjectID=Association[{"schema"->"","value"->""}];
-ObjectImprint=Association[{"date"->"","place"->"","publisher"->""}];
+ObjectImprints=Association[{"date"->"","place"->"","publisher"->""}];
 ObjectInspireField=Association[{"source"->"","term"->""}];
 ObjectInstitution=Association[{"curated_relation"->False,"name"->"","record"->ObjectJSONReference}];
 ObjectInstitutionHierarchy=Association[{"acronym"->"","name"->""}];
@@ -92,13 +95,85 @@ ObjectName=Association[{"name_variants"->{""},"native_names"->{""},"numeration"-
 ObjectPersistentIdentifier=Association[{"material"->"","schema"->"","source"->"","value"->""}];
 ObjectPosition=Association[{"curated_relation"->False,"current"->False,"end_date"->"","institution"->"","rank"->"","record"->ObjectJSONReference,"start_date"->""}];
 ObjectProjectMembership=Association[{"curated_relation"->False,"current"->False,"end_date"->"","name"->"","record"->ObjectJSONReference,"start_date"->""}];
-ObjectPublicationInfo=Association[{"artid"->"","cnum"->"","conf_acronym"->"","conference_record"->ObjectJSONReference,"curated_relation"->False,"hidden"->"","journal_issue"->"","journal_record"->ObjectJSONReference,"journal_title"->"","journal_volume"->"","material"->"","page_end"->"","page_start"->"","parent_isbn"->"","parent_record"->ObjectJSONReference,"parent_report_number"->"","pubinfo_freetext"->"","year"->0}];
+ObjectPublicationInfo=Association[{"artid"->"","cnum"->"","conf_acronym"->"","conference_record"->ObjectJSONReference,"curated_relation"->False,
+									"hidden"->False,"journal_issue"->"","journal_record"->ObjectJSONReference,"journal_title"->"","journal_volume"->"",
+									"material"->"","page_end"->"","page_start"->"","parent_isbn"->"","parent_record"->ObjectJSONReference,
+									"parent_report_number"->"","pubinfo_freetext"->"","year"->0}];
 ObjectRawRefs=Association[{"schema"->"","source"->"","value"->""}];
-ObjectRecordsFiles=Association[{"bucket"->"","checksum"->"","key"->"","size"->0,"version_id"->""}];
-ObjectReferences=Association[{"curated_relation"->False,"legacy_curated"->"","raw_refs"->"","record"->ObjectJSONReference,"reference"->""}];
-ObjectReference=Association[{"arxiv_eprint"->"","authors"->{ObjectReferenceAuthors},"book_series"->ObjectBookSeries,"collaborations"->{""},"document_type"->"","dois"->{""},"external_system_identifiers"->{ObjectID},"imprint"->ObjectImprint,"isbn"->"","label"->"","misc"->{""},"persistent_identifiers"->{ObjectID},"publication_info"->ObjectReferencePublicationInfo,"report_numbers"->{""},"texkey"->"","title"->ObjectTitle,"urls"->ObjectURL}];
+ObjectRecordsFiles=Association[{"bucket"->"","checksum"->"","file_id"->"","filename"->"","key"->"","size"->0,"version_id"->""}];
+ObjectReferences=Association[{"curated_relation"->False,"legacy_curated"->False,"raw_refs"->{ObjectRawRefs},"record"->ObjectJSONReference,"reference"->ObjectReference}];
+ObjectReference=Association[{"arxiv_eprint"->"","authors"->{ObjectReferenceAuthors},"book_series"->ObjectBookSeries,"collaborations"->{""},"document_type"->"","dois"->{""},
+								"external_system_identifiers"->{ObjectID},"imprint"->ObjectImprints,"isbn"->"","label"->"","misc"->{""},"persistent_identifiers"->{ObjectID},
+								"publication_info"->ObjectReferencePublicationInfo,"report_numbers"->{""},"texkey"->"","title"->ObjectTitle,"urls"->ObjectURL}];
 ObjectReferenceAuthors=Association[{"full_name"->"","inspire_role"->""}];
-ObjectReferencePublicationInfo=Association[{"artid"->"","cnum"->"","journal_issue"->"","journal_record"->ObjectJSONReference,"journal_title"->"","journal_volume"->"","material"->"","page_end"->"","page_start"->"","parent_isbn"->"","parent_report_number"->"","parent_title"->"","year"->0}];
+ObjectReferencePublicationInfo=Association[{"artid"->"","cnum"->"","journal_issue"->"","journal_record"->ObjectJSONReference,"journal_title"->"","journal_volume"->"",
+											"material"->"","page_end"->"","page_start"->"","parent_isbn"->"","parent_report_number"->"","parent_title"->"","year"->0}];
+ObjectRelatedRecord=Association[{"curated_relation"->False,"record"->ObjectJSONReference,"relation"->"","relation_freetext"->""}];
+ObjectReportNumber=Association[{"hidden"->False,"source"->"","value"->""}];
+ObjectSourcedValue=Association[{"source"->"","value"->""}];
+ObjectThesisInfo=Association[{"date"->"","defense_date"->"","degree_type"->"","institutions"->{ObjectInstitution}}];
+ObjectTitle=Association[{"source"->"","subtitle"->"","title"->""}];
+ObjectTitleTranslation=Association[{"language"->"","source"->"","subtitle"->"","title"->""}];
+ObjectURL=Association[{"description"->"","value"->""}];
+
+
+ObjectAcceleratorExperimentsLegend[n_]:=Association[{"accelerator"->"accelerator_"<>ToString[n],"curated_relation"->"curated_relation_"<>ToString[n],
+														"experiment"->"experiment_"<>ToString[n],"institution"->"institution_<>ToString[n]",
+														"legacy_name"->"legacy_name_"<>ToString[n],"record"->ObjectJSONReferenceLegend[n]}];
+ObjectAcquisitionSourceLegend[n_]:=Association[{"datetime"->"datetime_"<>ToString[n],"email"->"email_"<>ToString[n],"internal_uid"->"internal_uid_"<>ToString[n],
+												"method"->"method_"<>ToString[n],"orcid"->"orcid_"<>ToString[n],"source"->"source_"<>ToString[n],
+												"submission_number"->"submission_number_"<>ToString[n]}];
+ObjectAddressLegend[n_]:=Association[{"cities"->{"city_"<>ToString[n]<>"_1","city_"<>ToString[n]<>"_2"},"country_code"->"country_code_"<>ToString[n],
+										"latitude"->"latitude_"<>ToString[n],"longitude"->"longitude_"<>ToString[n],"place_name"->"place_name_"<>ToString[n],
+										"postal_address"->{"postal_address_"<>ToString[n]<>"_1","postal_address_"<>ToString[n]<>"_2"},
+										"postal_code"->"postal_code_"<>ToString[n],"state"->"state_"<>ToString[n]}];
+ObjectAdvisorsLegend[n_]:=Association[{"curated_relation"->"curated_relation_"<>ToString[n],"degree_type"->"degree_type","ids"->{ObjectIDLegend},"name"->"","record"->ObjectJSONReference}];
+ObjectAffiliations=Association[{"curated_relation"->False,"record"->ObjectJSONReference,"value"->""}];
+ObjectAffiliationsIdentifiers=Association[{"schema"->"","value"->""}];
+ObjectArXivEprint=Association[{"categories"->{""},"value"->""}];
+ObjectAuthors=Association[{"affiliations"->{ObjectAffiliations},"affiliations_identifiers"->{ObjectAffiliationsIdentifiers},"alternative_names"->{""},
+											"credit_roles"->{""},"curated_relation"->False,"emails"->{""},"full_name"->"","ids"->{ObjectID},"inspire_roles"->{""},
+											"raw_affiliations"->{ObjectSourcedValue},"record"->ObjectJSONReference,"signature_block"->"","uuid"->""}];
+ObjectAwards=Association[{"name"->"","url"->ObjectURL,"year"->0}];
+ObjectBookSeries=Association[{"title"->"","volume"->""}];
+ObjectCollaborations=Association[{"record"->ObjectJSONReference,"value"->""}];
+ObjectCopyright=Association[{"holder"->"","material"->"","statement"->"","url"->"","year"->0}];
+ObjectDESYBookkeeping=Association[{"date"->"","expert"->"","identifier"->"","status"->""}];
+ObjectDocument=Association[{"description"->"","filename"->False,"fulltext"->False,"hidden"->False,"key"->"","material"->"","original_url"->"","source"->"","url"->""}];
+ObjectDOI=Association[{"material"->"","source"->"","value"->""}];
+ObjectEmailAddress=Association[{"current"->False,"hidden"->False,"value"->""}];
+ObjectExportTo=Association[{"CDS"->False,"HAL"->False}];
+ObjectFigure=Association[{"caption"->"","filename"->"","key"->"","label"->"","material"->"","original_url"->"","source"->"","url"->""}];
+ObjectFundingInfo=Association[{"agency"->"","grant_number"->"","project_number"->""}];
+ObjectHarvestingInfo=Association[{"coverage"->"","date_last_harvest"->"","last_seen_item"->"","method"->""}];
+ObjectID=Association[{"schema"->"","value"->""}];
+ObjectImprints=Association[{"date"->"","place"->"","publisher"->""}];
+ObjectInspireField=Association[{"source"->"","term"->""}];
+ObjectInstitution=Association[{"curated_relation"->False,"name"->"","record"->ObjectJSONReference}];
+ObjectInstitutionHierarchy=Association[{"acronym"->"","name"->""}];
+ObjectISBN=Association[{"medium"->"","value"->""}];
+ObjectISSN=Association[{"medium"->"","value"->""}];
+ObjectJSONReference=Association[{"$ref"->""}];
+ObjectKeyword=Association[{"schema"->"","source"->"","value"->""}];
+ObjectLicense=Association[{"imposing"->"","license"->"","material"->"","url"->""}];
+ObjectLicenseJournal=Association[{"license"->"","url"->""}];
+ObjectName=Association[{"name_variants"->{""},"native_names"->{""},"numeration"->"","preferred_name"->"","previous_names"->{""},"title"->"","value"->""}];
+ObjectPersistentIdentifier=Association[{"material"->"","schema"->"","source"->"","value"->""}];
+ObjectPosition=Association[{"curated_relation"->False,"current"->False,"end_date"->"","institution"->"","rank"->"","record"->ObjectJSONReference,"start_date"->""}];
+ObjectProjectMembership=Association[{"curated_relation"->False,"current"->False,"end_date"->"","name"->"","record"->ObjectJSONReference,"start_date"->""}];
+ObjectPublicationInfo=Association[{"artid"->"","cnum"->"","conf_acronym"->"","conference_record"->ObjectJSONReference,"curated_relation"->False,
+									"hidden"->False,"journal_issue"->"","journal_record"->ObjectJSONReference,"journal_title"->"","journal_volume"->"",
+									"material"->"","page_end"->"","page_start"->"","parent_isbn"->"","parent_record"->ObjectJSONReference,
+									"parent_report_number"->"","pubinfo_freetext"->"","year"->0}];
+ObjectRawRefs=Association[{"schema"->"","source"->"","value"->""}];
+ObjectRecordsFiles=Association[{"bucket"->"","checksum"->"","file_id"->"","filename"->"","key"->"","size"->0,"version_id"->""}];
+ObjectReferences=Association[{"curated_relation"->False,"legacy_curated"->False,"raw_refs"->{ObjectRawRefs},"record"->ObjectJSONReference,"reference"->ObjectReference}];
+ObjectReference=Association[{"arxiv_eprint"->"","authors"->{ObjectReferenceAuthors},"book_series"->ObjectBookSeries,"collaborations"->{""},"document_type"->"","dois"->{""},
+								"external_system_identifiers"->{ObjectID},"imprint"->ObjectImprints,"isbn"->"","label"->"","misc"->{""},"persistent_identifiers"->{ObjectID},
+								"publication_info"->ObjectReferencePublicationInfo,"report_numbers"->{""},"texkey"->"","title"->ObjectTitle,"urls"->ObjectURL}];
+ObjectReferenceAuthors=Association[{"full_name"->"","inspire_role"->""}];
+ObjectReferencePublicationInfo=Association[{"artid"->"","cnum"->"","journal_issue"->"","journal_record"->ObjectJSONReference,"journal_title"->"","journal_volume"->"",
+											"material"->"","page_end"->"","page_start"->"","parent_isbn"->"","parent_report_number"->"","parent_title"->"","year"->0}];
 ObjectRelatedRecord=Association[{"curated_relation"->False,"record"->ObjectJSONReference,"relation"->"","relation_freetext"->""}];
 ObjectReportNumber=Association[{"hidden"->False,"source"->"","value"->""}];
 ObjectSourcedValue=Association[{"source"->"","value"->""}];
@@ -112,7 +187,7 @@ ObjectURL=Association[{"description"->"","value"->""}];
 (*HEP records*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Schema: HEP records*)
 
 
@@ -120,43 +195,66 @@ ObjectURL=Association[{"description"->"","value"->""}];
 (*Literature: Functions to extract all necessary information from each JSON entry (exact replica of Inspire Schema)*)
 
 
-HEPSchema[entry_]:=entry[["metadata","$schema"]]/.Missing["KeyAbsent",x__]:>"";
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#schema*)
+HEPSchema[entry_]:=entry[["metadata","$schema"]]/.Missing["KeyAbsent",x__]:>""; 
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#bucket*)
+HEPBucket[entry_]:=entry[["metadata","_bucket"]]/.Missing["KeyAbsent",x__]:>"";
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#collections*)
 HEPCollections[entry_]:=entry[["metadata","_collections"]]/.Missing["KeyAbsent",x__]:>{""};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#desy-bookkeeping*)
 HEPDESYBookkeeping[entry_]:=Module[{tmp},tmp=entry[["metadata","_desy_bookkeeping"]];If[Not@StringContainsQ[ToString[tmp],"Missing"],tmp,{ObjectDESYBookkeeping}]];
 	HEPDESYBookkeepingDate[entry_]:=(#[["date"]]&/@HEPDESYBookkeeping[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPDESYBookkeepingExpert[entry_]:=(#[["expert"]]&/@HEPDESYBookkeeping[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPDESYBookkeepingIdentifier[entry_]:=(#[["identifier"]]&/@HEPDESYBookkeeping[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPDESYBookkeepingStatus[entry_]:=(#[["status"]]&/@HEPDESYBookkeeping[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPDESYBookkeepingArray[entry_]:=Transpose@{HEPDESYBookkeepingDate[entry],HEPDESYBookkeepingExpert[entry],HEPDESYBookkeepingIdentifier[entry],HEPDESYBookkeepingStatus[entry]};
+		HEPDESYBookkeepingArray[entry_]:=Transpose@{HEPDESYBookkeepingDate[entry],HEPDESYBookkeepingExpert[entry],HEPDESYBookkeepingIdentifier[entry],HEPDESYBookkeepingStatus[entry]};
+		
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#export-to*)
 HEPExportTo[entry_]:=entry[["metadata","_export_to"]]/.Missing["KeyAbsent",x__]:>ObjectExportTo;
 	HEPExportToCDS[entry_]:=HEPExportTo[entry][["CDS"]]/.Missing["KeyAbsent",x__]:>False;
 	HEPExportToHAL[entry_]:=HEPExportTo[entry][["HAL"]]/.Missing["KeyAbsent",x__]:>False;
-	HEPExportToArray[entry_]:={HEPExportToCDS[entry],HEPExportToHAL[entry]};
+		HEPExportToArray[entry_]:={HEPExportToCDS[entry],HEPExportToHAL[entry]};
+		
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#files*)
 HEPFiles[entry_]:=entry[["metadata","_files"]]/.Missing["KeyAbsent",x__]:>{ObjectRecordsFiles};
 	HEPFilesBucket[entry_]:=(#[["bucket"]]&/@HEPFiles[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPFilesChecksum[entry_]:=(#[["checksum"]]&/@HEPFiles[entry])/.Missing["KeyAbsent",x__]:>"";
+	HEPFilesFileID[entry_]:=(#[["file_id"]]&/@HEPFiles[entry])/.Missing["KeyAbsent",x__]:>"";
+	HEPFilesFilename[entry_]:=(#[["filename"]]&/@HEPFiles[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPFilesKey[entry_]:=(#[["key"]]&/@HEPFiles[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPFilesSize[entry_]:=(#[["size"]]&/@HEPFiles[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPFilesVersionID[entry_]:=(#[["version_id"]]&/@HEPFiles[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPFilesArray[entry_]:=Transpose@{HEPFilesBucket[entry],HEPFilesChecksum[entry],HEPFilesKey[entry],HEPFilesSize[entry],HEPFilesVersionID[entry]};
+		HEPFilesArray[entry_]:=Transpose@{HEPFilesBucket[entry],HEPFilesChecksum[entry],HEPFilesFileID[entry],HEPFilesFilename[entry],HEPFilesKey[entry],HEPFilesSize[entry],HEPFilesVersionID[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#private-notes*)
 HEPPrivateNotes[entry_]:=entry[["metadata","_private_notes"]]/.Missing["KeyAbsent",x__]:>{ObjectSourcedValue};
 	HEPPrivateNotesSource[entry_]:=(#[["source"]]&/@HEPPrivateNotes[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPrivateNotesValue[entry_]:=(#[["value"]]&/@HEPPrivateNotes[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPPrivateNotesArray[entry_]:=Transpose@{HEPPrivateNotesSource[entry],HEPPrivateNotesValue[entry]};
+		HEPPrivateNotesArray[entry_]:=Transpose@{HEPPrivateNotesSource[entry],HEPPrivateNotesValue[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#abstracts*)
 HEPAbstracts[entry_]:=entry[["metadata","abstracts"]]/.Missing["KeyAbsent",x__]:>{ObjectSourcedValue};
 	HEPAbstractsSource[entry_]:=(#[["source"]]&/@HEPAbstracts[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPAbstractsValue[entry_]:=(#[["value"]]&/@HEPAbstracts[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPAbstractsArray[entry_]:=Transpose@{HEPAbstractsSource[entry],HEPAbstractsValue[entry]};
-	(*HEPAbstractsFirstAbstract[entry_]:=HEPAbstractsValue[entry]\[LeftDoubleBracket]1\[RightDoubleBracket];*)
+		HEPAbstractsArray[entry_]:=Transpose@{HEPAbstractsSource[entry],HEPAbstractsValue[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#accelerator-experiments*)
 HEPAcceleratorExperiments[entry_]:=entry[["metadata","accelerator_experiments"]]/.Missing["KeyAbsent",x__]:>{ObjectAcceleratorExperiments};
 	HEPAcceleratorExperimentsAccelerator[entry_]:=(#[["accelerator"]]&/@HEPAcceleratorExperiments[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPAcceleratorExperimentsCuratedRelation[entry_]:=(#[["curated_relation"]]&/@HEPAcceleratorExperiments[entry])/.Missing["KeyAbsent",x__]:>False;
+	HEPAcceleratorExperimentsCuratedRelation[entry_]:=(#[["curated_relation"]]&/@HEPAcceleratorExperiments[entry])/.Missing["KeyAbsent",x__]:>False;
 	HEPAcceleratorExperimentsExperiment[entry_]:=(#[["experiment"]]&/@HEPAcceleratorExperiments[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPAcceleratorExperimentsInstitution[entry_]:=(#[["institution"]]&/@HEPAcceleratorExperiments[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPAcceleratorExperimentsLegacyName[entry_]:=(#[["legacy_name"]]&/@HEPAcceleratorExperiments[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPAcceleratorExperimentsRecord[entry_]:=(#[["record"]]&/@HEPAcceleratorExperiments[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
-		HEPAcceleratorExperimentsRecordRef[entry_]:=#[["$ref"]]&/@HEPAcceleratorExperimentsRecord[entry]/.Missing["KeyAbsent",x__]:>"";
-HEPAcceleratorExperimentsArray[entry_]:=Transpose@{HEPAcceleratorExperimentsAccelerator[entry],HEPAcceleratorExperimentsCuratedRelation[entry],HEPAcceleratorExperimentsExperiment[entry],HEPAcceleratorExperimentsInstitution[entry],HEPAcceleratorExperimentsLegacyName[entry],HEPAcceleratorExperimentsRecordRef[entry]};
+	HEPAcceleratorExperimentsRecordRef[entry_]:=#[["$ref"]]&/@HEPAcceleratorExperimentsRecord[entry]/.Missing["KeyAbsent",x__]:>"";
+		HEPAcceleratorExperimentsArray[entry_]:=Transpose@{HEPAcceleratorExperimentsAccelerator[entry],HEPAcceleratorExperimentsCuratedRelation[entry],
+															HEPAcceleratorExperimentsExperiment[entry],HEPAcceleratorExperimentsInstitution[entry],
+															HEPAcceleratorExperimentsLegacyName[entry],HEPAcceleratorExperimentsRecordRef[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#acquisition-source*)
 HEPAcquisitionSource[entry_]:=entry[["metadata","acquisition_source"]]/.Missing["KeyAbsent",x__]:>ObjectAcquisitionSource;
 	HEPAcquisitionSourceDateTime[entry_]:=HEPAcquisitionSource[entry][["datetime"]]/.Missing["KeyAbsent",x__]:>"";
 	HEPAcquisitionSourceEmail[entry_]:=HEPAcquisitionSource[entry][["email"]]/.Missing["KeyAbsent",x__]:>"";
@@ -165,18 +263,25 @@ HEPAcquisitionSource[entry_]:=entry[["metadata","acquisition_source"]]/.Missing[
 	HEPAcquisitionSourceORCID[entry_]:=HEPAcquisitionSource[entry][["orcid"]]/.Missing["KeyAbsent",x__]:>"";
 	HEPAcquisitionSourceSource[entry_]:=HEPAcquisitionSource[entry][["source"]]/.Missing["KeyAbsent",x__]:>"";	
 	HEPAcquisitionSourceSubmissionNumber[entry_]:=HEPAcquisitionSource[entry][["submission_number"]]/.Missing["KeyAbsent",x__]:>"";
-HEPAcquisitionSourceArray[entry_]:={HEPAcquisitionSourceDateTime[entry],HEPAcquisitionSourceEmail[entry],HEPAcquisitionSourceInternalUID[entry],HEPAcquisitionSourceMethod[entry],HEPAcquisitionSourceORCID[entry],HEPAcquisitionSourceSource[entry],HEPAcquisitionSourceSubmissionNumber[entry]};
+		HEPAcquisitionSourceArray[entry_]:={HEPAcquisitionSourceDateTime[entry],HEPAcquisitionSourceEmail[entry],
+											HEPAcquisitionSourceInternalUID[entry],HEPAcquisitionSourceMethod[entry],
+											HEPAcquisitionSourceORCID[entry],HEPAcquisitionSourceSource[entry],
+											HEPAcquisitionSourceSubmissionNumber[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#arxiv-eprints*)
 HEPArXivEprints[entry_]:=entry[["metadata","arxiv_eprints"]]/.Missing["KeyAbsent",x__]:>{ObjectArXivEprint};
 	HEPArXivEprintsCategories[entry_]:=(#[["categories"]]&/@HEPArXivEprints[entry])/.Missing["KeyAbsent",x__]:>{""};
 	HEPArXivEprintsValue[entry_]:=(#[["value"]]&/@HEPArXivEprints[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPArXivEprintsArray[entry_]:=Transpose@{HEPArXivEprintsCategories[entry],HEPArXivEprintsValue[entry]};
+		HEPArXivEprintsArray[entry_]:=Transpose@{HEPArXivEprintsCategories[entry],HEPArXivEprintsValue[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#authors*)
 HEPAuthors[entry_]:=entry[["metadata","authors"]]/.Missing["KeyAbsent",x__]:>{ObjectAuthors};
 	HEPAuthorsAffiliations[entry_]:=(#[["affiliations"]]&/@HEPAuthors[entry])/.Missing["KeyAbsent",x__]:>{ObjectAffiliations};
-HEPAuthorsAffiliationsCuratedRelation[entry_]:=((#[["curated_relation"]]&/@#)&/@HEPAuthorsAffiliations[entry])/.Missing["KeyAbsent",x__]:>False;
-HEPAuthorsAffiliationsRecord[entry_]:=((#[["record"]]&/@#)&/@HEPAuthorsAffiliations[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
-			HEPAuthorsAffiliationsRecordRef[entry_]:=((#[["$ref"]]&/@#)&/@HEPAuthorsAffiliationsRecord[entry])/.Missing["KeyAbsent",x__]:>"";
+		HEPAuthorsAffiliationsCuratedRelation[entry_]:=((#[["curated_relation"]]&/@#)&/@HEPAuthorsAffiliations[entry])/.Missing["KeyAbsent",x__]:>False;
+		HEPAuthorsAffiliationsRecord[entry_]:=((#[["record"]]&/@#)&/@HEPAuthorsAffiliations[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
+		HEPAuthorsAffiliationsRecordRef[entry_]:=((#[["$ref"]]&/@#)&/@HEPAuthorsAffiliationsRecord[entry])/.Missing["KeyAbsent",x__]:>"";
 		HEPAuthorsAffiliationsValue[entry_]:=((#[["value"]]&/@#)&/@HEPAuthorsAffiliations[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPAuthorsAffiliationsArray[entry_]:=(({#[["curated_relation"]]/.Missing["KeyAbsent",x__]:>False,(#[["record"]]/.Missing["KeyAbsent",x__]:>ObjectJSONReference)[["$ref"]]/.Missing["KeyAbsent",x__]:>"",#[["value"]]/.Missing["KeyAbsent",x__]:>""}&/@#)&/@HEPAuthorsAffiliations[entry]);
+			HEPAuthorsAffiliationsArray[entry_]:=Transpose@{HEPAuthorsAffiliationsCuratedRelation[entry],HEPAuthorsAffiliationsRecordRef[entry],HEPAuthorsAffiliationsValue[entry]};
 	HEPAuthorsAlternativeNames[entry_]:=(#[["alternative_names"]]&/@HEPAuthors[entry])/.Missing["KeyAbsent",x__]:>{""};
 	HEPAuthorsCreditRoles[entry_]:=(#[["credit_roles"]]&/@HEPAuthors[entry])/.Missing["KeyAbsent",x__]:>{""};
 	HEPAuthorsCuratedRelation[entry_]:=(#[["curated_relation"]]&/@HEPAuthors[entry])/.Missing["KeyAbsent",x__]:>False;
@@ -185,45 +290,78 @@ HEPAuthorsAffiliationsArray[entry_]:=(({#[["curated_relation"]]/.Missing["KeyAbs
 	HEPAuthorsIDs[entry_]:=(#[["ids"]]&/@HEPAuthors[entry])/.Missing["KeyAbsent",x__]:>{ObjectID};
 		HEPAuthorsIDsSchema[entry_]:=((#[["schema"]]&/@#)&/@HEPAuthorsIDs[entry])/.Missing["KeyAbsent",x__]:>"";
 		HEPAuthorsIDsValue[entry_]:=((#[["value"]]&/@#)&/@HEPAuthorsIDs[entry])/.Missing["KeyAbsent",x__]:>"";
-		HEPAuthorsIDsArray[entry_]:=(({#[["schema"]],#[["value"]]}&/@#)&/@HEPAuthorsIDs[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPAuthorsInspireRoles[entry_]:=(#[["inspire_roles"]]&/@HEPAuthors[entry])/.Missing["KeyAbsent",x__]:>"";
+			HEPAuthorsIDsArray[entry_]:=Transpose@{HEPAuthorsIDsSchema[entry],HEPAuthorsIDsValue[entry]};
+	HEPAuthorsInspireRoles[entry_]:=(#[["inspire_roles"]]&/@HEPAuthors[entry])/.Missing["KeyAbsent",x__]:>{""};
 	HEPAuthorsRawAffiliations[entry_]:=(#[["raw_affiliations"]]&/@HEPAuthors[entry])/.Missing["KeyAbsent",x__]:>{ObjectSourcedValue};
 		HEPAuthorsRawAffiliationsSource[entry_]:=((#[["source"]]&/@#)&/@HEPAuthorsRawAffiliations[entry])/.Missing["KeyAbsent",x__]:>"";
 		HEPAuthorsRawAffiliationsValue[entry_]:=((#[["value"]]&/@#)&/@HEPAuthorsRawAffiliations[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPAuthorsRawAffiliationsArray[entry_]:=(({#[["source"]],#[["value"]]}&/@#)&/@HEPAuthorsRawAffiliations[entry])/.Missing["KeyAbsent",x__]:>"";
+			HEPAuthorsRawAffiliationsArray[entry_]:=Transpose@{HEPAuthorsRawAffiliationsSource[entry],HEPAuthorsRawAffiliationsValue[entry]};
 	HEPAuthorsRecord[entry_]:=(#[["record"]]&/@HEPAuthors[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
-		HEPAuthorsRecordRef[entry_]:=#[["$ref"]]&/@HEPAuthorsRecord[entry]/.Missing["KeyAbsent",x__]:>"";
+	HEPAuthorsRecordRef[entry_]:=#[["$ref"]]&/@HEPAuthorsRecord[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPAuthorsSignatureBlock[entry_]:=(#[["signature_block"]]&/@HEPAuthors[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPAuthorsUUID[entry_]:=(#[["uuid"]]&/@HEPAuthors[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPAuthorsArray[entry_]:=Transpose@{HEPAuthorsAffiliationsArray[entry],HEPAuthorsAlternativeNames[entry],HEPAuthorsCreditRoles[entry],HEPAuthorsCuratedRelation[entry],HEPAuthorsEmails[entry],HEPAuthorsFullName[entry],HEPAuthorsIDsArray[entry],HEPAuthorsInspireRoles[entry],HEPAuthorsRawAffiliationsArray[entry],HEPAuthorsRecordRef[entry],HEPAuthorsSignatureBlock[entry],HEPAuthorsUUID[entry]};
+		HEPAuthorsArray[entry_]:=Transpose@{HEPAuthorsAffiliationsArray[entry],HEPAuthorsAlternativeNames[entry],HEPAuthorsCreditRoles[entry],
+											HEPAuthorsCuratedRelation[entry],HEPAuthorsEmails[entry],HEPAuthorsFullName[entry],HEPAuthorsIDsArray[entry],
+											HEPAuthorsInspireRoles[entry],HEPAuthorsRawAffiliationsArray[entry],HEPAuthorsRecordRef[entry],
+											HEPAuthorsSignatureBlock[entry],HEPAuthorsUUID[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#book-series*)
 HEPBookSeries[entry_]:=entry[["metadata","book_series"]]/.Missing["KeyAbsent",x__]:>{ObjectBookSeries};
 	HEPBookSeriesTitle[entry_]:=(#[["title"]]&/@HEPBookSeries[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPBookSeriesVolume[entry_]:=(#[["volume"]]&/@HEPBookSeries[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPBookSeriesArray[entry_]:=Transpose@{HEPBookSeriesTitle[entry],HEPBookSeriesVolume[entry]};
-HEPCitations[entry_]:=entry[["metadata","citation_count"]]/.Missing["KeyAbsent",x__]:>True;
-HEPCitationsNoSelf[entry_]:=entry[["metadata","citation_count_without_self_citations"]]/.Missing["KeyAbsent",x__]:>True;
-HEPCiteable[entry_]:=entry[["metadata","citeable"]]/.Missing["KeyAbsent",x__]:>True;
+		HEPBookSeriesArray[entry_]:=Transpose@{HEPBookSeriesTitle[entry],HEPBookSeriesVolume[entry]};
+	
+(*Unknown*)
+HEPCitations[entry_]:=entry[["metadata","citation_count"]]/.Missing["KeyAbsent",x__]:>-1;
+
+(*Unknown*)
+HEPCitationsNoSelf[entry_]:=entry[["metadata","citation_count_without_self_citations"]]/.Missing["KeyAbsent",x__]:>-1;
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#citeable*)
+HEPCiteable[entry_]:=entry[["metadata","citeable"]]/.Missing["KeyAbsent",x__]:>False;
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#collaborations*)
 HEPCollaborations[entry_]:=entry[["metadata","collaborations"]]/.Missing["KeyAbsent",x__]:>{ObjectCollaborations};
 	HEPCollaborationsRecord[entry_]:=(#[["record"]]&/@HEPCollaborations[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
-		HEPCollaborationsRecordRef[entry_]:=#[["$ref"]]&/@HEPCollaborationsRecord[entry]/.Missing["KeyAbsent",x__]:>"";
+	HEPCollaborationsRecordRef[entry_]:=#[["$ref"]]&/@HEPCollaborationsRecord[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPCollaborationsValue[entry_]:=(#[["value"]]&/@HEPCollaborations[entry])/.Missing["c",x__]:>"";
-	HEPCollaborationsArray[entry_]:=Transpose@{HEPCollaborationsRecordRef[entry],HEPCollaborationsValue[entry]};
-HEPControlNumber[entry_]:=entry[["metadata","control_number"]]/.Missing["KeyAbsent",x__]:>0;
+		HEPCollaborationsArray[entry_]:=Transpose@{HEPCollaborationsRecordRef[entry],HEPCollaborationsValue[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#control-number*)
+HEPControlNumber[entry_]:=entry[["metadata","control_number"]]/.Missing["KeyAbsent",x__]:>-1;
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#copyright*)
 HEPCopyright[entry_]:=entry[["metadata","copyright"]]/.Missing["KeyAbsent",x__]:>{ObjectCopyright};
 	HEPCopyrightHolder[entry_]:=(#[["holder"]]&/@HEPCopyright[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPCopyrightMaterial[entry_]:=(#[["material"]]&/@HEPCopyright[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPCopyrightStatement[entry_]:=(#[["state,emt"]]&/@HEPCopyright[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPCopyrightURL[entry_]:=(#[["url"]]&/@HEPCopyright[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPCopyrightYear[entry_]:=(#[["year"]]&/@HEPCopyright[entry])/.Missing["KeyAbsent",x__]:>0;	HEPCopyrightArray[entry_]:=Transpose@{HEPCopyrightHolder[entry],HEPCopyrightMaterial[entry],HEPCopyrightStatement[entry],HEPCopyrightURL[entry],HEPCopyrightYear[entry]};
+	HEPCopyrightYear[entry_]:=(#[["year"]]&/@HEPCopyright[entry])/.Missing["KeyAbsent",x__]:>0;	
+		HEPCopyrightArray[entry_]:=Transpose@{HEPCopyrightHolder[entry],HEPCopyrightMaterial[entry],HEPCopyrightStatement[entry],HEPCopyrightURL[entry],HEPCopyrightYear[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#core*)
 HEPCore[entry_]:=entry[["metadata","core"]]/.Missing["KeyAbsent",x__]:>False;
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#corporate-author*)
 HEPCorporateAuthor[entry_]:=entry[["metadata","corporate_author"]]/.Missing["KeyAbsent",x__]:>{""};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#curated*)
 HEPCurated[entry_]:=entry[["metadata","curated"]]/.Missing["KeyAbsent",x__]:>False;
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#deleted*)
 HEPDeleted[entry_]:=entry[["metadata","deleted"]]/.Missing["KeyAbsent",x__]:>False;
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#deleted-records*)
 HEPDeletedRecords[entry_]:=entry[["metadata","deleted_records"]]/.Missing["KeyAbsent",x__]:>{ObjectJSONReference};
 	HEPDeletedRecordsRef[entry_]:=#[["$ref"]]&/@HEPDeletedRecords[entry]/.Missing["KeyAbsent",x__]:>"";
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#document-type*)
 HEPDocumentType[entry_]:=entry[["metadata","document_type"]]/.Missing["KeyAbsent",x__]:>{""};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#documents*)
 HEPDocuments[entry_]:=entry[["metadata","documents"]]/.Missing["KeyAbsent",x__]:>{ObjectDocument};
 	HEPDocumentsDescription[entry_]:=#[["description"]]&/@HEPDocuments[entry]/.Missing["KeyAbsent",x__]:>"";
+	HEPDocumentsFilename[entry_]:=#[["filename"]]&/@HEPDocuments[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPDocumentsFulltext[entry_]:=#[["fulltext"]]&/@HEPDocuments[entry]/.Missing["KeyAbsent",x__]:>False;
 	HEPDocumentsHidden[entry_]:=#[["hidden"]]&/@HEPDocuments[entry]/.Missing["KeyAbsent",x__]:>False;
 	HEPDocumentsKey[entry_]:=#[["key"]]&/@HEPDocuments[entry]/.Missing["KeyAbsent",x__]:>"";
@@ -231,84 +369,133 @@ HEPDocuments[entry_]:=entry[["metadata","documents"]]/.Missing["KeyAbsent",x__]:
 	HEPDocumentsOriginalURL[entry_]:=#[["original_url"]]&/@HEPDocuments[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPDocumentsSource[entry_]:=#[["source"]]&/@HEPDocuments[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPDocumentsURL[entry_]:=#[["url"]]&/@HEPDocuments[entry]/.Missing["KeyAbsent",x__]:>"";
-HEPDocumentsArray[entry_]:=Transpose@{HEPDocumentsDescription[entry],HEPDocumentsFulltext[entry],HEPDocumentsHidden[entry],HEPDocumentsKey[entry],HEPDocumentsMaterial[entry],HEPDocumentsOriginalURL[entry],HEPDocumentsSource[entry],HEPDocumentsURL[entry]};
+		HEPDocumentsArray[entry_]:=Transpose@{HEPDocumentsDescription[entry],HEPDocumentsFilename[entry],HEPDocumentsFulltext[entry],
+												HEPDocumentsHidden[entry],HEPDocumentsKey[entry],HEPDocumentsMaterial[entry],
+												HEPDocumentsOriginalURL[entry],HEPDocumentsSource[entry],HEPDocumentsURL[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#dois*)
 HEPDOIs[entry_]:=entry[["metadata","dois"]]/.Missing["KeyAbsent",x__]:>{ObjectDOI};
 	HEPDOIsMaterial[entry_]:=(#[["material"]]&/@HEPDOIs[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPDOIsSource[entry_]:=(#[["source"]]&/@HEPDOIs[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPDOIsValue[entry_]:=(#[["value"]]&/@HEPDOIs[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPDOIsArray[entry_]:=Transpose@{HEPDOIsMaterial[entry],HEPDOIsSource[entry],HEPDOIsValue[entry]};
+		HEPDOIsArray[entry_]:=Transpose@{HEPDOIsMaterial[entry],HEPDOIsSource[entry],HEPDOIsValue[entry]};
+
+(*unknown*)
 HEPEarliestDate[entry_]:=entry[["metadata","date"]]/.Missing["KeyAbsent",x__]:>"";
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#editions*)
 HEPEditions[entry_]:=entry[["metadata","editions"]]/.Missing["KeyAbsent",x__]:>"";
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#energy-ranges*)
 HEPEnergyRanges[entry_]:=entry[["metadata","energy_ranges"]]/.Missing["KeyAbsent",x__]:>{""};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#external-system-identifiers*)
 HEPExternalSystemIdentifiers[entry_]:=entry[["metadata","external_system_identifiers"]]/.Missing["KeyAbsent",x__]:>{ObjectID};
 	HEPExternalSystemIdentifiersSchema[entry_]:=#[["schema"]]&/@HEPExternalSystemIdentifiers[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPExternalSystemIdentifiersValue[entry_]:=#[["value"]]&/@HEPExternalSystemIdentifiers[entry]/.Missing["KeyAbsent",x__]:>"";
-	HEPExternalSystemIdentifiersArray[entry_]:={#[["schema"]],#[["value"]]}&/@HEPExternalSystemIdentifiers[entry]/.Missing["KeyAbsent",x__]:>"";
+		HEPExternalSystemIdentifiersArray[entry_]:=Transpose@{HEPExternalSystemIdentifiersSchema[entry],HEPExternalSystemIdentifiersValue[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#figures*)
 HEPFigures[entry_]:=entry[["metadata","figures"]]/.Missing["KeyAbsent",x__]:>{ObjectFigure};
 	HEPFiguresCaption[entry_]:=#[["caption"]]&/@HEPFigures[entry]/.Missing["KeyAbsent",x__]:>"";
+	HEPFiguresFilename[entry_]:=#[["filename"]]&/@HEPFigures[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPFiguresKey[entry_]:=#[["key"]]&/@HEPFigures[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPFiguresLabel[entry_]:=#[["label"]]&/@HEPFigures[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPFiguresMaterial[entry_]:=#[["material"]]&/@HEPFigures[entry]/.Missing["KeyAbsent",x__]:>"";	
+	HEPFiguresOriginalURL[entry_]:=#[["original_url"]]&/@HEPFigures[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPFiguresSource[entry_]:=#[["source"]]&/@HEPFigures[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPFiguresURL[entry_]:=#[["url"]]&/@HEPFigures[entry]/.Missing["KeyAbsent",x__]:>"";
-HEPFiguresArray[entry_]:=Transpose@{HEPFiguresCaption[entry],HEPFiguresKey[entry],HEPFiguresLabel[entry],HEPFiguresMaterial[entry],HEPFiguresSource[entry],HEPFiguresURL[entry]};
+		HEPFiguresArray[entry_]:=Transpose@{HEPFiguresCaption[entry],HEPFiguresFilename[entry],HEPFiguresKey[entry],
+											HEPFiguresLabel[entry],HEPFiguresMaterial[entry],HEPFiguresOriginalURL[entry],
+											HEPFiguresSource[entry],HEPFiguresURL[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#funding-info*)
 HEPFundingInfo[entry_]:=entry[["metadata","funding_info"]]/.Missing["KeyAbsent",x__]:>{ObjectFundingInfo};
 	HEPFundingInfoAgency[entry_]:=#[["agency"]]&/@HEPFundingInfo[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPFundingInfoGrantNumber[entry_]:=#[["grant_number"]]&/@HEPFundingInfo[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPFundingInfoProjectNumber[entry_]:=#[["project_number"]]&/@HEPFundingInfo[entry]/.Missing["KeyAbsent",x__]:>"";
-	HEPFundingInfoArray[entry_]:={HEPFundingInfoAgency[entry],HEPFundingInfoGrantNumber[entry],HEPFundingInfoProjectNumber[entry]};
-HEPImprints[entry_]:=entry[["metadata","imprints"]]/.Missing["KeyAbsent",x__]:>{ObjectImprint};
+		HEPFundingInfoArray[entry_]:=Transpose@{HEPFundingInfoAgency[entry],HEPFundingInfoGrantNumber[entry],HEPFundingInfoProjectNumber[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#imprints*)
+HEPImprints[entry_]:=entry[["metadata","imprints"]]/.Missing["KeyAbsent",x__]:>{ObjectImprints};
 	HEPImprintsDate[entry_]:=#[["date"]]&/@HEPImprints[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPImprintsPlace[entry_]:=#[["place"]]&/@HEPImprints[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPImprintsPublisher[entry_]:=#[["publisher"]]&/@HEPImprints[entry]/.Missing["KeyAbsent",x__]:>"";
-	HEPImprintsArray[entry_]:={HEPImprintsDate[entry],HEPImprintsPlace[entry],HEPImprintsPublisher[entry]};
+		HEPImprintsArray[entry_]:=Transpose@{HEPImprintsDate[entry],HEPImprintsPlace[entry],HEPImprintsPublisher[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#inspire-categories*)
 HEPInspireCategories[entry_]:=entry[["metadata","inspire_categories"]]/.Missing["KeyAbsent",x__]:>{ObjectInspireField};
 	HEPInspireCategoriesSource[entry_]:=#[["source"]]&/@HEPInspireCategories[entry]/.Missing["KeyAbsent",x__]:>"";
 	HEPInspireCategoriesTerm[entry_]:=#[["term"]]&/@HEPInspireCategories[entry]/.Missing["KeyAbsent",x__]:>"";
-	HEPInspireCategoriesArray[entry_]:={#[["source"]],#[["term"]]}&/@HEPInspireCategories[entry]/.Missing["KeyAbsent",x__]:>"";
+		HEPInspireCategoriesArray[entry_]:=Transpose@{HEPInspireCategoriesSource[entry],HEPInspireCategoriesTerm[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#isbns*)
 HEPISBNs[entry_]:=entry[["metadata","isbns"]]/.Missing["KeyAbsent",x__]:>{ObjectISBN};
 	HEPISBNsMedium[entry_]:=(#[["medium"]]&/@HEPISBNs[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPISBNsValue[entry_]:=(#[["value"]]&/@HEPISBNs[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPISBNsArray[entry_]:=Transpose@{HEPISBNsMedium[entry],HEPISBNsValue[entry]};
+		HEPISBNsArray[entry_]:=Transpose@{HEPISBNsMedium[entry],HEPISBNsValue[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#keywords*)
 HEPKeywords[entry_]:=entry[["metadata","keywords"]]/.Missing["KeyAbsent",x__]:>{ObjectKeyword};
 	HEPKeywordsSchema[entry_]:=(#[["schema"]]&/@HEPKeywords[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPKeywordsSource[entry_]:=(#[["source"]]&/@HEPKeywords[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPKeywordsValue[entry_]:=(#[["value"]]&/@HEPKeywords[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPKeywordsArray[entry_]:=Transpose@{HEPKeywordsSchema[entry],HEPKeywordsSource[entry],HEPKeywordsValue[entry]};
-HEPLanguages[entry_]:=entry[["metadata","languages"]]/.Missing["KeyAbsent",x__]:>{"English"};
+		HEPKeywordsArray[entry_]:=Transpose@{HEPKeywordsSchema[entry],HEPKeywordsSource[entry],HEPKeywordsValue[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#languages  ISO 639-1 alpha 2 language code*)
+HEPLanguages[entry_]:=entry[["metadata","languages"]]/.Missing["KeyAbsent",x__]:>{"en"};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#legacy-creation-date*)
 HEPLegacyCreationDate[entry_]:=entry[["metadata","legacy_creation_date"]]/.Missing["KeyAbsent",x__]:>"";
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#legacy-version*)
 HEPLegacyVersion[entry_]:=entry[["metadata","legacy_version"]]/.Missing["KeyAbsent",x__]:>"";
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#license*)
 HEPLicense[entry_]:=entry[["metadata","license"]]/.Missing["KeyAbsent",x__]:>{ObjectLicense};
 	HEPLicenseImposing[entry_]:=(#[["imposing"]]&/@HEPLicense[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPLicenseLicense[entry_]:=(#[["license"]]&/@HEPLicense[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPLicenseMaterial[entry_]:=(#[["material"]]&/@HEPLicense[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPLicenseURL[entry_]:=(#[["url"]]&/@HEPLicense[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPLicenseArray[entry_]:=Transpose@{HEPLicenseImposing[entry],HEPLicenseLicense[entry],HEPLicenseMaterial[entry],HEPLicenseURL[entry]};
+		HEPLicenseArray[entry_]:=Transpose@{HEPLicenseImposing[entry],HEPLicenseLicense[entry],HEPLicenseMaterial[entry],HEPLicenseURL[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#new-record*)
 HEPNewRecord[entry_]:=entry[["metadata","new_record"]]/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
 	HEPNewRecordRef[entry_]:=HEPNewRecord[entry][["$ref"]]/.Missing["KeyAbsent",x__]:>"";
+	
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#number-of-pages*)
 HEPNumberOfPages[entry_]:=entry[["metadata","number_of_pages"]]/.Missing["KeyAbsent",x__]:>0;
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#persistent-identifiers*)
 HEPPersistentIdentifiers[entry_]:=entry[["metadata","persistent_identifiers"]]/.Missing["KeyAbsent",x__]:>{ObjectPersistentIdentifier};
 	HEPPersistentIdentifiersMaterial[entry_]:=(#[["material"]]&/@HEPPersistentIdentifiers[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPersistentIdentifiersSchema[entry_]:=(#[["schema"]]&/@HEPPersistentIdentifiers[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPersistentIdentifiersSource[entry_]:=(#[["source"]]&/@HEPPersistentIdentifiers[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPersistentIdentifiersValue[entry_]:=(#[["value"]]&/@HEPPersistentIdentifiers[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPPersistentIdentifiersArray[entry_]:=Transpose@{HEPPersistentIdentifiersMaterial[entry],HEPPersistentIdentifiersSchema[entry],HEPPersistentIdentifiersSource[entry],HEPPersistentIdentifiersValue[entry]};
+		HEPPersistentIdentifiersArray[entry_]:=Transpose@{HEPPersistentIdentifiersMaterial[entry],HEPPersistentIdentifiersSchema[entry],
+															HEPPersistentIdentifiersSource[entry],HEPPersistentIdentifiersValue[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#preprint-date*)
 HEPPreprintDate[entry_]:=entry[["metadata","preprint_date"]]/.Missing["KeyAbsent",x__]:>"";
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#public-notes*)
 HEPPublicNotes[entry_]:=entry[["metadata","public_notes"]]/.Missing["KeyAbsent",x__]:>{ObjectSourcedValue};
 	HEPPublicNotesSource[entry_]:=(#[["source"]]&/@HEPPublicNotes[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicNotesValue[entry_]:=(#[["value"]]&/@HEPPublicNotes[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPPublicNotesArray[entry_]:=Transpose@{HEPPublicNotesSource[entry],HEPPublicNotesValue[entry]};
+		HEPPublicNotesArray[entry_]:=Transpose@{HEPPublicNotesSource[entry],HEPPublicNotesValue[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#publication-info*)
 HEPPublicationInfo[entry_]:=entry[["metadata","publication_info"]]/.Missing["KeyAbsent",x__]:>{ObjectPublicationInfo};
 	HEPPublicationInfoArtID[entry_]:=(#[["artid"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoCnum[entry_]:=(#[["cnum"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoConfAcronym[entry_]:=(#[["conf_acronym"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPPublicationInfoConferenceRecord[entry_]:=(#[["conference_record"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
-		HEPPublicationInfoConferenceRecordRef[entry_]:=(#[["$ref"]]&/@HEPPublicationInfoConferenceRecord[entry])/.Missing["KeyAbsent",x__]:>"";
+	HEPPublicationInfoConferenceRecord[entry_]:=(#[["conference_record"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
+	HEPPublicationInfoConferenceRecordRef[entry_]:=(#[["$ref"]]&/@HEPPublicationInfoConferenceRecord[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoCuratedRelation[entry_]:=(#[["curated_relation"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>False;
 	HEPPublicationInfoHidden[entry_]:=(#[["hidden"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>False;
 	HEPPublicationInfoJournalIssue[entry_]:=(#[["journal_issue"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPPublicationInfoJournalRecord[entry_]:=(#[["journal_record"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
-		HEPPublicationInfoJournalRecordRef[entry_]:=(#[["$ref"]]&/@HEPPublicationInfoJournalRecord[entry])/.Missing["KeyAbsent",x__]:>"";
+	HEPPublicationInfoJournalRecord[entry_]:=(#[["journal_record"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
+	HEPPublicationInfoJournalRecordRef[entry_]:=(#[["$ref"]]&/@HEPPublicationInfoJournalRecord[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoJournalTitle[entry_]:=(#[["journal_title"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoJournalVolume[entry_]:=(#[["journal_volume"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoMaterial[entry_]:=(#[["material"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
@@ -316,40 +503,53 @@ HEPPublicationInfoJournalRecord[entry_]:=(#[["journal_record"]]&/@HEPPublication
 	HEPPublicationInfoPageStart[entry_]:=(#[["page_start"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoParentISBN[entry_]:=(#[["parent_isbn"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoParentRecord[entry_]:=(#[["parent_record"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
-		HEPPublicationInfoParentRecordRef[entry_]:=(#[["$ref"]]&/@HEPPublicationInfoParentRecord[entry])/.Missing["KeyAbsent",x__]:>"";
+	HEPPublicationInfoParentRecordRef[entry_]:=(#[["$ref"]]&/@HEPPublicationInfoParentRecord[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoParentReportNumber[entry_]:=(#[["parent_report_number"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPPublicationInfoPubinfoFreetext[entry_]:=(#[["pubinfo_freetext"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
-	HEPPublicationInfoYear[entry_]:=(#[["year"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPPublicationInfoArray[entry_]:=Transpose@{HEPPublicationInfoArtID[entry],HEPPublicationInfoCnum[entry],HEPPublicationInfoConfAcronym[entry],HEPPublicationInfoConferenceRecordRef[entry],HEPPublicationInfoCuratedRelation[entry],HEPPublicationInfoHidden[entry],HEPPublicationInfoJournalIssue[entry],HEPPublicationInfoJournalRecordRef[entry],HEPPublicationInfoJournalTitle[entry],HEPPublicationInfoJournalVolume[entry],HEPPublicationInfoMaterial[entry],HEPPublicationInfoPageEnd[entry],HEPPublicationInfoPageStart[entry],HEPPublicationInfoParentISBN[entry],HEPPublicationInfoParentRecordRef[entry],HEPPublicationInfoParentReportNumber[entry],HEPPublicationInfoPubinfoFreetext[entry],HEPPublicationInfoYear[entry]};
+	HEPPublicationInfoYear[entry_]:=(#[["year"]]&/@HEPPublicationInfo[entry])/.Missing["KeyAbsent",x__]:>0;
+		HEPPublicationInfoArray[entry_]:=Transpose@{HEPPublicationInfoArtID[entry],HEPPublicationInfoCnum[entry],HEPPublicationInfoConfAcronym[entry],
+													HEPPublicationInfoConferenceRecordRef[entry],HEPPublicationInfoCuratedRelation[entry],HEPPublicationInfoHidden[entry],
+													HEPPublicationInfoJournalIssue[entry],HEPPublicationInfoJournalRecordRef[entry],HEPPublicationInfoJournalTitle[entry],
+													HEPPublicationInfoJournalVolume[entry],HEPPublicationInfoMaterial[entry],HEPPublicationInfoPageEnd[entry],
+													HEPPublicationInfoPageStart[entry],HEPPublicationInfoParentISBN[entry],HEPPublicationInfoParentRecordRef[entry],
+													HEPPublicationInfoParentReportNumber[entry],HEPPublicationInfoPubinfoFreetext[entry],HEPPublicationInfoYear[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#publication-type*)
 HEPPublicationType[entry_]:=entry[["metadata","publication_type"]]/.Missing["KeyAbsent",x__]:>{""};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#record-affiliations*)
 HEPRecordAffiliations[entry_]:=entry[["metadata","record_affiliations"]]/.Missing["KeyAbsent",x__]:>{ObjectAffiliations};
 	HEPRecordAffiliationsCuratedRelation[entry_]:=(#[["curated_relation"]]&/@HEPRecordAffiliations[entry])/.Missing["KeyAbsent",x__]:>False;
 	HEPRecordAffiliationsRecord[entry_]:=(#[["record"]]&/@HEPRecordAffiliations[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
-		HEPRecordAffiliationsRecordRef[entry_]:=(#[["$ref"]]&/@HEPRecordAffiliationsRecord[entry])/.Missing["KeyAbsent",x__]:>"";
+	EPRecordAffiliationsRecordRef[entry_]:=(#[["$ref"]]&/@HEPRecordAffiliationsRecord[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPRecordAffiliationsValue[entry_]:=(#[["value"]]&/@HEPRecordAffiliations[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPRecordAffiliationsArray[entry_]:=({#[["curated_relation"]]/.Missing["KeyAbsent",x__]:>False,(#[["record"]]/.Missing["KeyAbsent",x__]:>ObjectJSONReference)[["$ref"]]/.Missing["KeyAbsent",x__]:>"",#[["value"]]/.Missing["KeyAbsent",x__]:>""}&/@HEPRecordAffiliations[entry]);
+		HEPRecordAffiliationsArray[entry_]:=Transpose@{HEPRecordAffiliationsCuratedRelation[entry],EPRecordAffiliationsRecordRef[entry],HEPRecordAffiliationsValue[entry]};
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#refereed*)
 HEPRefereed[entry_]:=entry[["metadata","refereed"]]/.Missing["KeyAbsent",x__]:>False;
+
+(*https://inspire-schemas.readthedocs.io/en/latest/schemas/hep.html#references*)
 HEPReferences[entry_]:=entry[["metadata","references"]]/.Missing["KeyAbsent",x__]:>{ObjectReferences};
 	HEPReferencesCuratedRelation[entry_]:=(#[["curated_relation"]]&/@HEPReferences[entry])/.Missing["KeyAbsent",x__]:>False;
 	HEPReferencesLegacyCurated[entry_]:=(#[["legacy_curated"]]&/@HEPReferences[entry])/.Missing["KeyAbsent",x__]:>False;
-	HEPReferencesRawRefs[entry_]:=(#[["raw_refs"]]&/@HEPReferences[entry])/.Missing["KeyAbsent",x__]:>{ObjectRawRefs};
+	HEPReferencesRawRefs[entry_]:=(#[["raw_refs"]]&/@HEPReferences[entry])/.Missing["KeyAbsent",x__]:>ObjectRawRefs;
 		HEPReferencesRawRefsSchema[entry_]:=((#[["schema"]]&/@#)&/@HEPReferencesRawRefs[entry])/.Missing["KeyAbsent",x__]:>"";
 		HEPReferencesRawRefsSource[entry_]:=((#[["source"]]&/@#)&/@HEPReferencesRawRefs[entry])/.Missing["KeyAbsent",x__]:>"";
 		HEPReferencesRawRefsValue[entry_]:=((#[["value"]]&/@#)&/@HEPReferencesRawRefs[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPReferencesRawRefsArray[entry_]:=(({#[["schema"]],#[["source"]],#[["value"]]}&/@#)&/@HEPReferencesRawRefs[entry])/.Missing["KeyAbsent",x__]:>"";
-(*HEPReferencesRawRefsArray[entry_]:=Transpose@{HEPReferencesRawRefsSchema[entry],HEPReferencesRawRefsSource[entry],HEPReferencesRawRefsValue[entry]};*)
+			HEPReferencesRawRefsArray[entry_]:=(({#[["schema"]],#[["source"]],#[["value"]]}&/@#)&/@HEPReferencesRawRefs[entry])/.Missing["KeyAbsent",x__]:>"";
+	HEPReferencesArray[entry]=Transpose@{HEPReferencesCuratedRelation[entry],HEPReferencesLegacyCurated[entry],HEPReferencesRawRefsArray[entry]};
 	HEPReferencesRecord[entry_]:=(#[["record"]]&/@HEPReferences[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
-		HEPReferencesRecordRef[entry_]:=(#[["$ref"]]&/@HEPReferencesRecord[entry])/.Missing["KeyAbsent",x__]:>"";
+	HEPReferencesRecordRef[entry_]:=(#[["$ref"]]&/@HEPReferencesRecord[entry])/.Missing["KeyAbsent",x__]:>"";
 	HEPReferencesReference[entry_]:=(#[["reference"]]&/@HEPReferences[entry])/.Missing["KeyAbsent",x__]:>ObjectReference;
 		HEPReferencesReferenceArXivEprint[entry_]:=(#[["arxiv_eprint"]]&/@HEPReferencesReference[entry])/.Missing["KeyAbsent",x__]:>"";
 		HEPReferencesReferenceAuthors[entry_]:=(#[["authors"]]&/@HEPReferencesReference[entry])/.Missing["KeyAbsent",x__]:>{ObjectReferenceAuthors};
 			HEPReferencesReferenceAuthorsFullName[entry_]:=((#[["full_name"]]&/@#)&/@HEPReferencesReferenceAuthors[entry])/.Missing["KeyAbsent",x__]:>"";
 			HEPReferencesReferenceAuthorsInspireRole[entry_]:=((#[["inspire_role"]]&/@#)&/@HEPReferencesReferenceAuthors[entry])/.Missing["KeyAbsent",x__]:>"";
-			HEPReferencesReferenceAuthorsArray[entry_]:=(({#[["full_name"]],#[["inspire_role"]]}&/@#)&/@HEPReferencesReferenceAuthors[entry])/.Missing["KeyAbsent",x__]:>"";
+				HEPReferencesReferenceAuthorsArray[entry_]:=(({#[["full_name"]],#[["inspire_role"]]}&/@#)&/@HEPReferencesReferenceAuthors[entry])/.Missing["KeyAbsent",x__]:>"";
 		HEPReferencesReferenceBookSeries[entry_]:=(#[["book_series"]]&/@HEPReferencesReference[entry])/.Missing["KeyAbsent",x__]:>ObjectBookSeries;
 			HEPReferencesReferenceBookSeriesTitle[entry_]:=(#[["title"]]&/@HEPReferencesReferenceBookSeries[entry])/.Missing["KeyAbsent",x__]:>"";
 			HEPReferencesReferenceBookSeriesVolume[entry_]:=(#[["volume"]]&/@HEPReferencesReferenceBookSeries[entry])/.Missing["KeyAbsent",x__]:>"";
-			HEPReferencesReferenceBookSeriesArray[entry_]:=({#[["title"]],#[["volume"]]}&/@HEPReferencesReferenceBookSeries[entry])/.Missing["KeyAbsent",x__]:>"";
+				HEPReferencesReferenceBookSeriesArray[entry_]:=({#[["title"]],#[["volume"]]}&/@HEPReferencesReferenceBookSeries[entry])/.Missing["KeyAbsent",x__]:>"";
 		HEPReferencesReferenceCollaborations[entry_]:=(#[["collaborations"]]&/@HEPReferencesReference[entry])/.Missing["KeyAbsent",x__]:>{""};
 		HEPReferencesReferenceDocumentType[entry_]:=(#[["document_type"]]&/@HEPReferencesReference[entry])/.Missing["KeyAbsent",x__]:>"";
 		HEPReferencesReferenceDOIs[entry_]:=(#[["dois"]]&/@HEPReferencesReference[entry])/.Missing["KeyAbsent",x__]:>{""};
@@ -357,7 +557,7 @@ HEPReferencesRawRefsArray[entry_]:=(({#[["schema"]],#[["source"]],#[["value"]]}&
 			HEPReferencesReferenceExternalSystemIdentifiersSchema[entry_]:=((#[["schema"]]&/@#)&/@HEPReferencesReferenceExternalSystemIdentifiers[entry])/.Missing["KeyAbsent",x__]:>"";
 			HEPReferencesReferenceExternalSystemIdentifiersValue[entry_]:=((#[["value"]]&/@#)&/@HEPReferencesReferenceExternalSystemIdentifiers[entry])/.Missing["KeyAbsent",x__]:>"";
 			HEPReferencesReferenceExternalSystemIdentifiersArray[entry_]:=(({#[["schema"]],#[["value"]]}&/@#)&/@HEPReferencesReferenceExternalSystemIdentifiers[entry])/.Missing["KeyAbsent",x__]:>"";
-		HEPReferencesReferenceImprint[entry_]:=(#[["imprint"]]&/@HEPReferencesReference[entry])/.Missing["KeyAbsent",x__]:>ObjectImprint;
+		HEPReferencesReferenceImprint[entry_]:=(#[["imprint"]]&/@HEPReferencesReference[entry])/.Missing["KeyAbsent",x__]:>ObjectImprints;
 			HEPReferencesReferenceImprintDate[entry_]:=(#[["date"]]&/@HEPReferencesReferenceImprint[entry])/.Missing["KeyAbsent",x__]:>"";
 			HEPReferencesReferenceImprintPlace[entry_]:=(#[["place"]]&/@HEPReferencesReferenceImprint[entry])/.Missing["KeyAbsent",x__]:>"";
 			HEPReferencesReferenceImprintPublisher[entry_]:=(#[["publisher"]]&/@HEPReferencesReferenceImprint[entry])/.Missing["KeyAbsent",x__]:>"";
@@ -394,9 +594,9 @@ HEPReferencesRawRefsArray[entry_]:=(({#[["schema"]],#[["source"]],#[["value"]]}&
 			HEPReferencesReferenceURLsDescription[entry_]:=((#[["description"]]&/@#)&/@HEPReferencesReferenceURLs[entry])/.Missing["KeyAbsent",x__]:>"";
 			HEPReferencesReferenceURLsValue[entry_]:=((#[["value"]]&/@#)&/@HEPReferencesReferenceURLs[entry])/.Missing["KeyAbsent",x__]:>"";
 			HEPReferencesReferenceURLsArray[entry_]:=(({#[["description"]],#[["value"]]}&/@#)&/@HEPReferencesReferenceURLs[entry])/.Missing["KeyAbsent",x__]:>"";
-HEPReferencesReferenceArray[entry_]:=Transpose@{HEPReferencesReferenceArXivEprint[entry],HEPReferencesReferenceAuthorsArray[entry],HEPReferencesReferenceBookSeriesArray[entry],HEPReferencesReferenceCollaborations[entry],HEPReferencesReferenceDocumentType[entry],HEPReferencesReferenceDOIs[entry],HEPReferencesReferenceExternalSystemIdentifiersArray[entry],HEPReferencesReferenceImprintArray[entry],HEPReferencesReferenceISBN[entry],HEPReferencesReferenceLabel[entry],HEPReferencesReferenceMisc[entry],HEPReferencesReferencePersistentIdentifiersArray[entry],HEPReferencesReferencePublicationInfoArray[entry],HEPReferencesReferenceReportNumbers[entry],HEPReferencesReferenceTeXKey[entry],HEPReferencesReferenceTitleArray[entry],HEPReferencesReferenceURLsArray[entry]};
+(*HEPReferencesReferenceArray[entry_]:=Transpose@{HEPReferencesReferenceArXivEprint[entry],HEPReferencesReferenceAuthorsArray[entry],HEPReferencesReferenceBookSeriesArray[entry],HEPReferencesReferenceCollaborations[entry],HEPReferencesReferenceDocumentType[entry],HEPReferencesReferenceDOIs[entry],HEPReferencesReferenceExternalSystemIdentifiersArray[entry],HEPReferencesReferenceImprintArray[entry],HEPReferencesReferenceISBN[entry],HEPReferencesReferenceLabel[entry],HEPReferencesReferenceMisc[entry],HEPReferencesReferencePersistentIdentifiersArray[entry],HEPReferencesReferencePublicationInfoArray[entry],HEPReferencesReferenceReportNumbers[entry],HEPReferencesReferenceTeXKey[entry],HEPReferencesReferenceTitleArray[entry],HEPReferencesReferenceURLsArray[entry]};
 HEPReferencesArray[entry_]:=Transpose@{HEPReferencesCuratedRelation[entry],HEPReferencesLegacyCurated[entry],HEPReferencesRawRefsArray[entry],HEPReferencesRecordRef[entry],HEPReferencesReferenceArray[entry]};
-HEPRelatedRecords[entry_]:=entry[["metadata","related_records"]]/.Missing["KeyAbsent",x__]:>{ObjectRelatedRecord};
+*)HEPRelatedRecords[entry_]:=entry[["metadata","related_records"]]/.Missing["KeyAbsent",x__]:>{ObjectRelatedRecord};
 	HEPRelatedRecordsCuratedRelation[entry_]:=(#[["curated_relation"]]&/@HEPRelatedRecords[entry])/.Missing["KeyAbsent",x__]:>False;
 	HEPRelatedRecordsRecord[entry_]:=(#[["record"]]&/@HEPRelatedRecords[entry])/.Missing["KeyAbsent",x__]:>ObjectJSONReference;
 		HEPRelatedRecordsRecordRef[entry_]:=(#[["$ref"]]&/@HEPRelatedRecordsRecord[entry])/.Missing["KeyAbsent",x__]:>"";
@@ -471,7 +671,9 @@ ExtractHEPCitations[entry_]:={HEPCitations[entry]};
 ExtractHEPCitationsNoSelf[entry_]:={HEPCitationsNoSelf[entry]};
 ExtractHEPCiteableFlag[entry_]:={HEPCiteable[entry]};
 (*ExtractHEPCitationsCount[entry_]:=Quiet[Check[{entry\[LeftDoubleBracket]"metadata","citation_count"\[RightDoubleBracket]/.Missing["KeyAbsent",x__]\[RuleDelayed]Null},0]];*)
-ExtractHEPCollaborations[entry_]:=HEPCollaborationsValue[entry]/.""->Null;
+ExtractHEPCollaborationsIDs[entry_]:=ToExpression[Flatten[StringCases[HEPCollaborationsRecordRef[entry],DigitCharacter..]/.{}->Null]];
+ExtractHEPCollaborationsValues[entry_]:=HEPCollaborationsValue[entry]/.""->Null;
+ExtractHEPCollaborationsAll[entry_]:=Transpose@{ExtractHEPCollaborationsIDs[entry],ExtractHEPCollaborationsValues[entry]};
 ExtractHEPCore[entry_]:={HEPCore[entry]};
 ExtractHEPCurated[entry_]:={HEPCurated[entry]};
 ExtractHEPDateCreated[entry_]:=RecordCreated[entry]/.""->{Null};
@@ -479,7 +681,9 @@ ExtractHEPDateUpdated[entry_]:=RecordUpdated[entry]/.""->{Null};
 ExtractHEPDocumentTypes[entry_]:=HEPDocumentType[entry]/.""->Null;
 ExtractHEPDOIs[entry_]:=HEPDOIsValue[entry]/.""->Null;
 ExtractHEPEarliestDate[entry_]:=HEPEarliestDate[entry]/.""->{Null};
-ExtractHEPExperiments[entry_]:=HEPAcceleratorExperimentsLegacyName[entry]/.""->Null;
+ExtractHEPExperimentsIDs[entry_]:=ToExpression[Flatten[StringCases[HEPAcceleratorExperimentsRecordRef[entry],DigitCharacter..]/.{}->Null]];
+ExtractHEPExperimentsLegacyName[entry_]:=HEPAcceleratorExperimentsLegacyName[entry]/.""->Null;
+ExtractHEPExperimentsAll[entry_]:= Transpose@{ExtractHEPExperimentsIDs[entry],ExtractHEPExperimentsLegacyName[entry]};
 ExtractHEPExternalIDs[entry_]:=HEPExternalSystemIdentifiersArray[entry]/.""->Null;
 ExtractHEPExternalURLs[entry_]:=HEPURLsArray[entry]/.""->Null;
 ExtractHEPID[entry_]:={RecordID[entry]};
@@ -840,7 +1044,7 @@ ExtractCountryCodeAndState[entry_]:=Transpose@{CountryData/@ExtractInstitutionAd
 (*Literature: Convert each JSON entry to a Mathematica Record with format RecordLegend*)
 
 
-HEPEntryToRecord[JSON_,JSONbrief_]:=If[ToString[JSONbrief]!="Null",{ExtractHEPID[JSON],ExtractHEPDateCreated[JSON],ExtractHEPEarliestDate[JSONbrief],ExtractHEPDateUpdated[JSON],ExtractHEPTitle[JSON],ExtractHEPAbstract[JSON],ExtractHEPExperiments[JSON],ExtractHEPArXivCategories[JSON],ExtractHEPArXivFirstCategory[JSON],ExtractHEPArXivIDs[JSON],ExtractHEPAuthorsCount[JSONbrief],ExtractHEPAuthorsAll[JSON],ExtractHEPCitations[JSON],ExtractHEPCitationsNoSelf[JSON],ExtractHEPCiteableFlag[JSON],ExtractHEPReferencesCount[JSONbrief],ExtractHEPCollaborations[JSON],ExtractHEPCore[JSON],ExtractHEPCurated[JSON],ExtractHEPDocumentTypes[JSON],ExtractHEPDOIs[JSON],ExtractHEPExternalIDs[JSON],ExtractHEPNumberofPages[JSONbrief],ExtractHEPNumberofFigures[JSON],ExtractHEPInspireCategories[JSON],ExtractHEPISBNs[JSON],ExtractHEPKeywords[JSON],ExtractHEPPreprintDate[JSON],ExtractHEPJournalArtID[JSON],ExtractHEPJournalID[JSON],ExtractHEPJournalName[JSON],ExtractHEPJournalVolume[JSON],ExtractHEPJournalIssue[JSON],ExtractHEPJournalPageStart[JSON],ExtractHEPJournalPageEnd[JSON],ExtractHEPJournalDate[JSON],ExtractHEPPublicationType[JSON],ExtractHEPRefereedFlag[JSON],ExtractHEPReferences[JSON],ExtractHEPReportNumbers[JSON],ExtractHEPURL[JSON],ExtractHEPTeXKeys[JSON],ExtractHEPThesisInfo[JSON],ExtractHEPExternalURLs[JSON],ExtractHEPWithdrawnFlag[JSON]},{ExtractHEPID[JSON],ExtractHEPDateCreated[JSON],ExtractHEPEarliestDate[JSON],ExtractHEPDateUpdated[JSON],ExtractHEPTitle[JSON],ExtractHEPAbstract[JSON],ExtractHEPExperiments[JSON],ExtractHEPArXivCategories[JSON],ExtractHEPArXivFirstCategory[JSON],ExtractHEPArXivIDs[JSON],ExtractHEPAuthorsCount[JSON],ExtractHEPAuthorsAll[JSON],ExtractHEPCitations[JSON],ExtractHEPCitationsNoSelf[JSON],ExtractHEPCiteableFlag[JSON],ExtractHEPReferencesCount[JSON],ExtractHEPCollaborations[JSON],ExtractHEPCore[JSON],ExtractHEPCurated[JSON],ExtractHEPDocumentTypes[JSON],ExtractHEPDOIs[JSON],ExtractHEPExternalIDs[JSON],ExtractHEPNumberofPages[JSON],ExtractHEPNumberofFigures[JSON],ExtractHEPInspireCategories[JSON],ExtractHEPISBNs[JSON],ExtractHEPKeywords[JSON],ExtractHEPPreprintDate[JSON],ExtractHEPJournalArtID[JSON],ExtractHEPJournalID[JSON],ExtractHEPJournalName[JSON],ExtractHEPJournalVolume[JSON],ExtractHEPJournalIssue[JSON],ExtractHEPJournalPageStart[JSON],ExtractHEPJournalPageEnd[JSON],ExtractHEPJournalDate[JSON],ExtractHEPPublicationType[JSON],ExtractHEPRefereedFlag[JSON],ExtractHEPReferences[JSON],ExtractHEPReportNumbers[JSON],ExtractHEPURL[JSON],ExtractHEPTeXKeys[JSON],ExtractHEPThesisInfo[JSON],ExtractHEPExternalURLs[JSON],ExtractHEPWithdrawnFlag[JSON]}];
+HEPEntryToRecord[JSON_,JSONbrief_]:=If[ToString[JSONbrief]!="Null",{ExtractHEPID[JSON],ExtractHEPDateCreated[JSON],ExtractHEPEarliestDate[JSONbrief],ExtractHEPDateUpdated[JSON],ExtractHEPTitle[JSON],ExtractHEPAbstract[JSON],ExtractHEPExperimentsAll[JSON],ExtractHEPArXivCategories[JSON],ExtractHEPArXivFirstCategory[JSON],ExtractHEPArXivIDs[JSON],ExtractHEPAuthorsCount[JSONbrief],ExtractHEPAuthorsAll[JSON],ExtractHEPCitations[JSON],ExtractHEPCitationsNoSelf[JSON],ExtractHEPCiteableFlag[JSON],ExtractHEPReferencesCount[JSONbrief],ExtractHEPCollaborationsAll[JSON],ExtractHEPCore[JSON],ExtractHEPCurated[JSON],ExtractHEPDocumentTypes[JSON],ExtractHEPDOIs[JSON],ExtractHEPExternalIDs[JSON],ExtractHEPNumberofPages[JSONbrief],ExtractHEPNumberofFigures[JSON],ExtractHEPInspireCategories[JSON],ExtractHEPISBNs[JSON],ExtractHEPKeywords[JSON],ExtractHEPPreprintDate[JSON],ExtractHEPJournalArtID[JSON],ExtractHEPJournalID[JSON],ExtractHEPJournalName[JSON],ExtractHEPJournalVolume[JSON],ExtractHEPJournalIssue[JSON],ExtractHEPJournalPageStart[JSON],ExtractHEPJournalPageEnd[JSON],ExtractHEPJournalDate[JSON],ExtractHEPPublicationType[JSON],ExtractHEPRefereedFlag[JSON],ExtractHEPReferences[JSON],ExtractHEPReportNumbers[JSON],ExtractHEPURL[JSON],ExtractHEPTeXKeys[JSON],ExtractHEPThesisInfo[JSON],ExtractHEPExternalURLs[JSON],ExtractHEPWithdrawnFlag[JSON]},{ExtractHEPID[JSON],ExtractHEPDateCreated[JSON],ExtractHEPEarliestDate[JSON],ExtractHEPDateUpdated[JSON],ExtractHEPTitle[JSON],ExtractHEPAbstract[JSON],ExtractHEPExperimentsAll[JSON],ExtractHEPArXivCategories[JSON],ExtractHEPArXivFirstCategory[JSON],ExtractHEPArXivIDs[JSON],ExtractHEPAuthorsCount[JSON],ExtractHEPAuthorsAll[JSON],ExtractHEPCitations[JSON],ExtractHEPCitationsNoSelf[JSON],ExtractHEPCiteableFlag[JSON],ExtractHEPReferencesCount[JSON],ExtractHEPCollaborationsAll[JSON],ExtractHEPCore[JSON],ExtractHEPCurated[JSON],ExtractHEPDocumentTypes[JSON],ExtractHEPDOIs[JSON],ExtractHEPExternalIDs[JSON],ExtractHEPNumberofPages[JSON],ExtractHEPNumberofFigures[JSON],ExtractHEPInspireCategories[JSON],ExtractHEPISBNs[JSON],ExtractHEPKeywords[JSON],ExtractHEPPreprintDate[JSON],ExtractHEPJournalArtID[JSON],ExtractHEPJournalID[JSON],ExtractHEPJournalName[JSON],ExtractHEPJournalVolume[JSON],ExtractHEPJournalIssue[JSON],ExtractHEPJournalPageStart[JSON],ExtractHEPJournalPageEnd[JSON],ExtractHEPJournalDate[JSON],ExtractHEPPublicationType[JSON],ExtractHEPRefereedFlag[JSON],ExtractHEPReferences[JSON],ExtractHEPReportNumbers[JSON],ExtractHEPURL[JSON],ExtractHEPTeXKeys[JSON],ExtractHEPThesisInfo[JSON],ExtractHEPExternalURLs[JSON],ExtractHEPWithdrawnFlag[JSON]}];
 HEPRecordLegend=Table[ToString[i]<>". "<>ToExpression[StringReplace[DeleteDuplicates[StringDelete[StringSplit[StringSplit[StringSplit[ToString[Definition[HEPEntryToRecord]],"Null, "][[2]],"}"][[1]],", "],{"[","]","{","}"}]],{"ExtractHEP"->"\"","JSONbrief"->"\"","JSON"->"\""}]][[i]],{i,1,Quiet[HEPEntryToRecord[a,b]//Length]}];
 
 
