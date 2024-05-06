@@ -2,6 +2,8 @@
 __pycache__/
 data.plk
 .DS_Store
+.ipynb_checkpoints/
+.mypy_cache/
 
 *.py[cod]
 
